@@ -1,0 +1,36 @@
+---
+layout: default
+title: 
+generator: pagination
+pagination:
+    max_per_page: 5
+use:
+    - posts
+---
+{% for post in page.pagination.items %}
+<li class="post">
+    <div class="content">
+        <div class="postdata">
+                <span class="title">
+                    <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
+                </span>
+                <span class="date">{{ post.post_date }}</span>
+        </div>
+        <div class="entry">
+            {% set break_array = post.blocks.content|split('<!--more-->', 2) %}
+                {{ break_array[0]|raw }}
+            {% if break_array|length > 1 %}
+                <a href="{{ site.url }}{{ post.url }}">More...</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="footer"></div>
+</li>
+{% endfor %}
+
+{% if page.pagination.previous_page or page.pagination.next_page %}
+    <nav>
+        {% if page.pagination.previous_page %}<a href="{{ site.url }}{{ page.pagination.previous_page.url }}">Newer Posts</a>{% endif %}<br />
+        {% if page.pagination.next_page %}<a href="{{ site.url }}{{ page.pagination.next_page.url }}">Older Posts</a>{% endif %}<br />
+    </nav>
+{% endif %}
