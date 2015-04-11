@@ -139,6 +139,7 @@ img         { outline:0;border:0; }
 
 #content .entry p {
     text-indent: 10px;
+    margin-bottom: 15px;
 }
 
 #content .oppic {
