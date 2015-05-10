@@ -10,9 +10,9 @@
     <div class="content">
         <div class="postdata">
                 <span class="title">
-                    <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
+                    <a href="{{ page.url }}" rel="bookmark">{{ page.title }}</a>
                 </span>
-                <span class="date">{{ post.post_date }}</span>
+                <span class="date">{{ page.post_date }}</span>
         </div>
         <div class="entry">
             {{ page.blocks.content|raw }}
@@ -20,12 +20,6 @@
     </div>
     <div class="footer"></div>
 </li>
-<!--             <li class="post">
-                <div class="content">
-                    
-                </div>
-                <div class="footer"></div>
-            </li> -->
 
 {% if site.disqus.shortname and site.disqus.shortname != '' %}
 <div id="disqus_thread"></div>
@@ -47,8 +41,8 @@
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the
-    <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered byDisqus.</a>
+<noscript>
+    Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered byDisqus.</a>
 </noscript>
 {% endif %}
 

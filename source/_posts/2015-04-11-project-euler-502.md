@@ -24,6 +24,14 @@ import Data.List
 import Data.Bits
 
 {-|
+  Decimal to binary conversion
+ -}
+binary :: Integer -> [Integer]
+binary 0 = [0]
+binary 1 = [1]
+binary x = binary (div x 2) ++ [mod x 2]
+
+{-|
   Naive implementation of Euler Problem 502. Generate all castles, check validity, count
 -}
 castles :: Integer -> Integer -> Integer
