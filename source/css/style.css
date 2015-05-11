@@ -7,35 +7,38 @@ body {
     color: #141414;
     font-size: 20px;
     font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+    text-align: left;
 }
 
-p             { margin: 0 0 0 0; text-align: left; line-height: 1.5; }
-p.last        { margin-bottom:0; }
-p.first       { margin-top: 0px; }
-p.img         { text-align: center }
+p.img {
+    text-align: center
+}
 
 a:link,
 a:visited,
 a:focus,
 a:hover,
-a:active    {
-    color: #404040; 
+a:active {
     text-decoration: underline; 
-    cursor:pointer;
+    cursor: pointer;
 }
 
-a:hover     { text-decoration:none; }
+a:hover {
+    text-decoration: none;
+}
 
 a:active, 
-a:focus         { outline: 0; } /*remove border in ff*/
-
-img         { outline:0;border:0; }
+a:focus,
+img {
+    outline: 0;
+    border: 0;
+}
 
 #header {
     padding: 20px 0px 0px 0px;
     text-align: center;
 }
-
 
 #header #invader-wrapper {
     height: 150px;
@@ -75,7 +78,6 @@ img         { outline:0;border:0; }
     100% {background-color: #e88383;}
 }
 
-
 #header #invader {
     position: relative;
     top: 33px;
@@ -91,50 +93,51 @@ img         { outline:0;border:0; }
 }
 
 #content {
-    min-height:600px;
+    min-height: 600px;
 }
 
 #content .post {
-    overflow:hidden;
-    padding-top:12px;
+    overflow: hidden;
+    padding-top: 12px;
     margin-bottom: 23px;
     margin-left: 5px;
     margin-right: 5px;
     padding: 10px 17px;
 }
 
-#content .title {
-    padding-bottom:6px;
+#content .postdata .title {
+    padding-bottom: 6px;
     font-size: 1.83em;
     vertical-align: middle;
 }
 
-#content .title a {
-    text-decoration:none;
+#content .postdata .title a {
+    text-decoration: none;
     color: #343434;
+}
 
+#content .postdata .title a:hover {
+    color: #91adc1;
 }
-#content .title a:hover {
-    color:#91adc1;
-}
+
 #content .postdata {
-    font-size:0.9em;
+    font-size: 0.9em;
     padding-bottom: 6px;
-    margin-bottom:8px;
+    margin-bottom: 8px;
     border-bottom: 1px solid #DFDFDF;
 }
 
 #content .date {
     float: right;
-    color:#919191;
+    color: #919191;
     vertical-align: middle;
     line-height: 34px;
     padding-top: 9px;
 }
 
 #content .entry {
-    clear:both;
-    overflow:hidden;
+    clear: both;
+    overflow: hidden;
 }
 
 #content .entry p {
@@ -149,7 +152,11 @@ img         { outline:0;border:0; }
 }
 
 #content .entry a {
-     color:#e08105; 
+    color: #343434;
+}
+
+#content .entry a:hover {
+    color: #91adc1;
 }
 
 #content .navigation {
@@ -161,6 +168,7 @@ img         { outline:0;border:0; }
     text-align: center;
     padding-top: 45px;
     padding-bottom: 25px;
+    line-height: 0.9em;
 }
 
 #footer img {
@@ -168,5 +176,5 @@ img         { outline:0;border:0; }
 }
 
 .text-align-center {
-    text-align: center;;
+    text-align: center;
 }
