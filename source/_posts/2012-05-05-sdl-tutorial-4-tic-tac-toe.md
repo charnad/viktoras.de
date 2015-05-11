@@ -10,8 +10,8 @@ post_date: 05.05.2012
 
 Первое, что мы надо сделать - спланировать игру. Все мы знаем, что крестики-нолики имеют поле 3x3, где игроки ставят крестики или нолики. Итак, для этого нам будет нужно 3 изображения, одно для игрового поля, одно для X, и одно для О. Нам не нужно многокрестиков или ноликов, потому что мы можем отрисовывать их в программе сколько угодно раз. Наше игровое поле будет размером 600x600, а наши X и O будут 200x200 (1/3 площади). 
 
-<img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/4/grid.png"/>
-<img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/4/o.png" style="float: left;"/><img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/4/x.png"/>
+<img src="{{site.url}}/img/2012-05-07-sdl-tutotial-4/grid.png"/>
+<img src="{{site.url}}/img/2012-05-07-sdl-tutotial-4/o.png" style="float: left;"/><img src="{{site.url}}/img/2012-05-07-sdl-tutotial-4/x.png"/>
 <br clear="both">[*Это png изображения, для работы вам нужны bmp. Их можно взять в репозитории на гитхабе, ссылка в начале поста.*]
 
 Теперь у нас есть изображения, и нам нужен способ, чтобы загрузить их в нашу программу. Откройте **App.h** и внесите некоторые изменения. Удалите поверхность Test, и добавьте три новых поверхности.
