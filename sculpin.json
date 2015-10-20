@@ -1,0 +1,19 @@
+{
+    "name": "charnad/viktoras.de",
+    "description": "Viktoras.de blog",
+    "type": "sculpin-site",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Viktoras Bezaras",
+            "email": "charnad@gmail.com",
+            "homepage": "http://viktoras.de"
+        }
+    ],
+    "require": {
+        "components/highlightjs": "~7.3.0"
+    },
+    "config": {
+        "component-dir": "source/js"
+    }
+}
