@@ -1,14 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
 body {
-    color: #141414;
-    font-size: 20px;
-    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
-    line-height: 1.5;
-    text-align: left;
+    font-size: 16px;
 }
 
 p.img {
@@ -47,8 +38,6 @@ img {
     background-color: #a1bdd1;
     overflow: hidden;
     border-radius: 100px;
-    margin-left: auto;
-    margin-right: auto;
     z-index: 0;
     -webkit-box-shadow: inset 0px -2px 15px 7px rgba(0,0,0,0.35);
     -moz-box-shadow: inset 0px -2px 15px 7px rgba(0,0,0,0.35);
@@ -86,49 +75,39 @@ img {
 }
 
 #main {
-    padding: 10px 21px;
-    max-width: 1200px;
-    
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#content {
+    padding: 10px 21px;    
     min-height: 600px;
 }
 
-#content .post {
-    overflow: hidden;
-    padding-top: 12px;
-    margin-bottom: 23px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 10px 17px;
+.post {
+    margin: 0px 0px 40px 0px;
+    clear: both;
+    min-height: 100px;
 }
 
-#content .postdata .title {
+.post .postdata .title {
     padding-bottom: 6px;
     font-size: 1.83em;
     vertical-align: middle;
 }
 
-#content .postdata .title a {
+.post .postdata .title a {
     text-decoration: none;
     color: #343434;
 }
 
-#content .postdata .title a:hover {
+.post .postdata .title a:hover {
     color: #91adc1;
 }
 
-#content .postdata {
+.post .postdata {
     font-size: 0.9em;
     padding-bottom: 6px;
     margin-bottom: 8px;
     border-bottom: 1px solid #DFDFDF;
 }
 
-#content .date {
+.post .date {
     float: right;
     color: #919191;
     vertical-align: middle;
@@ -136,31 +115,26 @@ img {
     padding-top: 9px;
 }
 
-#content .entry {
-    clear: both;
-    overflow: hidden;
-}
-
-#content .entry p {
+.post .entry p {
     text-indent: 10px;
     margin-bottom: 15px;
 }
 
-#content .oppic {
+.post .oppic {
     float: left;
     margin-right: 10px;
     margin-bottom: 5px;
 }
 
-#content .entry a {
+.post .entry a {
     color: #343434;
 }
 
-#content .entry a:hover {
+.post .entry a:hover {
     color: #91adc1;
 }
 
-#content .navigation {
+.post .navigation {
     margin-bottom: 40px;
     text-align: center;
 }

@@ -1,0 +1,20 @@
+<nav class="text-align-center">
+    {% if page.pagination.total_pages > 1 %}
+        {% for i in 1..page.pagination.total_pages %}
+
+            {% if i == 1 %}
+                {% set query = '' %}
+            {% else %}
+                {% set query = '/page/' ~ i %}
+            {% endif %}
+
+            {% if i == page.pagination.page %}
+                {% set class = 'class=active' %}
+            {% else %}
+                {% set class = '' %}
+            {% endif %}
+
+            <a {{class}} href="{{site.url}}{{query}}">{{i}}</a>
+        {% endfor %}
+    {% endif %}
+</nav>
