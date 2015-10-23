@@ -139,14 +139,13 @@ img {
     text-align: center;
 }
 
-#footer {
+.footer {
     text-align: center;
     padding-top: 45px;
     padding-bottom: 25px;
-    line-height: 0.9em;
 }
 
-#footer img {
+.footer img {
     vertical-align: bottom;
 }
 
