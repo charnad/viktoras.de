@@ -1,0 +1,1848 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[В лабиринте извилин]]></title>
+    <link href="//charnad.github.io/atom.xml" rel="self"/>
+    <link href="//charnad.github.io/"/>
+    <updated>2015-10-23T20:07:20+00:00</updated>
+    <id>//charnad.github.io/</id>
+            <author>
+            <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
+        <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[Why do I hate static methods]]></title>
+            <link href="//charnad.github.io/blog/why-do-i-hate-static-methods"/>
+            <updated>2015-05-10T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/why-do-i-hate-static-methods</id>
+            <content type="html"><![CDATA[<p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
+
+<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
+
+<pre><code class="php">class Helper
+{
+   public static formatA() {...}
+   public static formatB() {...}
+   public static formatC() {...}
+}
+</code></pre>
+
+<p>The thing is, it has absolutely no difference from:</p>
+
+<pre><code class="php">function helper_formatA() {...}
+function helper_formatB() {...}
+function helper_formatC() {...}
+</code></pre>
+
+<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
+
+<p>So we have used this static method somewhere in the code:</p>
+
+<pre><code class="php">// .. within some class
+public function foo()
+{
+    // ...
+    Helper::formatA('bar');
+}
+</code></pre>
+
+<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
+
+<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
+
+<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
+
+<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Project Euler 502]]></title>
+            <link href="//charnad.github.io/blog/project-euler-502"/>
+            <updated>2015-04-11T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/project-euler-502</id>
+            <content type="html"><![CDATA[<p>Hello everyone, I've decided to continue writing posts into my blog, when I deal with something interesting. This time my attention has been drawn to Project Euler problems. I tend to refer to those problems when I'm learning a new programming language. Solving easier problems help to get handy with the syntax and language constructs. So it's Haskell now. I'm not going to tell how Haskell is different from anything I've learned before (Coursera Scala course was the closest), so i'll just proceed with the Problem 502, which I found really intriguing.</p>
+
+<p>The problem itself can be found <a href="https://projecteuler.net/problem=502">here</a>. Brief comprehension is: how many castles can you build, that follow the rules: no hanging blocks, total amount of blocks is even. I am currently at the first approach stage. The first approach is usually naive: generate every possible castle, check the validity and calculate how many there are.</p>
+
+<p>But there are several concepts I used, which I find quite interesting.
+A castle consists of levels, each level consists of blocks and spaces between them. If you encode blocks and spaces as 0's and 1's you get a binary string, which you can convert to decimal. So, a castle is a just list of integers.</p>
+
+<p>The next thing is, how do we generate a level on top of the previus level. And the answer is again, quite simple. If a level has a width of 3, then there are 8 possible combinations of blocks and spaces, which are also numbers from 0 (no blocks, only spaces) to 7 (one block across the whole level). So on the 2x2 grid there are: 1 for the base level + 3 possible combinations (0, 1, 2) of the second level = 4 castles. At this point there will also be invalid castles (with hanging blocks), but we will filter them out later. On a WxH grid we will have 1 + (2 ^ W - 1) ^ (H - 1) castles. As a simple example in the task it is given a 10x13 grid, which would produce ~1.65*10^35 possible castles (Eeek).</p>
+
+<p>The next idea, which will cut the number of computations by a huge amount is a check, if there are any hanging blocks. Because if there is at least one, we can skip this "branch". How do we do it? Let's see, if a level is a binary number, the next level may not be bigger, than that number, because otherwise most significant bit will hover over 0 of the underlying level, which is not allowed. Moreover, every 1 of the new level must have an underlying 1 from the previous level - bitwise AND. (New level) AND (Old level) must be equal to the (New level), otherwise new level is invalid.</p>
+
+<p>So this is basically it, I start with a base level, add numbers from 0 to (2 ^ W) - 1, if they AND with the previous level, and after all I calculate amonut of blocks by grouping them.</p>
+
+<pre><code class="haskell">import Data.List
+import Data.Bits
+
+{-|
+  Decimal to binary conversion
+ -}
+binary :: Integer -&gt; [Integer]
+binary 0 = [0]
+binary 1 = [1]
+binary x = binary (div x 2) ++ [mod x 2]
+
+{-|
+  Naive implementation of Euler Problem 502. Generate all castles, check validity, count
+-}
+castles :: Integer -&gt; Integer -&gt; Integer
+castles w h = genericLength [c | c &lt;- (allCastles w h), (even . sum . (map (countBlocks))) c]
+
+{-|
+  Generates all possible castles, even invalid ones. Each level is introduced
+  with a number, which in binary form represents blocks
+-}
+allCastles :: Integer -&gt; Integer -&gt; [[Integer]]
+allCastles _ 0 = []
+allCastles 0 _ = []
+allCastles w h = addLevel [[base]] (h-1)
+  where base = (2 ^ w)-1
+        addLevel castles levelsLeft
+            | levelsLeft == 0 = castles
+            | otherwise = addLevel ([c ++ [p] | c &lt;- castles, p &lt;- [0..(last c)], (p == p .&amp;. (last c))]) (levelsLeft-1)
+
+{-|
+  Counts amount of blocks within a castle row
+-}
+countBlocks :: Integer -&gt; Integer
+countBlocks = genericLength . (filter ((== 1).head)) . group . binary
+</code></pre>
+
+<p>This is by no means an optimal solution, I couldn't even compute a 10x13 grid from the simpler example within a reasonable amonut of time. The biggest so far was a 9x7 grid for 28+ millions of castles.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Демо: плазма]]></title>
+            <link href="//charnad.github.io/blog/plasma"/>
+            <updated>2013-05-14T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/plasma</id>
+            <content type="html"><![CDATA[<p><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma-logo.png" class="oppic" height="150px">Эффект плазмы (или попросту плазма) - эффект часто использующийся в демках, чтобы создать переливающийся эффект. Есть много способов создать анимацию плазмы, но я рассмотрю только один: сумма синусов и некоторых других функций. Экспериментируя с параметрами и пробуя различные функции, а так же цвета, можно найти очень круто выглядящие комбинации. Оригинал этой статьи можно найти <a href="http://lodev.org/cgtutor/plasma.html">здесь</a>. В ней примеры указаны с использованием С, я же делал все на HTML5 (JavaScript + canvas). Примеры довольно просты и перенести на любой другой язык будет несложно. Внутри около 5 мегабайт картинок, если кого-то это беспокоит.<!--more--></p>
+
+<p>Перед тем, как мы приступим к собственно созданию плазмы, давайте рассмотрим функцию, которая нам в этом поможет. Значения функции синус лежат в промежутке от -1 до +1, выглядит вот так:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/sine.png"></p>
+
+<p>Для наших целей мы отобразим ее немного иначе, а именно будем устанавливать цвет пикселя равным синусу его x-координаты:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/example1.png"></p>
+
+<p>Белые полосы это места, где синус близок или равен единице, черные, соответственно, близко к -1. Такого эффекта можно добиться следующим кодом:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.width; y++) {
+    for (x = 0; x &lt; canvas.height; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 4));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Мы проходим через каждый пиксель, расчитываем его цвет на основе синуса, и выводим. Значение цвета должно быть в пределах от 0 до 256 (0x00 - 0xFF), а так как синус всегда имеет значение между -1 и 1, мы преобразуем его в 0-256, умножив на 128 и прибавив 128. X делим на 4 чтобы значение функции менялось медленнее. Если разделить на меньшее значение, то полосы станут уже:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/example2.png"></p>
+
+<p>Если использовать синус от суммы sin((x + y) / 8.0), то линии будут скошенными:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/example3.png"></p>
+
+<p>Другая интересная функция для плазмы это синус расстояния от пикселя до определенной точки. Расстояние от пикселя до точки отсчета (0, 0) равняется sqrt(x * x + y * y). А расстояние от пикселя до центра экрана (холста): sqrt((x - w / 2) * (x - w / 2) + (y - h / 2) * (y - h / 2)). Если взять от этого синус, то получится:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/example4.png"></p>
+
+<p>Вот код, который генерирует такую картинку (в этом примере, я перенес точку координат в центр изображения, для простоты [charnad]):</p>
+
+<pre><code class="javascript">for (y = -cY; y &lt; cY; y++) {
+    for (x = -cX; x &lt; cX; x++) {
+        color = 128 + Math.floor(128 * Math.sin(Math.sqrt(x*x + y*y) / 8));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Складывая эти функции (с различными коэффициентами, точками отсчета, и т.д.), и используя лучшую цветовую палитру, чем оттенки серого, которые мы использовали до сих пор, мы можем создавать крутую плазму. Для разогрева, вот плазма сгенерированная суммой двух функций:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/example5.png"></p>
+
+<p>Несмотря на то, что выглядит не очень круто, это уже настоящая плазма. Она получается из суммы синусов x и y. Код ничуть не сложнее предыдущих примеров, но для ясности я расписал формулу на несколько строк. Также, в конце результат делится на два, таким образом мы остаемся в пределах 0-255:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Чтобы получить и цвета и анимацию, мы будем использовать цветовую палитру (параметр "цвет" будет использоваться как индекс для выбора цвета из палитры), и каждый фрейм будем сдвигать палитру на небольшое значение, так что все цвета палитры будут проходить по кругу. В таком режиме нам нужно будет нарисовать плазму только один раз и дальше только сдвигать палитру. Так как цвета меняются по кругу, палитра не должна быть "прерывистой", и заканчиваться должна тем же цветом, что и начинаться.
+Следующие две "прерываются" и не могут быть использованы для плазмы, потому что тогда анимация будет рваной или перескакивать:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/palette1.png"></p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/palette2.png"></p>
+
+<p>А вот эта палитра может быть использована:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/palette3.png"></p>
+
+<p>Теперь чтобы у нас получился эффект плазмы: создаем палитру, создаем буфер, где будут хранится значения вычисленной функции синусов для разных пикселей, рисуем пиксели с цветом из палитры, смещаем палитру каждый фрейм. Плазма сама по себе такая же, как и в предыдущем примере, но использование палитры делает ее гораздо интереснее. Вот упрощенная часть кода, которая реализует этот алгоритм:</p>
+
+<pre><code class="javascript">// Просчитываем значения цвета, как и в предыдущих примерах
+for (y = 0; y &lt; canvas.height; y++) {
+    data[y] = [];
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        data[y][x] = color;
+    }
+}
+
+// Далее в цикле отрисовываем
+// n - сдвиг палитры
+for (y = 0; y &lt; data.length; y++) {
+    for (x = 0; x &lt; data[y].length; x++) {
+        color = palette[Math.floor(data[y][x] + n) % 360];
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>и это дает нам примерно следующую картину:</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma1.gif"></p>
+
+<p>Вторая картинка показывает ту же плазму, но с упрощенной палитрой состоящей всего из 2х цветов, чтобы можно было лучше проследить движение цвета.</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma2.gif"></p>
+
+<p>Теперь, если в коде генерации плазмы мы заменим функцию на сумму 4 синусов, один из которых синус расстояния до верхнего левого угла картинки, то получим:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 8));
+color += 128 + (128 * Math.sin((x+y) / 16));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma4.gif"></p>
+
+<p>И вот, что еще можно попробовать:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 32));
+color += 128 + (128 * Math.sin(Math.sqrt(Math.pow(cX-x, 2)+Math.pow(cY-y, 2)) / 8));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma5.gif"></p>
+
+<p>Как видите, можно менять параметры и функции, пока не будет достигнут желаемый результат.
+Давайте теперь попробуем другие палитры.</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 32.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 64.0));
+    b = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/palette4.png"></p>
+
+<p>Это все та же плазма, но уже с новой палитрой. Чтобы цвета не "перескакивали", палитра должна начинаться и заканчиваться одним и тем же цветом.</p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma6.gif"></p>
+
+<p>Следующая палитра дает довольно крутой эффект (хотя это дело вкуса):</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 16.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    b = 0;
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/palette5.png"></p>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma7.gif"></p>
+
+<p>Наконец, вместо использования палитры и ее смещения, можно так же пересчитывать синусы каждый фрейм, каждый раз меняя значения, используя время в функции. Можно генерировать RBG-составляющие отдельно. Это все в сумме довольно много вычислений, так что плазма может тормозить. Но упомянуть об этом стоит. Каждый фрейм, для каждого пикселя расчитывается сумма 4х расстояний. Затем, из полученного значения вычисляется цвет, и он же используется чтобы создать R, G и B составляющие цвета этого пикселя. Из-за такого способа подсчета цвета картинка получится немного пикселизированной.</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = Math.sin(dist(x + time, y, 128.0, 128.0) / 8.0)
+        color += Math.sin(dist(x, y, 64.0, 64.0) / 8.0)
+        color += Math.sin(dist(x, y + time / 7, 192.0, 64) / 7.0)
+        color += Math.sin(dist(x, y, 192.0, 100.0) / 8.0);
+        color = Math.floor((4 + color)) * 32;
+        color = rgbString(color, color * 2, 255 - color);
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p class="img"><img src="//charnad.github.io/img/posts/2013-05-14-plasma/plasma8.gif"></p>
+
+<p>Можно так же расчитывать отдельную плазму для каждого цветового канала и т.д. Возможности безграничны, но это все будет медленнее, чем смещение палитры, особенно с неоптимизированными алгоритмами, которые приведены тут.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Постинг в WordPress из Git]]></title>
+            <link href="//charnad.github.io/blog/git-to-wordpress-posting"/>
+            <updated>2013-02-11T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/git-to-wordpress-posting</id>
+            <content type="html"><![CDATA[<p><img src="//charnad.github.io/img/git.png" class="oppic">Этот пост я пишу совсем не в маленьком окошке TinyMCE, а в удобном Sublime Text 2. Более того, чтобы запостить его в блог, мне даже не придется заходить в админку. Пост автоматически появится на странице, когда я сделаю push в git репозиторий. А если я захочу что-то исправить, то опять же, достаточно будет сделать push, и пост будет автоматически исправлен.</p>
+
+<p>Идея, в общем, не нова, многие слышали про Octopress, или блог bobuk'а, которые тоже работают через git. Правда вот никакого похожего плагина для Wordpress я не нашел. Только на одном из сайтов, на вопрос "А можно ли постить в блог через git?" ответили "...this is a massive job for what seems like a very small payoff...". Ну что ж, никому не надо, а мне надо.<!--more--></p>
+
+<p>Будущую систему я назвал blocto, от слов blog и octo (от Octopus, подразумевая Github, хотя он не используется). Сами посты я решил хранить в статических файлах. Изначально это должны быть Markdown файлы, но я отказался от этой идеи из-за сложности в синхронизации постов. Я использую следующий формат файла:</p>
+
+<pre><code class="yaml">tags: теги, разделенные, запятыми
+categories: категории, разделенные, запятыми
+type: тип поста (пост или страница)
+author: id автора
+post_status: статус поста (черновик, опубликованный)
+comment_status: статус комментариев (открыты или закрыты)
+title: Заголовок поста
+
+
+Содержимое идет после двух пропущенных строк.
+</code></pre>
+
+<p>Само имя файла является идентификатором, и одновременно URI поста. Эти файлы находятся в git репозитории, так что я получаю версионность, а так же своего рода бекап. Я всегда смогу еще раз импортировать все эти файлы в Вордпесс.</p>
+
+<p>Итак, доставка файлов на сервер реализуется с помощью пуша. В git присутствует отличная фича, которая называется хуки (hooks). Можно написать скрипт, который будет выполняться перед коммитом, после коммита, в разные другие моменты, в том числе после пуша. Я создал файл .git/hooks/post-receive, который является шелл скриптом, выполняемым при получении данных. Соответственно все, что нам нужно в нем сделать, это обновить файлы и запустить импорт, поэтому скрипт выглядит так:</p>
+
+<pre><code class="bash">#!/bin/sh
+GIT_WORK_TREE=/home/viktoras/blocto git checkout -f
+php /home/viktoras/blocto/sync.php
+</code></pre>
+
+<p>Оставалось написать сам скрипт для импорта. Проще всего использовать API самого Wordpress, подключив файл wp-load.php. Тогда не придется вручную подключаться к базе. Скрипт можно <a href="https://gist.github.com/charnad/4974262">посмотреть на Github</a>. Скрипт распространяется под MIT лицензией. Это еще сырая альфа версия, и можно его много чего улучшать и добавлять.</p>
+
+<p>Теперь, написание нового поста выглядит так:</p>
+
+<pre><code class="bash">touch posts/new-post.md
+edit posts/new-post.md
+git add -u
+git commit -m "New post"
+git push wordpress master
+</code></pre>
+
+<p>Пост, который вы только что прочитали, был сделан именно таким образом.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Сущности.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-6-entities"/>
+            <updated>2012-05-12T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-6-entities</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>В этой статьей мы направим наши силы на создание сущностей (Entities). Сущности - это все, с чем можно взаимодействовать. Например, это может быть монстр или сундук с сокровищами, который можно открыть. В этом смысле, практически все в игре, что движется, это сущность. Камень, который является частью карты, который никогда не двигается, не является сущностью. Но если вы хотите, чтобы камень двигался, не важно по какой причине, то мы сделаем его сущностью.<!--more--></p>
+
+<p>Давайте начнем с создания двух новых файлов: <strong>Entity.cpp</strong> и <strong>Entity.h</strong>. Откройте заголовочный файл и добавьте следующее:</p>
+
+<pre><code class="cpp">#include &lt;vector&gt;
+
+#include "Animation.h"
+#include "Sprite.h"
+
+class Entity {
+    public:
+        static std::vector&lt;Entity*&gt;    EntityList;
+
+    protected:
+        Animation      Anim;
+        SDL_Surface*    Surface;
+
+    public:
+        float           X;
+        float           Y;
+
+        int             Width;
+        int             Height;
+
+        int             AnimState;
+
+    public:
+        Entity();
+        virtual ~Entity();
+
+        virtual bool Load(char* File, int Width, int Height, int MaxFrames);
+        virtual void Loop();
+        virtual void Render(SDL_Surface* Screen);
+        virtual void Cleanup();
+};
+</code></pre>
+
+<p>Теперь откройте Entity.cpp и добавьте это:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+std::vector&lt;Entity*&gt; Entity::EntityList;
+
+Entity::Entity() {
+    Surface = NULL;
+
+    X = Y = 0.0f;
+
+    Width = Height = 0;
+
+    AnimState = 0;
+}
+
+Entity::~Entity() {}
+
+bool Entity::Load(char* File, int Width, int Height, int MaxFrames) {
+    if((Surface = Sprite::Load(File)) == NULL) {
+        return false;
+    }
+
+    Sprite::Transparent(Surface, 255, 0, 255);
+
+    this-&gt;Width = Width;
+    this-&gt;Height = Height;
+
+    Anim.MaxFrames = MaxFrames;
+
+    return true;
+}
+
+void Entity::Loop() {
+    Anim.Animate();
+}
+
+void Entity::Render(SDL_Surface* Screen) {
+    if(Surface == NULL || Screen == NULL) return;
+
+    Sprite::Draw(Screen, Surface, X, Y, AnimState * Width, Anim.GetCurrentFrame() * Height, Width, Height);
+}
+
+void Entity::Cleanup() {
+    if(Surface) {
+        SDL_FreeSurface(Surface);
+    }
+
+    Surface = NULL;
+}
+</code></pre>
+
+<p>Теперь поясню. В этом классе мы инкапсулируем 5 основных компонентов, о которых я упоминал в первой статье. Это позволит нам работать с сущностями в игре гораздо проще, чем смешивать их в кучу со всем остальным в классе App. Первое, что вы можете заметить, это статический вектор, который называется EntityList. Этот вектор будет содержать все наши сущности, они будут легко доступны через Entity::EntityList, потому что он объявлен статическим. Надо особо отметить: мы объявляем EntityList в Entity, поскольку это предотвратит циклические зависимости в будущем. То есть, например мы попытаемся получить карту, чтобы обработать сущности на ней, а также хотим получить сущности, чтобы обработать карту. Map объявляет Entity, Entity объявляет Map, это повлечет за собой проблемы во время компиляции.</p>
+
+<p>Так что этот вектор содержит все наши сущности в игре. Обратите внимание, что каждый член вектора - указатель. Это потому, что в дальнейшем мы будем наследовать все последующие классы сущностей от класса Entity. Так, например, если мы собираемся сделать игру Megaman, мы бы создали класс Megaman и унаследовали бы его от класс Entity. И, благодаря полиморфизму, мы можем хранить объекты класса Megaman в EntityList. Собственно поэтому, мы заявили функции в классе, как virtual, а некоторые члены как protected.</p>
+
+<p>Далее, у нас есть базовая информация о сущности, общая для всех: координаты, размеры, поверхность для ее(сущности) изображения. Также, у нас есть функция загрузки, она получает имя файла и загружает изображение из него. По умолчанию, устанавливается прозрачный цвет. Я хочу чтобы вы понимали, что все, что я делаю не высечено в камне. Вы можете, и я даже советую вам менять код по своему вкусу. Вы можете передавать функции Load больше или меньше параметров, может вы не хотите устанавливать прозрачность по умолчанию, кто знает. Пробуйте и не волнуйтесь, если где-то запутаетесь или ошибетесь, вы всегда сможете достать мой код.</p>
+
+<p>Итак, у нас есть основная функция Loop, которая обрабатывает основные расчеты. Сейчас мы только занимаемся анимацией. Мы лишь меняем  MaxFrames, а остальное оставляем по умолчанию. Далее, функция Render, в качестве параметра передается поверхность для отображения. Чтобы можно было рисовать не только сразу на экран, но и на любую другую поверхность по вашему выбору. Ну и наконец, функция Cleanup, которая освобождает память и все такое.</p>
+
+<p>Как я уже говорил в начале, это лишь базовая структура класса Entity, она еще может не так много, но не волнуйтесь, в будущем сможет сделать все, что вы захотите. Итак, давайте заставим сущности работать. Откройте <strong>App.h</strong> и добавьте файл заголовка в начале, и объявить две сущности:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+//...
+
+private:
+    Entity         Entity1;
+    Entity         Entity2;
+</code></pre>
+
+<p>Давайте теперь загрузим в них изображения, в App::Init.cpp добавьте следующее:</p>
+
+<pre><code class="cpp">if(Entity1.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+if(Entity2.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+Entity2.X = 100;
+
+Entity::EntityList.push_back(&amp;Entity1);
+Entity::EntityList.push_back(&amp;Entity2);
+</code></pre>
+
+<p>Я еще раз использую изображение Йоши и прошлой статьи.</p>
+
+<p>Вспомните, что я говорил, про инкапсуляцию основных функции игры в классе Entity. Мы должны вызывать эти функции в соответствующих функциях App. Поэтому, откройте App::Loop и добавьте следующее:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Loop();
+}
+</code></pre>
+
+<p>Мы в обходим каждый элемент вектора и вызываем функцию Loop. Довольно просто. (И мы проверяем на NULL, чтобы не было ошибок). Теперь, давайте сделаем то же самое в App::Render:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Render(Screen);
+}
+</code></pre>
+
+<p>и еще раз то же самое в App::Cleanup:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Cleanup();
+}
+
+Entity::EntityList.clear();
+</code></pre>
+
+<p>Обратите внимание, я добавил вызов функции очистки вектора.</p>
+
+<p>Отлично, теперь скомпилируйте то, что получилось. Вы должны увидеть две фигурки Йоши на экране. В следующей статье мы рассмотрим создание карты.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Анимация.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-5-animation"/>
+            <updated>2012-05-07T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-5-animation</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, [SDL Tutorial - Animation][1] за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>В последней статье мы создали прототип игры в крестики-нолики. Надеюсь, многие из вас смогли заставить его работать. Если нет, то не волнуйтесь, рано или поздно у вас все получится. В этой статье мы собираемся научиться делать анимацию с помощью SDL. Как и прежде, мы будем код предыдущих статей SDL, за исключением кода из Крестиков-ноликов. Я отменил почти все изменения, сделанные в той статье, оставил лишь Transparent функцию для класса Sprite.</p>
+
+<p>Мы создадим новый класс для обработки анимации, и в следующем уроке мы создадим класс для сущностей (Entities). Имейте в виду, что эти две разные вещи, и, хотя я знаю, они могут быть выражены через один класс, я не хочу использовать такой подход. Поэтому, пожалуйста, попридержите вашу критику.<!--more--></p>
+
+<p>Создайте два новых файла с названиями <strong>Animation.h</strong> и <strong>Animation.cpp</strong>. В будущем, наш Entity-класс будет наследовать этот класс, но пока что мы будем пользоваться им напрямую. Давайте сразу подключим файл в <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">#include "Animation.h"
+</code></pre>
+
+<p>Теперь откройте <strong>Animation.h</strong> и добавьте базовую структуру класса в файл:</p>
+
+<pre><code class="cpp">#ifndef _ANIMATION_H_
+#define _ANIMATION_H_
+
+#include &lt;SDL.h&gt;
+
+class Animation {
+    private:
+        int    CurrentFrame;
+        int     FrameInc;
+
+        int     FrameRate;
+        long    OldTime;
+
+    public:
+        int    MaxFrames;
+        bool    Oscillate;
+
+    public:
+        Animation();
+        void Animate();
+
+    public:
+        void SetFrameRate(int Rate);
+        void SetCurrentFrame(int Frame);
+        int GetCurrentFrame();
+};
+
+#endif
+</code></pre>
+
+<p>Теперь откройте <strong>Animation.cpp</strong> и добавьте следующий код:</p>
+
+<pre><code class="cpp">#include "Animation.h"
+
+Animation::Animation() {
+    CurrentFrame    = 0;
+    MaxFrames       = 0;
+    FrameInc        = 1;
+
+    FrameRate       = 100; //Milliseconds
+    OldTime         = 0;
+
+    Oscillate       = false;
+}
+
+void Animation::Animate() {
+    if(OldTime + FrameRate &gt; SDL_GetTicks()) {
+        return;
+    }
+
+    OldTime = SDL_GetTicks();
+
+    CurrentFrame += FrameInc;
+
+    if(Oscillate) {
+        if(FrameInc &gt; 0) {
+            if(CurrentFrame &gt;= MaxFrames) {
+                FrameInc = -FrameInc;
+            }
+        }else{
+            if(CurrentFrame &lt;= 0) {
+                FrameInc = -FrameInc;
+            }
+        }
+    }else{
+        if(CurrentFrame &gt;= MaxFrames) {
+            CurrentFrame = 0;
+        }
+    }
+}
+
+void Animation::SetFrameRate(int Rate) {
+    FrameRate = Rate;
+}
+
+void Animation::SetCurrentFrame(int Frame) {
+    if(Frame &lt; 0 || Frame &gt;= MaxFrames) return;
+
+    CurrentFrame = Frame;
+}
+
+int Animation::GetCurrentFrame() {
+    return CurrentFrame;
+}
+</code></pre>
+
+<p>Теперь объясню что же делает этот класс. Существует один основной элемент анимации, который мы должны обрабатывать - текущий кадр анимации. Возьмите изображение Йоши ниже (мы будем использовать его в этой статье). Вы увидите, у нас есть 8 кадров Йоши на одном изображении. Каждый кадр будет пронумерован 0, 1, 2 сверху вниз.</p>
+
+<p><img src="//charnad.github.io/img/2012-05-07-sdl-tutotial-5/yoshi.bmp"></p>
+
+<p>Помните, статью про координаты, где мы создаели функцию, которая отрисовывает часть изображения? И если взять эту функцию в сочетании с номером кадра анимации, вуаля!</p>
+
+<p>Первая переменная, CurrentFrame, это текущий кадр анимации, который мы будем рисовать на экране. Независимо от того, какое у него значение, он будет определять, какую часть поверхности мы будем рисовать на экране. Поэтому, когда мы вызываем функцию рисования, мы делаем что-то вроде этого:</p>
+
+<pre><code class="cpp">Sprite::Draw(Screen, Image, 0, 0, 0, Anim_Yoshi.GetCurrentFrame() * 64, 64, 64);
+</code></pre>
+
+<p>Так как наш Йоши размером 64 х 64 пикселей, столько мы и захватим для вывода, это же и является нашим кадром анимации. Посмотрите на иллюстрацию ниже.</p>
+
+<p><img src="//charnad.github.io/img/2012-05-07-sdl-tutotial-5/Animation.jpg"/></p>
+
+<p>Когда CurrentFrame увеличивается на 1, мы прыгаем вниз на 64 пикселя (высота кадра Yoshi), и рисуем этот кадр.</p>
+
+<p>Другая часть этого класса нужна нам для того, чтобы определять, сколько кадров в анимации - MaxFrames. Наконец важно так же знать, сколько кадров в секунду, или, скорее, как быстро будет меняться анимированное изображение. Для этого мы используем вот этот кусок кода в функции Animate().</p>
+
+<pre><code class="cpp">if(OldTime + FrameRate &gt; SDL_GetTicks()) {
+    return;
+}
+</code></pre>
+
+<p>Если взять OldTime в миллисекундах плюс желаемую частоту кадров, мы можем сравнить это значение с количеством миллисекунл, которые SDL был запущен. Например, мы только что запустили нашу программу, SDL_GetTicks = 0, и OldTime = 0. Желаемая частота кадров будет 1 кадр в секунду. Итак FrameRate = 1000 (миллисекунд). 0 + 1000 больше 0? Да, так что мы не будем ничего делать и ждать. Но как только 0 + 1000 станет меньше, чем SDL_GetTicks, что означает, что 1 секунда прошла, мы увеличим номер кадра, а затем сбросим OldTime на текущее время, и начнем все сначала.</p>
+
+<p>Следующий интересный момент это Oscillate и FrameInc. Я не хотел бы никого путать лишними переменными, но мне кажется, что это пригодится нам в будущем. В общем, когда Oscillate = true, в анимация будет увеличиваться номер кадра, а затем уменьшаться в обратном порядке. Если бы в анимации было 10 кадров, было бы как-то так:</p>
+
+<p>0 1 2 3 4 5 6 7 8 9 8 7 6 5 4 3 2 1 2 ...</p>
+
+<p>Видите, номер кадра идет до 9, а затем уменьшается обратно до 0, и так далее. Есть несколько интересных применений для этого, но мы этим займемся в других статьях. Так, как это работает? Взгляните на функцию Animate. Если Oscillate = false, то мы просто проверяем превысил ли номер текущего кадра максимальное количество кадров. Если да - сбрасываем на 0, а затем ниже, мы переходим к следующему кадру. В противположном же случае, у нас есть переменная FrameInc, которая принимает значения 1 или -1, в зависимости от того, увеличиваем или уменьшаем номер кадра. То есть, если FrameInc больше 0, мы увеличиваем номер кадра, иначе - уменьшаем. И если мы достигли первого или последнего кадра - меняем FrameInc на противоположный.</p>
+
+<p>Теперь, когда мы обо всем позаботились, используем этот класс. Создайте новый объект типа Animation в <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">Animation      Anim_Yoshi;
+</code></pre>
+
+<p>Теперь, давайте установиv MaxFrames, добавьте в App::Init():</p>
+
+<pre><code class="cpp">Sprite::Transparent(Test, 255, 0, 255);
+Anim_Yoshi.MaxFrames = 8;
+</code></pre>
+
+<p>И теперь, чтобы анимация двигалась в App::Loop():</p>
+
+<pre><code class="cpp">Anim_Yoshi.Animate();
+</code></pre>
+
+<p>И наконец, нарисуем на экране App::Render():</p>
+
+<pre><code class="cpp">void App::Render() {
+    SDL_FillRect(Screen, NULL, 0x000000);
+    Sprite::Draw(Screen, Test, 290, 220, 0, Anim_Yoshi.GetCurrentFrame() * 64, 64, 64);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Теперь скомпилируйте и смотрить как работает наша анимация! SDL_FillRect заполняет указанную поверхность одним цветом, в данном случае черным, чтобы остатки анимации не мешались на экране.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Крестики-нолики.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-4-tic-tac-toe"/>
+            <updated>2012-05-05T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-4-tic-tac-toe</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-tic-tac-toe">SDL Tutorial - Tic Tac Toe</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>До этого момента мы закладывали основу для создания игры. Мы создавали базовую структуру для обработки общих задач, создали специальный класс для обработки событий, и создали класс для работы с поверхностями. В этом уроке мы их объединим для создания игры в крестики-нолики. Не волнуйтесь, все будет довольно просто. Будем использовать код из последней статьи.<!--more--></p>
+
+<p>Первое, что мы надо сделать - спланировать игру. Все мы знаем, что крестики-нолики имеют поле 3x3, где игроки ставят крестики или нолики. Итак, для этого нам будет нужно 3 изображения, одно для игрового поля, одно для X, и одно для О. Нам не нужно многокрестиков или ноликов, потому что мы можем отрисовывать их в программе сколько угодно раз. Наше игровое поле будет размером 600x600, а наши X и O будут 200x200 (1/3 площади).</p>
+
+<p><img src="//charnad.github.io/img/2012-05-07-sdl-tutotial-4/grid.png"/>
+<img src="//charnad.github.io/img/2012-05-07-sdl-tutotial-4/o.png" style="float: left;"/><img src="//charnad.github.io/img/2012-05-07-sdl-tutotial-4/x.png"/>
+<br clear="both">[<em>Это png изображения, для работы вам нужны bmp. Их можно взять в репозитории на гитхабе, ссылка в начале поста.</em>]</p>
+
+<p>Теперь у нас есть изображения, и нам нужен способ, чтобы загрузить их в нашу программу. Откройте <strong>App.h</strong> и внесите некоторые изменения. Удалите поверхность Test, и добавьте три новых поверхности.</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+
+        SDL_Surface*    G;
+        SDL_Surface*    X;
+        SDL_Surface*    O;
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+        void Exit();
+};
+
+#endif
+
+</code></pre>
+
+<p>Далее, откройте <strong>App.cpp</strong> и проделайте то же самое, удалите Test и добавьте три новых поверхности. В конструкторе:</p>
+
+<pre><code class="cpp">App::App() {
+    G = NULL;
+    X = NULL;
+    O = NULL;
+    Screen = NULL;
+
+    Running = true;
+}
+</code></pre>
+
+<p>и не забудьте об освобождении ресурсов:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_FreeSurface(G);
+    SDL_FreeSurface(X);
+    SDL_FreeSurface(O);
+    SDL_FreeSurface(Screen);
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Теперь у нас есть три готовые поверхности, давайте загрузим туда изображения. Найдите App::Init(), и внесите изменения: избавимся от поверхности Test (опять), и загрузим три новых изображения. Обратите внимание, что мы изменили размер окна до размеров игрового поля - 600х600.</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Как вы могли заметить, теперь графические файлы находятся в папке gfx. Со временем, когда игра растет, становится очень удобно держать все изображения в одной папке. Давайте теперь нарисуем игровое поле на экране. Откройте App::Render.cpp и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, G, 0, 0);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Скомпилируйте программу, и если все хорошо - вы должны увидеть игровое поле. Помните, что есть 5 основных моментов использования поверхностей: объявить ее, установите ее в NULL, загрузите изображение, нарисуйте поверхность, а затем освободите ее. Я советую вам, запомнить эти 5 шагов сейчас, потому что позже, если вы пропустите один из них, вы можете столкнуться с проблемами. Например, не установленная в NULL поверхность, может привести к непредсказуемому поведению или, не освобожденная поверхность, может привести к утечке памяти.</p>
+
+<p>Вы наверняка удивляетесь, почему наши X и O на розовом фоне. Для этого, конечно же, есть причина. Мы собираемся реализовать прозрачность у этих поверхностей. По существу, везде, где сейчас розовый цвет, поверхность будет прозрачной. В SDL есть простая функция для этого SDL_SetColorKey. Давайте добавим ее в <strong>Sprite.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H);
+        static bool Transparent(SDL_Surface* Surface, int R, int G, int B);
+};
+
+#endif
+
+</code></pre>
+
+<p>Теперь, в <strong>Sprite.cpp</strong> добавим ее реализацию:</p>
+
+<pre><code class="cpp">bool Sprite::Transparent(SDL_Surface* Surface, int R, int G, int B) {
+    if(Surface == NULL) {
+        return false;
+    }
+
+    SDL_SetColorKey(Surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(Surface-&gt;format, R, G, B));
+
+    return true;
+}
+</code></pre>
+
+<p>Обратите внимание на 3 дополнительных параметра, которые передаются помимо поверхности. Эти параметры обозначают цвет, в системе RGB, который мы хотим сделать прозрачным, это не обязательно должен быть розовый. Например, если бы мы хотели, чтобы прозрачным был красный, то передали бы в функцию: 255, 0, 0.</p>
+
+<p>Функция Transparent сначала проверяет, есть ли у нас действительная поверхность. Если да, то установливает цветовой ключ[<em>aka [хромакей][http://ru.wikipedia.org/wiki/%D5%F0%EE%EC%E0%EA%E5%E9]</em>] (прозрачность). Первым аргументом идет поверхность к которой применяется хромакей, вторым параметром идут различные флаги, а третьим цвет, который будет прозрачным. Флаги, которые мы передаем вполне обычные, первый говорит SDL применять хромакей для переданной поверхности, а второй говорит SDL попытаться использовать RLE ускорение (чтобы сделать отрисовку быстрее). Третий аргумент выглядит чуть более сложным, мы используем SDL_MapRGB для создания цвета. SDL_MapRGB принимает параметром поверхность, и желаемый цвет (R, G, B), и подобрать наиболее близкий к нему для этой поверхности. Не все поверхности имеют одинаковую цветовую палитру. Вспомните старые времена Денди, там можно было использовать всего несколько цветов. Та же идея здесь, SDL_MapRGB берет цвет и сопоставляет его с ближайшим цветом в палитре этой поверхности.</p>
+
+<p>Давайте теперь применим эту новую функцию к нашим поверхностям, откройте App::Init и внесите следующие изменения:</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    Sprite::Transparent(X, 255, 0, 255);
+    Sprite::Transparent(O, 255, 0, 255);
+
+    return true;
+}
+</code></pre>
+
+<p>Теперь все, что касается поверхностей, должно быть готово. Следующее, что нам нужно сделать, это выяснить как рисовать эти X и O. Мы не можем просто рисовать их везде по полю, потому что они не всегда будут в одинаковых местах. И вот что мы сделаем, мы создадим массив из 9 контейнеров, значения в этом массиве будет говорить о том, какая фигура стоит в каждой ячейке клетки, а индекс - номер ячейки. То есть, ячейка с индексом 0 будет в верхнем левом углу, с индексом 1 будет вверху посередине, 2 в правом верхнем углу, 3 в середине слева, и так далее.</p>
+
+<p>Каждая ячейка может иметь три значения: Empty, X, и О. Чтобы все выглядело немного аккуратнее, чем просто 0, 1, 2, в массиве, мы будем использовать перечисление (enum). Обозначим GRID_TYPE_NONE = 0, GRID_TYPE_X = 1, и GRID_TYPE_O = 2.</p>
+
+<p>Теперь добавим массив и перечисление в <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+enum {
+    GRID_TYPE_NONE = 0,
+    GRID_TYPE_X,
+    GRID_TYPE_O
+};
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+
+        SDL_Surface*    G;
+        SDL_Surface*    X;
+        SDL_Surface*    O;
+
+        int             Grid[9];
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+        void Exit();
+};
+
+#endif
+
+</code></pre>
+
+<p>С этого момента, я буду давать только код требуемых функций, а не код из файла. Надеюсь, что вы уже запомнили где находятся основные функции, и это не станет проблемой. Нам нужно добавить функцию сброса игрового поля. Она установит все значения массива в GRID_TYPE_NONE, и это будет означать, что все клетки поля пусты. Добавим так же вызов этой функции в инициализацию:</p>
+
+<p>В <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">public:
+    void Reset();
+</code></pre>
+
+<p>В <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::Reset() {
+    for(int i = 0;i &lt; 9;i++) {
+        Grid[i] = GRID_TYPE_NONE;
+    }
+}
+
+bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    Sprite::Transparent(X, 255, 0, 255);
+    Sprite::Transparent(O, 255, 0, 255);
+
+    Reset();
+
+    return true;
+}
+</code></pre>
+
+<p>Следующее, что мы должны сделать, это функция размещения X и O на экране. Давайте ее создадим. Откройте опять <strong>App.h</strong> и добавьте функцию ниже Reset:</p>
+
+<pre><code class="cpp">void SetCell(int ID, int Type);
+</code></pre>
+
+<p>И в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::SetCell(int ID, int Type) {
+    if(ID &lt; 0 || ID &gt;= 9) return;
+    if(Type &lt; 0 || Type &gt; GRID_TYPE_O) return;
+
+    Grid[ID] = Type;
+}
+</code></pre>
+
+<p>Эта функция принимает два аргумента: во-первых, id изменяемой ячейки, а во-вторых тип, в который мы ее устанавливаем. У нас есть два условия, во-первых, убедимся, что мы не выходим за границы массива (иначе наша программа бы упала), а во-вторых, убедимся, что мы задаем правильный тип. Теперь давайте сделаем так, чтобы X и O отрисовывались на экране. Добавим следующий код в <strong>App::Render</strong>:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, G, 0, 0);
+
+    for(int i = 0;i &lt; 9;i++) {
+        int cX = (i % 3) * 200;
+        int cY = (i / 3) * 200;
+
+        if(Grid[i] == GRID_TYPE_X) {
+            Sprite::Draw(Screen, X, cX, cY);
+        }else
+        if(Grid[i] == GRID_TYPE_O) {
+            Sprite::Draw(Screen, O, cX, cY);
+        }
+    }
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Это немного сложнее, чем то, что мы делали до сих пор. Во-первых, мы проходим по каждой ячейке поля, переводим ID клетки в X и Y координаты. Чтобы найти X, мы берем остаток от деления на 3. Это даст нам 0, когда i = 0, 1, когда i = 1, 2, когда i = 2, 0, когда i 3, и так далее. Умножим полученное число на 200, потому что каждая клетка размером 200x200 пикселей, и получаем координату X. Чтобы найти Y, мы делим на 3 без остатка, это дает 0, когда i = [0, 1, 2], 1, когда i = [3, 4, 5], и так далее. Затем опять умножаем на 200. Я настоятельно советую вам разобраться, как это работает, потому что методы такого рода используются для tile-based игр.</p>
+
+<p>Наконец, нам нужно обрабатывать пользовательские действия. Для этого мы будем отлавливать события мышки. Когда пользователь нажимает на ячейку будем ставить в нее X или O. Переопределим один из методов Event для этого. Откройте <strong>App.h</strong> и добавьте функцию и переменную, про нее я скажу чуть позже:</p>
+
+<pre><code class="cpp">int CurrentPlayer;
+
+void OnLButtonDown(int mX, int mY);
+</code></pre>
+
+<p>И в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::OnLButtonDown(int mX, int mY) {
+    int ID = mX / 200;
+    ID = ID + ((mY / 200) * 3);
+
+    if(Grid[ID] != GRID_TYPE_NONE) {
+        return;
+    }
+
+    if(CurrentPlayer == 0) {
+        SetCell(ID, GRID_TYPE_X);
+        CurrentPlayer = 1;
+    }else{
+        SetCell(ID, GRID_TYPE_O);
+        CurrentPlayer = 0;
+    }
+}
+</code></pre>
+
+<p>Сначала мы делаем обратное преобразование, из координат в ID. Затем проверяем, что клетка еще не занята, иначе выходим из функции. Потом проверяем, чей сейчас ход, ставим соответствующую фигуру и передаем ход другому игроку. Как раз CurrentPlayer и говорит нам о том, чей сейчас ход. Кстати, ее надо инициализировать в конструкторе в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">App::App() {
+    CurrentPlayer = 0;
+
+    G = NULL;
+    X = NULL;
+    O = NULL;
+
+    Screen = NULL;
+
+    Running = true;
+}
+</code></pre>
+
+<p>Скомпилируйте программу и вы должны получить почти полностью работающую версию крестиков-ноликов. Поздравляем!</p>
+
+<p>Попробуйте дальше сделать самостоятельно. У нас есть прочный фундамент для нашей игры. Попробуйте добавить "X победил", "О победил" и "Ничья" в конце каждой игры (нужны дополнительные изображения). Подумайте, как вы собираетесь определять, кто выиграл. Попробуйте добавить способ сбросить игру после того, как она закончилась. Если хотите, можете даже попробовать добавить некий искуственный интеллект, который будет играть против пользователей. Или, если вам и этого мало, попробуйте добавить возможность играть игрок против игрока, или игрока против компьютера.</p>
+
+<p>Когда у вас будет твердое понимание, как все работает в этой статье - вы можете перейти к следующей, для изучения покадровой анимации.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. События.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-3-events"/>
+            <updated>2012-05-02T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-3-events</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-events">SDL Events</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>Говоря об основах разработки игр нельзя не упомянуть о том, что называется событиями (Events). Все видеоигры, от Pong до очень сложных игр для ПК и консоли, используют события для взаимодействия с игроком. Эти события могут поступать от клавиатуры, мыши, джойстика, геймпада, и так далее, даже из операционной системы. Важно понять, как работают события, если мы хотим позволить пользователю взаимодействовать с игрой. Мы уже использовали события, но только для закрытия нашего окна, теперь мы посмотрим, как получать события от пользователя.</p>
+
+<p>Если вы еще не догадались, каждая статья построена на основе предыдущих, так что будем использовать код из предыдущей статьи. Чтобы отслеживать все эти события и использовать их в наших функциях, давайте создадим новый класс. Создайте два файла с названиями: <strong>Event.h</strong> и <strong>Event.cpp</strong>. Эти два файла будет обрабатывать наши события, и вызвать соответствующую функцию. Класс App будет наследовать этот класс, поэтому, когда нам нужно будет поймать событие мы просто переопределим функцию.<!--more--></p>
+
+<p>Откройте <strong>Event.h</strong> и добавьте следующий код:</p>
+
+<pre><code class="cpp">#ifndef _EVENT_H_
+#define _EVENT_H_
+
+#include &lt;SDL.h&gt;
+
+class Event {
+    public:
+        Event();
+        virtual ~Event();
+        virtual void Handle(SDL_Event* Event);
+        virtual void OnInputFocus();
+        virtual void OnInputBlur();
+        virtual void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+        virtual void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+        virtual void OnMouseFocus();
+        virtual void OnMouseBlur();
+        virtual void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+        virtual void OnMouseWheel(bool Up, bool Down);
+        virtual void OnLButtonDown(int mX, int mY);
+        virtual void OnLButtonUp(int mX, int mY);
+        virtual void OnRButtonDown(int mX, int mY);
+        virtual void OnRButtonUp(int mX, int mY);
+        virtual void OnMButtonDown(int mX, int mY);
+        virtual void OnMButtonUp(int mX, int mY);
+        virtual void OnJoyAxis(Uint8 which, Uint8 axis, Sint16 value);
+        virtual void OnJoyButtonDown(Uint8 which, Uint8 button);
+        virtual void OnJoyButtonUp(Uint8 which, Uint8 button);
+        virtual void OnJoyHat(Uint8 which, Uint8 hat, Uint8 value);
+        virtual void OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel);
+        virtual void OnMinimize();
+        virtual void OnRestore();
+        virtual void OnResize(int w,int h);
+        virtual void OnExpose();
+        virtual void Exit();
+        virtual void OnUser(Uint8 type, int code, void* data1, void* data2);
+};
+
+#endif
+</code></pre>
+
+<p>Немаленький класс, да? Так, а теперь откройте <strong>Event.cpp</strong> и добавьте следующий код:</p>
+
+<pre><code class="cpp">#include "Event.h"
+
+Event::Event() {}
+Event::~Event() {}
+
+void Event::Handle(SDL_Event* Event) {
+    switch(Event-&gt;type) {
+        case SDL_ACTIVEEVENT: {
+            switch(Event-&gt;active.state) {
+                case SDL_APPMOUSEFOCUS: {
+                    if ( Event-&gt;active.gain )
+            OnMouseFocus();
+                    else
+            OnMouseBlur();
+                    break;
+                }
+                case SDL_APPINPUTFOCUS: {
+                    if ( Event-&gt;active.gain )
+            OnInputFocus();
+                    else
+            OnInputBlur();
+                    break;
+                }
+                case SDL_APPACTIVE:    {
+                    if ( Event-&gt;active.gain )
+            OnRestore();
+                    else
+            OnMinimize();
+                    break;
+                }
+            }
+            break;
+        }
+
+        case SDL_KEYDOWN: {
+            OnKeyDown(Event-&gt;key.keysym.sym,Event-&gt;key.keysym.mod,Event-&gt;key.keysym.unicode);
+            break;
+        }
+
+        case SDL_KEYUP: {
+            OnKeyUp(Event-&gt;key.keysym.sym,Event-&gt;key.keysym.mod,Event-&gt;key.keysym.unicode);
+            break;
+        }
+
+        case SDL_MOUSEMOTION: {
+            OnMouseMove(Event-&gt;motion.x,Event-&gt;motion.y,Event-&gt;motion.xrel,Event-&gt;motion.yrel,(Event-&gt;motion.state&amp;SDL_BUTTON(SDL_BUTTON_LEFT))!=0,(Event-&gt;motion.state&amp;SDL_BUTTON(SDL_BUTTON_RIGHT))!=0,(Event-&gt;motion.state&amp;SDL_BUTTON(SDL_BUTTON_MIDDLE))!=0);
+            break;
+        }
+
+        case SDL_MOUSEBUTTONDOWN: {
+            switch(Event-&gt;button.button) {
+                case SDL_BUTTON_LEFT: {
+                    OnLButtonDown(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+                case SDL_BUTTON_RIGHT: {
+                    OnRButtonDown(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+                case SDL_BUTTON_MIDDLE: {
+                    OnMButtonDown(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+            }
+            break;
+        }
+
+        case SDL_MOUSEBUTTONUP:    {
+            switch(Event-&gt;button.button) {
+                case SDL_BUTTON_LEFT: {
+                    OnLButtonUp(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+                case SDL_BUTTON_RIGHT: {
+                    OnRButtonUp(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+                case SDL_BUTTON_MIDDLE: {
+                    OnMButtonUp(Event-&gt;button.x,Event-&gt;button.y);
+                    break;
+                }
+            }
+            break;
+        }
+
+        case SDL_JOYAXISMOTION: {
+            OnJoyAxis(Event-&gt;jaxis.which,Event-&gt;jaxis.axis,Event-&gt;jaxis.value);
+            break;
+        }
+
+        case SDL_JOYBALLMOTION: {
+            OnJoyBall(Event-&gt;jball.which,Event-&gt;jball.ball,Event-&gt;jball.xrel,Event-&gt;jball.yrel);
+            break;
+        }
+
+        case SDL_JOYHATMOTION: {
+            OnJoyHat(Event-&gt;jhat.which,Event-&gt;jhat.hat,Event-&gt;jhat.value);
+            break;
+        }
+        case SDL_JOYBUTTONDOWN: {
+            OnJoyButtonDown(Event-&gt;jbutton.which,Event-&gt;jbutton.button);
+            break;
+        }
+
+        case SDL_JOYBUTTONUP: {
+            OnJoyButtonUp(Event-&gt;jbutton.which,Event-&gt;jbutton.button);
+            break;
+        }
+
+        case SDL_QUIT: {
+            Exit();
+            break;
+        }
+
+        case SDL_SYSWMEVENT: {
+            //Ignore
+            break;
+        }
+
+        case SDL_VIDEORESIZE: {
+            OnResize(Event-&gt;resize.w,Event-&gt;resize.h);
+            break;
+        }
+
+        case SDL_VIDEOEXPOSE: {
+            OnExpose();
+            break;
+        }
+
+        default: {
+            OnUser(Event-&gt;user.type,Event-&gt;user.code,Event-&gt;user.data1,Event-&gt;user.data2);
+            break;
+        }
+    }
+}
+
+void Event::OnInputFocus() {}
+void Event::OnInputBlur() {}
+void Event::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {}
+void Event::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {}
+void Event::OnMouseFocus() {}
+void Event::OnMouseBlur() {}
+void Event::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle) {}
+void Event::OnMouseWheel(bool Up, bool Down) {}
+void Event::OnLButtonDown(int mX, int mY) {}
+void Event::OnLButtonUp(int mX, int mY) {}
+void Event::OnRButtonDown(int mX, int mY) {}
+void Event::OnRButtonUp(int mX, int mY) {}
+void Event::OnMButtonDown(int mX, int mY) {}
+void Event::OnMButtonUp(int mX, int mY) {}
+void Event::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value) {}
+void Event::OnJoyButtonDown(Uint8 which,Uint8 button) {}
+void Event::OnJoyButtonUp(Uint8 which,Uint8 button) {}
+void Event::OnJoyHat(Uint8 which,Uint8 hat,Uint8 value) {}
+void Event::OnJoyBall(Uint8 which,Uint8 ball,Sint16 xrel,Sint16 yrel) {}
+void Event::OnMinimize() {}
+void Event::OnRestore() {}
+void Event::OnResize(int w,int h) {}
+void Event::OnExpose() {}
+void Event::Exit() {}
+void Event::OnUser(Uint8 type, int code, void* data1, void* data2) {}
+</code></pre>
+
+<p>Много кода, но нам надо покрыть все события SDL. В целом, мы просто берем указатель на SDL_Event, проверяем его тип и вызываем соответствующую функцию. Выглядит, что кода много, но это только потому, что много типов событий.</p>
+
+<p>Теперь, когда с этим разобрались, перейдет к <strong>App.h</strong> и подключим наш новый класс:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+        SDL_Surface*    Test;
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Все должно хорошо скомпилироваться. Теперь надо связать поступающие события с нашим классом. Найдите App::Event() и измените функцию вот так:</p>
+
+<pre><code class="cpp">void App::Event(SDL_Event* Evt) {
+    Event::Handle(Evt);
+}
+</code></pre>
+
+<p>Мы передаем событие в наш класса, теперь он будет заботиться о правильном вызовов функций. Теперь, когда мы хотим использовать событие, мы должны переопределить функцию. Так как мы избавились от проверки события SDL_Quit, давайте использовать вместо этого метод класса. Откройте <strong>App.h</strong>, и добавьте следующие функции:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+        SDL_Surface*    Test;
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+        void Exit();
+};
+
+#endif
+</code></pre>
+
+<p>Функция Exit() будет обрабатывать событие SDL_Quit. У нас есть прототип, позволяющий определить, что он делает, теперь добавим реализацию. Откройте <strong>App.cpp</strong> и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Exit() {
+    Running = false;
+}
+</code></pre>
+
+<p>Перекомпилируйте и попробуйте запустить. Программа должна закрываться по крестику как и раньше. Я рекомендую вам ознакомиться с несколькими другими событиями. В дальнейшем мы будем использовать некоторые из них в нашей игре.</p>
+
+<p>Перейти на более чем на следующем уроке, чтобы взглянуть на создание нашей первой игре, крестики-нолики./strong</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Координаты и блиттинг.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-2-coordinates-and-blitting"/>
+            <updated>2012-05-01T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-2-coordinates-and-blitting</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, [SDL Coordinates and Bliting][http://www.sdltutorials.com/sdl-coordinates-and-blitting] за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>Используя [первую статью][//charnad.github.io/blog/sdl-tutorial-1-basics/], как базу, углубимся в мир поверхностей SDL. Я пытался донести до вас мысль, что SDL поверхности - это в основном изображения, хранящиеся в памяти. Представьте что, у нас есть пустая поверхность размером 320x240 пикселей. Если добавить к ней систему SDL координат, то получится что-то вроде этого:</p>
+
+<p><img src="//charnad.github.io/img/2012-05-01-sdl-tutotial-2/coords.jpg">
+Эта система координат отличается, от обычной. Обратите внимание, что координата Y увеличивается вниз, а координата X увеличивается вправо. Это важно понимать, чтобы правильно рисовать изображения на экране.<!--more--></p>
+
+<p>Поскольку у нас уже есть основная поверхность (Screen), нам нужен способ, чтобы рисовать на ней. Этот процесс называется блиттинг [<em>Blitting - Перенос битовых блоков</em>], когда мы в общем переносим одно изображение на другое. Но прежде чем мы сможем это сделать, мы должны загрузить эти изображения в память. SDL предлагает простую функцию для этого - SDL_LoadBMP. Примерный код может выглядеть следующим образом:</p>
+
+<pre><code class="cpp">SDL_Surface* TmpSurface;
+
+if((TmpSurface = SDL_LoadBMP("mypicture.bmp")) == NULL) {
+    //Error!
+}
+</code></pre>
+
+<p>Все довольно просто, SDL_LoadBMP принимает один аргумент, имя файла, который вы хотите загрузить, и возвращает поверхность.  Если функция возвращает NULL, то либо файл не найден, либо поврежден или произошла какая-либо другая ошибка. К сожалению, чтобы все работало быстро, одного этого метода недостаточно. Часто изображение будет загружено в другом формате. И, когда мы будем отображать изображение на экране, мы можем столкнуться с потерей производительности, выпадением цветов изображения, и т.п. Но, к счастью SDL предлагает решение этой проблемы - функцию SDL_DisplayFormat. Она принимает уже загруженную поверхность, и возвращает новую, уже использующую тот же формат, что и дисплей.</p>
+
+<p>Давайте этот процесс завернем класс. Возьмем код из предыдущей статьи за основу и добавим два новых файла: <strong>Sprite.h</strong> и <strong>Sprite.cpp</strong>. Откройте <strong>Sprite.h</strong> и добавьте следующее:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+    public:
+        static SDL_Surface* Load(const char* File);
+};
+
+#endif
+</code></pre>
+
+<p>Мы создали простую статическую функцию Load, которая будет загружать файл в поверхность. Теперь откроем <strong>Sprite.cpp</strong>:</p>
+
+<pre><code class="cpp">#include "Sprite.h"
+
+Sprite::Sprite() {}
+
+SDL_Surface* Sprite::Load(const char* File) {
+    SDL_Surface* Temp = NULL;
+    SDL_Surface* Result = NULL;
+
+    if((Temp = SDL_LoadBMP(File)) == NULL) {
+        return NULL;
+    }
+
+    Result = SDL_DisplayFormat(Temp);
+    SDL_FreeSurface(Temp);
+
+    return Result;
+}
+</code></pre>
+
+<p>Надо отменить несколько важных вещей. Во-первых, всегда помните, что когда вы создаете указатель, установите его в значение NULL или 0.  Вы можете столкнуться с проблемами, если вы это не сделаете. Во-вторых, обратите внимание, что SDL_DisplayFormat возвращает новую поверхность, а не перезаписывает оригинальную. Это важно помнить, потому что, поскольку он создает новую поверхность, мы должны освободить старую. В противном случае, у она так и будет занимать память.</p>
+
+<p>Теперь у нас есть способ загрузки поверхностей в памяти, теперь же нужен способ отображать их поверх других поверхностей. Как и в случае с загрузкой изображений, SDL предлагает функцию для блиттинга: SDL_BlitSurface. Она не такая простая как SDL_LoadBMP, но все же достаточно простая. Откроем <strong>Sprite.h</strong> и добавим следующие прототипы функций:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+};
+
+#endif
+</code></pre>
+
+<p>Теперь откройте <strong>Sprite.cpp</strong>, и добавьте следующее:</p>
+
+<pre><code class="cpp">#include "Sprite.h"
+
+Sprite::Sprite() {
+}
+
+SDL_Surface* Sprite::Load(const char* File) {
+    SDL_Surface* Temp = NULL;
+    SDL_Surface* Result = NULL;
+
+    if((Temp = SDL_LoadBMP(File)) == NULL) {
+        return NULL;
+    }
+
+    Result = SDL_DisplayFormat(Temp);
+    SDL_FreeSurface(Temp);
+
+    return Result;
+}
+
+bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y) {
+    if(Dest == NULL || Src == NULL) {
+        return false;
+    }
+
+    SDL_Rect Area;
+    Area.x = X;
+    Area.y = Y;
+
+    SDL_BlitSurface(Src, NULL, Dest, &amp;Area);
+
+    return true;
+}
+</code></pre>
+
+<p>Прежде всего, посмотрим на аргументы, которые передаются функции Draw. У нас есть две поверхности, и две переменные типа int. Первая поверхность Dest - на ней мы будем рисовавать, вторая поверхность Src - из нее будут браться данные для отображения. Можно сказать, что мы "наклеиваем" (помните аналогию со стикерами?) Src на Dest. X, Y - это координаты на поверхности Dest где будет находиться верхний левый угол изображения из Src.</p>
+
+<p>Теперь к содержимому функции. Сначала мы проверяем, что у нас есть действительная поверхность, иначе возвращаем false. Далее, определяем SDL_Rect. Это SDL структура, которая состоит из четырех элементов: X, Y, W, H.  Как вы, возможно, догадались, это задает размеры прямоугольника. В нашем случае, мы заботимся только о том, где мы рисуем, а не сколько. Поэтому, мы назначаем X, Y координаты на поверхности Dest. Если вам интересно, что означает NULL среди параметров функции SDL_BlitSurface, то это еще один параметр SDL_Rect. К нему мы вернемся позже. Наконец, мы вызваем функцию переноса изображения, и возвращаем true.</p>
+
+<p>Теперь, чтобы убедиться, что все это работает, давайте создадим тестовую поверхность. Откройте <strong>App.h</strong>, и создайте новую поверхность, и подключите недавно созданный <strong>Sprite.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+#include "Sprite.h"
+
+class App {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+        SDL_Surface*    Test;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Не забудьте инициализировать поверхность значением NULL в конструкторе:</p>
+
+<pre><code class="cpp">App::App() {
+    Test = NULL;
+    Screen = NULL;
+    Running = true;
+}
+</code></pre>
+
+<p>И так же не забудьте "прибраться" за собой:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_FreeSurface(Test);
+    SDL_FreeSurface(Screen);
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Давайте теперь загрузим изображение. Перейдите к функции App::Init(), добавьте код:</p>
+
+<pre><code class="cpp"><br />bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((Test = Sprite::Load("image.bmp")) == NULL) {
+        return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Не забудьте заменить "image.bmp" реальным изображением, которое у вас есть. Если нету - откройте MSPaint, что-нибудь нарисуйте, и сохраните в той же папке, где будет ваш исполняемый файл. Теперь у нас есть загруженное изображение, которое можно нарисовать. Найдите App::Render и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, Test, 0, 0);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Обратите внимание на новую функцию SDL_Flip. Это просто обновление буфера и вывод Screen на экран. Это называется двойной буферизацией. Это процесс рисования всего в памяти, и, потом вывод на экран. Если этого не делать, получилось бы мерцающее изображение. Помните флаг SDL_DOUBLEBUF? Это он и включает двойную буферизацию.</p>
+
+<p>Скомпилируйте код и убедитесь, что все работает правильно. Вы должны увидеть изображение в верхнем левом углу экрана.  Если да, то поздравляю, вы на один шаг ближе к самой игре. Если нет, убедитесь, что ваш image.bmp находится в той же папке, что и исполняемый файл. Кроме того, убедитесь, что это действительно bitmap файл.</p>
+
+<p><img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/2/ss1.jpg"></p>
+
+<p>Теперь давайте продвинемся немного дальше. Хотя это круто уметь рисовать изображение на экране, часто нам нужна только его часть. Возьмем, к примеру, набор тайлов (tileset):</p>
+
+<p><img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/2/tileset.png"></p>
+
+<p>Хотя это одно изображение, мы хотим нарисовать отдельную его часть.  Открытие еще раз <strong>Sprite.h</strong> и добавьте следующий код:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H);
+};
+
+#endif
+</code></pre>
+
+<p>Теперь в <strong>Sprite.cpp</strong><span style="color: red;"> (Внимание, мы добавляем еще одну функцию Draw, мы не заменяем первую)</span>:</p>
+
+<pre><code class="cpp">bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H) {
+    if(Dest == NULL || Src == NULL) {
+        return false;
+    }
+
+    SDL_Rect DestArea;
+
+    DestArea.x = X;
+    DestArea.y = Y;
+
+    SDL_Rect SrcArea;
+
+    SrcArea.x = X2;
+    SrcArea.y = Y2;
+    SrcArea.w = W;
+    SrcArea.h = H;
+
+    SDL_BlitSurface(Src, &amp;SrcArea, Dest, &amp;DestArea);
+
+    return true;
+}
+</code></pre>
+
+<p>Обратите внимание, что это в основном точно такая же функция, как и первыая, за исключением того, мы добавили еще один SDL_Rect. Этот SDL_Rect прямоугольник определяет, какие пикселы из исходного изображения скопировать в итоговое. Если, например, указаны параметры 0, 0, 50, 50, то отрисовано было бы лишь левая верхняя часть поверхности (квадрат размером 50х50).</p>
+
+<p><img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/2/draw2.jpg"></p>
+
+<p>Давайте проверим как это работает, найдите App::Render(), и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, Test, 0, 0);
+    Sprite::Draw(Screen, Test, 70, 110, 90, 90, 50, 50);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p><img src="http://www.charnad.com/blog/wp-content/uploads/pictures/sdl-tutorials/2/ss2.jpg" alt="coordinates"></p>
+
+<p>Должно получиться, что ваше изображение отображается по координатам 70, 110 и видна только его часть. Надо обратить особое внимание на то, как эти функции работают, и как устроена система SDL координат, мы будем еще не раз это использовать.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Базовое окно.]]></title>
+            <link href="//charnad.github.io/blog/sdl-tutorial-1-basics"/>
+            <updated>2012-05-01T00:00:00+00:00</updated>
+            <id>//charnad.github.io/blog/sdl-tutorial-1-basics</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//charnad.github.io/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
+
+<p>Эти обучающие статьи предназначены для тех, у кого уже есть опыт использования C++ или другого языка программирования. Если у вас возникают сложности с пониманием кода, а не концепций, то я настоятельно советую вам сначала прочитать статью, объясняющую основы языка С++. Необязательно знать все о С++, но чем больше - тем проще вам будет в дальнейшем.</p>
+
+<p>В статьях я буду использовать Code::Blocks в качестве IDE и gcc с mingw для компиляции. [Я лично изначально использовал gcc с cygwin, но такой набор потребует включения cygwin1.dll в дистрибутив, что может накладывать лицензионные ограничения. Поэтому позже я установил mingw компилятор из тех же репозиториев cygwin.] Если вы хотите использовать другую IDE и/или компилятор, вы, конечно, можете это сделать, если достаточно уверены, что сможете включить все библиотеки в линковку. Скачать же Code::Blocks можно на официальном сайте <a href="http://www.codeblocks.org/downloads/26">http://www.codeblocks.org</a> (скачать версию, включающую MinGW). Рекомендуется использовать стабильную версию, если вы не хотите тратить время на ночные сборки.</p>
+
+<p>Эти статьи в значительной степени сосредоточены вокруг SDL (Simple DirectMedia Layer), 2D кросс-платформенной графической библиотеки. Эта библиотека позволит отрисовывать графику, и делать разные классные вещи, которые потом и помогут нам сделать игру. Вам также надо будет загрузить библиотеку с сайта <a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org</a>. Вам нужен tar-файл в разделе "Development Libraries, Win32" и zip-файл в разделе "Runtime Libraries, Win32". Если вы используете Visual Studio - выберите соответствующий файл вместо MinGW версии. После скачивания вы можете скопировать .dll файлы в папку Windows/system32, таким образом любое SDL приложение сможет его использовать. [Я не стал этого делать, достаточно чтобы SDL.dll и другие необходимые dll файлы находились в той же папке, что и исполняемый файл]. <!--more--></p>
+
+<p>Начните новый проект (Blank project) в Code::Blocks, назовите по желанию и сохраните в удобное для вас место. Откройте tar-файл (который вы скачали из раздела "Development Libraries"), из него нам нужны папки include и lib, распакуйте их в папку вашего проекта. Вернемся обратно в Code::Blocks, кликните правой кнопкой на проект, слева в списке проектов, и в появившемся меню выберите "Build Options". Слева в дереве скорее всего будет имя вашего проекта и два пункта: Debug и Release. Выберите корень дерева, таким образом мы установим настройки сразу для всего проекта. Нас интересуют две вкладки: Search Directories и Linker Settings. В Search Directories по умолчанию выбрана вкладка Compiler, снизу нажмите Add и добавьте 2 папки: include и include/SDL. Этим мы облегчили подключение заголовочных файлов. Теперь во вкладке Linker Settings также нажимаем Add и добавляем файлы: libSDLmain.a и libSDL.dll.a (!Именно в таком порядке!). Этим мы подключили библиотеки SDL в наш проект. Нажимайте ОК и настройка проекта на этом закончена. [<em>Если в будущем у вас возникнут проблемы с '_WinMain@16', то в Linker Settings, справа от библиотек в окне Other linker options допишите -lmingw32. Если возникнет проблема с libgcc_s_dw2-1.dll, допишите там же -static.</em>]</p>
+
+<p>Давайте, наконец, создадим два файла, назовем их <strong>App.h</strong> и <strong>App.cpp</strong>, это будет ядром нашей программы. Откройте <strong>App.h</strong> и добавьте туда следующий код:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    public:
+        App();
+        int Execute();
+};
+#endif
+</code></pre>
+
+<p>Теперь в файл <strong>App.cpp</strong> добавим вот этот код:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {}
+
+int App::Execute() {
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+
+    return App.Execute();
+}
+</code></pre>
+
+<p>Класс App - это основа всей нашей программы. Давайте сделаем шаг в сторону и я расскажу как игры обычно устроены. Большинство игр состоят из 5 функций, контролирующих игровой процесс. Обычно это:</p>
+
+<p>Initialize
+Функция обрабатывает загрузку всех данных, текстур, карт, NPC, чего угодно.</p>
+
+<p>Event
+Функция обрабатывает все поступающие события от мышки, клавиатуры, джойстика и других устройств.</p>
+
+<p>Loop
+Функция обрабатывает обновление данных, например движение NPC по экрану, уменьшение здоровье персонажа и так далее.</p>
+
+<p>Render
+Функция занимается отображением всего на экране. Она НЕ обрабатывает манипуляции с данными - этим занимается Loop.</p>
+
+<p>Cleanup
+Функция просто отключает все использующиеся ресурсы и закрывает игру.</p>
+
+<p>Важно понимать, что игра это просто один большой цикл. Внутри этого цикла случаются события, обновляются данные, рисуются картинки. Поэтому базовая структура игры может иметь следующий вид:</p>
+
+<pre><code class="cpp">Initialize();
+
+while(true) {
+    Events();
+    Loop();
+    Render();
+}
+
+Cleanup();
+</code></pre>
+
+<p>На каждом шаге цикла мы что-то делаем с данными и соответствующе их отображаем. События используются для манипуляции данными пользователем. Они в целом не являются необходимыми чтобы создать игру, но нужны, для возможности управлять игровым процессом.</p>
+
+<p>Поясним эту мысль на примере. Например, у нас есть наш рыцарь, герой игры. Все, что мы хотим сделать, это просто его перемещать. Если я нажму влево - он пойдет налево. Сейчас мы выясним, как это сделать в цикле. Во-первых, мы знаем, что мы хотим, проверять события (события клавиатуры). Так как события нужны для управления данными, нам нужны будут переменные, которые будут изменяться. Тогда мы можем использовать эти переменные для отображения нашего рыцаря на экране. У нас могло бы быть что-нибудь навроде:</p>
+
+<pre><code class="cpp">if(Key == LEFT) X--;
+if(Key == RIGHT) X++;
+if(Key == UP) Y--;
+if(Key == DOWN) Y++;
+
+RenderImage(KnightImage, X, Y);
+</code></pre>
+
+<p>Это работает, потому что каждый цикл проверяется, нажата ли кнопка ВЛЕВО, ВПРАВО и т.д., и если да, то уменьшить или увеличить переменную. Так что, если наша игра идет со скоростью 30 кадров в секунду и мы нажимаем НАЛЕВО, то рыцарь будет двигаться влево со скоростью 30 пикселей в секунду. Если вам еще не удалось разобраться в принципе игрового цикла, то вы скоро с этим справитесь. Цикл необходим, чтобы игра правильно функционировала.</p>
+
+<p>Возвращаясь к нашему концептуальному коду (5 функций), мы можем добавить эти дополнительные функции в наш проект, в файле <strong>App.h</strong>:</p>
+
+<pre><code>cpp#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>А в файле <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {
+    Running = true;
+}
+
+bool App::Init() {
+    return true;
+}
+
+int App::Execute() {
+    if(Init() == false) {
+        return -1;
+    }
+
+    SDL_Event Event;
+
+    while(Running) {
+        while(SDL_PollEvent(&amp;Event)) {
+            Event(&amp;Event);
+        }
+
+        Loop();
+        Render();
+    }
+
+    Cleanup();
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+    return App.Execute();
+}
+
+void App::Event(SDL_Event* Event) {}
+void App::Loop() {}
+void App::Render() {}
+void App::Cleanup() {}
+</code></pre>
+
+<p>Вы видите несколько новых переменных, но давайте сначала разберемся что же делает этот код. Во-первых, мы пытаемся инициализировать нашу игру, если не вышло - мы возвращаем -1 (код ошибки), тем самым закрывая программу. Если все хорошо, то мы входим в игровой цикл. В цикла мы используем SDL_PollEvent для проверки событий и передаем их по одному в Event. После этого, мы идем в Loop для перемещения данных вокруг, и всего в таком роде, а затем отображаем нашу игру. Повторяем это бесконечно. Если пользователь выходит из игры, мы попадаем в Cleanup, которая освободит используемые ресурсы. Вот так, достаточно просто.</p>
+
+<p>Теперь, давайте посмотрим на SDL_Event и SDL_PollEvent. Первое - это структура, которая содержит информацию о событиях. Вторая функция, которая будет захватывать любые события, ожидающие в очереди. Очередь может состоять из любого количества событий, поэтому мы должны перебрать их по очереди. Например, позволяет нажимает кнопку А и перемещает мышь, в тот момент, когда исполняется Render(). SDL обнаружит это и поставит два события в очередь, по одному на каждое нажатие клавиши и перемещение мыши. Мы получаем эти события из очереди с помощью SDL_PollEvent, а затем передаем его в Event, чтобы обработать соответствующим образом. Когда в очереди нет событий, SDL_PollEvent вернет false, выйдя из цикла обработки событий.</p>
+
+<p>Другая добавленная переменная Running - это наш выход из цикла игры. Если оно false, значит игра закончилась, и надо выйти из программы. Так что, если, например, если пользователь нажимает клавишу ESC мы можем присвоить ей false, и тем самым выйти из игры.</p>
+
+<p>На данном этапе программа должна компилироваться без проблем, правда, вы можете заметить, что ее нельзя закрыть. Даже, вероятно, придется использовать диспетчер задач для завершения программы.</p>
+
+<p>Теперь, когда все настроено, давайте создадим окно, где будет отрисовываться наша игра. Откройте <strong>App.h</strong> и добавить переменную поверхности SDL:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+        SDL_Surface*    Screen;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Думаю, самое время объяснить что такое SDL поверхность. SDL поверхность это все, что можно нарисовать, и все на чем можно нарисовать. Например, у нас есть лист бумаги, карандаш, и стикеры. Бумаги можно назвать поверхностью. Мы можем рисовать на ней, наклеивать стикеры и прочее. Стикеры тоже можно считать поверхностями, мы можем рисовать и на них, и наклеивать другие стикеры поверх. Таким что, Screen - это просто наш "лист бумаги", на котором мы будем рисовать.</p>
+
+<p>Теперь, давайте отредактируем функцию Init, чтобы инициализировать эту поверхность:</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &gt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Первое, что нужно сделать, это запустить собственно SDL, чтобы мы могли получить доступ к его функциям. Мы командуем SDL инициализировать все, что доступно; есть различные параметры, которые можно передать, но это на данный момент это не важно. Следующая функция: SDL_SetVideoMode. Она и создаст наше окно и поверхность. Она принимает 4 параметра: ширину окна, высота окна, битовое разрешение (рекомендуется 16 или 32), и различные флаги отображения. Есть довольно много флагов, но тех, которые мы используем, достаточно на данный момент. Первый флаг говорит SDL использовать аппаратную памяти для хранения изображений, а второй говорит SDL использовать двойную буферизацию (это предотвратит мерцание на экране). Еще один флаг, который может заинтересовать вас - это SDL_FULLSCREEN, он запускает приложение в полноэкранном режиме.</p>
+
+<p>Теперь, когда окно настроено, давайте сделаем так, чтобы все работало гладко. Изменим функцию App::Cleanup() и добавим следующее:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Мы просто выходим из SDL. Надо учесть, что в этой функции, мы будем освобождать использованные поверхности</p>
+
+<p>Чтобы все было аккуратно, надо также инициализировать указатель Screen значением NULL, в конструкторе класса. В <strong>App.cpp</strong> добавить следующее:</p>
+
+<pre><code class="cpp">App::App() {
+    Screen = NULL;
+    Running = true;
+}
+</code></pre>
+
+<p>Попробуйте скомпилировать проект, посмотрите как он работает. Должно появится пустое окно. Его все еще нельзя закрыть просто так, придется воспользоваться диспетчером задач. Это не очень удобно, поэтому давайте исправим ситуацию. Изменим функцию Event:</p>
+
+<pre><code class="cpp">void App::Event(SDL_Event* Event) {
+    if(Event-&gt;type == SDL_QUIT) {
+        Running = false;
+    }
+}
+</code></pre>
+
+<p>SDL события различаются по типу. Эти типы могут варьироваться от нажатия клавиш, движения мыши, все что нам нужно это проверить его тип. Нужный нам тип - это запрос на закрытие окна (например, когда пользователь нажимает кнопку X). Если это событие произойдет, мы устанавливаем Running = false, тем самым завершив нашу программу. Достаточно просто. Мы рассмотрим больше событий в других статьях.</p>
+
+<p>Если вы хорошо разобрались и понимаете, как работает код в этой статье, вы можете перейти к <a href="//charnad.github.io/blog/sdl-tutorial-2-coordinates-and-blitting/">следующей</a>, чтобы узнать больше о поверхности SDL.</p>
+]]></content>
+        </entry>
+    </feed>
