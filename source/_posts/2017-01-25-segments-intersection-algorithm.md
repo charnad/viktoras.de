@@ -6,8 +6,11 @@ post_date: 25.01.2017
 ---
 
 For my job I needed to write a more efficient function to merge multiple sets of segments. Segments were date ranges where some special offers are applicable. So let's say a 10% discount is valid from 1st Jan to 10th Jan and another 20% discount is valid from 5th Jan to 15th Jan. This means both of them are valid between 5th and 10th. Those are just two ranges, there potentially be two lists of any amount of segments.
+
 Now, I've said more efficient, because the code I inherited has been creating an list of all the dates within given ranges and calling [array_merge](http://php.net/manual/en/function.array-merge.php) on them. This has worked until we've started getting dates ranges like "0001-01-01 to 9999-12-31".
+
 I've came up with an algorithm, which might not be the most optimal, but I'm pretty happy with it. Especially because I've developed it without stealing parts from Google or StackOverflow. For funsies I'll reproduce the algorithm in Golang (it was in PHP originally).
+
 Funnily enough, while writing this article I've come up with even easier solution. It seems much more obvious and looks like it doesn't deserver an article, but I've already wrote it. So there.
 
 Prerequisites are: segments within a set are not overlapping with each other and are sorted.
