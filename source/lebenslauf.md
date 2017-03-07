@@ -7,7 +7,7 @@ title: Lebenslauf
 <div style="padding-top: 3em;"/>
 {% endblock %}
 
-{% block posts %}
+{% block head_styles %}
 <style>
     #cv-sidebar #cv-photo {
         border: 1px;
@@ -49,15 +49,17 @@ title: Lebenslauf
         font-weight: bold;
     }
 </style>
+{% endblock %}
 
+{% block posts %}
 <div id="cv-sidebar" class="col-xs-3">
-    <img id="cv-photo" class="img-thumbnail">
+    <span style="font-size: 125px;"><img id="cv-photo" class="img-thumbnail" alt="☺"/></span>
 
     <h1>Viktoras Bezaras</h1>
 
     <p>
         <div>
-            <h1 class="glyphicon">&#x1F382;</h1>
+            <h1 class="glyphicon">&#12484;</h1>
         </div>
         25.09.1986 - {{ date(now).diff(date("1986-09-25")).y }} Jahre
     </p>
@@ -83,7 +85,7 @@ title: Lebenslauf
     <div>
         <h4>Anwendungsentwickler @ TraSo GmbH, Leipzig   <small>05/2014 - aktuel</small></h4>
         <p>
-            Bei TraSo habe ich im Mai 2014 angefangen als Entwickler im Bereich Hotel Import für eine Backend Enterprise Software für Touristische Veranstalter. Meine Vorgänger haben sich einige Monaten zuvor verabschiedet und ich musste dringend mich in Legacy Code ohne jegliche Übergabe einarbeiten. Hotel Import Bereich war damals der Schmerzpunkt und die Hauptaufgabe war die Stabilität und Qualität der Datenverarbeitung zu erreichen. Ich und meine QA-Kollegin haben die Verantwortung, Kunden- und Partner Kommunikation übernomen und innerhalb 2 Jahren haben den Bereich komplett umgebaut. Mit über 1000 Unit-Test hat das Anteil des Bugfix-Tickets von ~90% auf ~10% gesunken, die meisten Aufgaben beziehen sich jetzt auf die neue Features. Obwohl die Anzahl der Import Anbindungen hat sich seit 2014 mehr als verdreifacht, schaffen wir immer noch zuzweit die Arbeit, was am Anfang für 4-5 Mitarbeiter gedacht wurde. Parallel dazu habe ich weitere Aufgaben übernommen wie: Buchungschnittstellen-Anbindungen, Transferschnittstellen-Anbindungen, OTDS Export.
+            Bei TraSo habe ich im Mai 2014 angefangen im Bereich Hotel Import für eine Backend Enterprise Software für Touristische Veranstalter. Meine Vorgänger haben sich einige Monate zuvor verabschiedet und ich musste dringend mich in Legacy Code ohne jegliche Übergabe einarbeiten. Hotel Import Bereich war damals der Schmerzpunkt und die Hauptaufgabe war die Stabilität und Qualität der Datenverarbeitung zu erreichen. Ich und meine QA-Kollegin haben die Verantwortung, Kunden- und Partner Kommunikation übernomen und innerhalb 2 Jahren haben den Bereich komplett umgebaut. Mit über 1000 Unit-Test hat das Anteil des Bugfix-Tickets von ~90% auf ~10% gesunken, die meisten Aufgaben beziehen sich jetzt auf die neuen Features. Obwohl die Anzahl der Import Anbindungen hat sich seit 2014 mehr als verdreifacht, schaffen wir immer noch zu zweit die Arbeit, was am Anfang für 4-5 Mitarbeiter gedacht wurde. Parallel dazu habe ich weitere Aufgaben übernommen wie: Buchungschnittstellen-Anbindungen, Transferschnittstellen-Anbindungen, OTDS Export.
             <br /><br />
             Tools und Technologien: PHP, MySQL, Zend Framework, PHPUnit, Atlassian Stack (Jira, Stash, Bamboo), GitLab, Git, PhpStorm.
         </p>
@@ -92,7 +94,7 @@ title: Lebenslauf
     <div>
         <h4>Senior Web-Entwickler @ meets-ecommerce OA GmbH, Niesky   <small>06/2013 – 05/2014</small></h4>
         <p>
-            Die Firma meets-ecommerce war ein E-commerce Startup mit 5 Mitarbeiter. Wir haben projektiert und entwickelt eine Microservices Basierend REST-like Application mit Anbindungen an verschiedene E-commerce Plattformen und Schnittstellen wie z.B. Magento oder eBay. Trotz der Kollegen verlassen, bis wir zwei mit dem Eigentümer geblieben haben, haben wir stark gearbeitet und unseren Bestens gegeben bis die Firma aus finanziellen Gründen leider geschlossen wurde.
+            Die Firma meets-ecommerce war ein E-commerce Startup mit 5 Mitarbeiter. Wir haben projektiert und entwickelt eine Microservices basierend REST-like Application mit Anbindungen an verschiedene E-commerce Plattformen und Schnittstellen wie z. B. Magento oder eBay. Trotz der Kollegen verlassen, bis wir zwei mit dem Eigentümer geblieben haben, haben wir stark gearbeitet und unseren Bestens gegeben bis die Firma aus finanziellen Gründen leider geschlossen wurde.
             <br /><br />
             Tools und Technologien: PHP, Phalcon Framework, Postgresql, RabbitMQ, RobotFramework, Redmine, Git, PhpStorm, SCRUM.
             <br /><br />
@@ -103,7 +105,7 @@ title: Lebenslauf
     <div>
         <h4>PHP-Entwickler @ netforge GmbH & Co. KG, Berlin    <small>01/2011 – 04/2013</small></h4>
         <p>
-            Bei netforge habe ich als Angesteller angefagen nach der erfolgreiche Zusammenarbeit als Consultant. Als meine Hauptaufgabe, hatte ich ein featurevolles Rechnungs-Steuersystem auf Basis Symfony Framework entwickelt. Ich habe die ganze Zeit vom Home Office in Görlitz gearbeitet mit der Kommunikation über Skype.
+            Bei netforge habe ich als Angestellter angefangen nach der erfolgreiche Zusammenarbeit als Consultant. Als meine Hauptaufgabe, hatte ich ein featurevolles Rechnungs-Steuersystem auf Basis Symfony Framework entwickelt. Ich habe die ganze Zeit vom Home Office in Görlitz gearbeitet mit der Kommunikation über Skype.
             <br /><br />
             Tools und Technologien: PHP, Symfony Framework, MySQL, SQLite, Lime (Test Framework), SVN.
             <br /><br />
@@ -114,7 +116,7 @@ title: Lebenslauf
     <div>
         <h4>PHP-Entwickler (Freiberufler) @ WEB-SHOP-HOSTING, Berlin   <small>03/2010 – 12/2010</small></h4>
         <p>
-            An meine erste Projekte in Deutschland habe ich als Freiberufler gearbeitet. Für WEB-SHOP-HOSTING habe ich ein Symfony-basierend CMS-System entwickelt (genutzt für z.B. http://wir-nehmen-wir.net). Ein anderes Projekt war die Weiterentwicklung der Drupal-basierenden http://www.teamdrive.com Webseite.
+            An meine erste Projekte in Deutschland habe ich als Freiberufler gearbeitet. Für WEB-SHOP-HOSTING habe ich ein Symfony-basierend CMS-System entwickelt (genutzt für z. B. http://wir-nehmen-wir.net). Ein anderes Projekt war die Weiterentwicklung der Drupal-basierenden http://www.teamdrive.com Webseite.
             <br /><br />
             Tools und Technologien: PHP, Drupal 7, Symfony Framework, MySQL, SQLite, Mercurial.
             <br /><br />
@@ -177,18 +179,15 @@ title: Lebenslauf
 
     <div>
         <h3>Philosophie</h3>
-                <p>
-                    Der Begriff Software Entwickler umfasst viel mehr als eine Person die Programme eintippt. Persönliche Charakterzüge sind manchmal sogar wichtiger als Programmierfähigkeiten.
-                </p>
-                <p>
-                    Für ein Software Entwickler ist es wichtig eine freundliche und produktive <strong>Kommunikation</strong> mit Kollegen, Partner und Kunden zu haben. Ich arbeite nah mit Techsupport Kollegen, sodass die Kunden bei Technisch-komplexen Fragen eine relevante Information bekommen können, ich bin immer bereit zu helfen. Ich habe auch viel teilgenommen in Meetings mit Partner (z.B. auf ITB Messe) und Vortrage gegeben.
-                </p>
-                <p>
-                    Ich glaube die <strong>Lösung-orientirte Denkweise</strong> und <strong>Selbständigkeit</strong> sind meine Vorteile. Setz mit das Ziel und ich kümmere mich darum. Die Aufgabe wird geklärt, geplant, umgesetzt, getestet und abgeschlossen. 
-                </p>
-
-         - Leadership und zusammenarbeit
-         - Unit-Testing
+        <p>
+            Der Begriff Software Entwickler umfasst viel mehr als eine Person die Programme eintippt. Persönliche Charakterzüge sind manchmal sogar wichtiger als Programmierfähigkeiten.
+        </p>
+        <p>
+            Für ein Software-Entwickler ist es wichtig eine freundliche und produktive <strong>Kommunikation</strong> mit Kollegen, Partner und Kunden zu haben. Ich arbeite nah mit Techsupport Kollegen, sodass die Kunden bei Technisch-komplexen Fragen eine relevante Information bekommen können, ich bin immer bereit zu helfen. Ich habe auch viel teilgenommen in Meetings mit Partner (z.B. auf ITB Messe) als auch Vortrage gegeben.
+        </p>
+        <p>
+            Die <strong>Lösung-orientirte Denkweise</strong> und <strong>Selbständigkeit</strong> sind meine Vorteile. Ich habe mehrere Jahre von Zuhause gearbeitet. Setz mir das Ziel und ich kümmere mich darum. Ich kläre die Aufgabe mit relevanten Ansprechpersonen, plane, umsetze, teste und berichte.
+        </p>
     </div>
 </div>
 {% endblock %}
