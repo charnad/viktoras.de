@@ -11,7 +11,6 @@ title: Lebenslauf
 <style>
     #cv-sidebar #cv-photo {
         border: 1px;
-        height: 200px;
         width: 200px;
     }
 
@@ -53,7 +52,7 @@ title: Lebenslauf
 
 {% block posts %}
 <div id="cv-sidebar" class="col-xs-3">
-    <span style="font-size: 125px;"><img id="cv-photo" class="img-thumbnail" alt="☺"/></span>
+    <span style="font-size: 125px;"><img src="img/viktoras.jpg" id="cv-photo" class="img-thumbnail" alt="☺"/></span>
 
     <h1>Viktoras Bezaras</h1>
 
@@ -85,7 +84,7 @@ title: Lebenslauf
     <div>
         <h4>Anwendungsentwickler @ TraSo GmbH, Leipzig   <small>05/2014 - aktuel</small></h4>
         <p>
-            Bei TraSo habe ich im Mai 2014 angefangen im Bereich Hotel Import für eine Backend Enterprise Software für Touristische Veranstalter. Meine Vorgänger haben sich einige Monate zuvor verabschiedet und ich musste dringend mich in Legacy Code ohne jegliche Übergabe einarbeiten. Hotel Import Bereich war damals der Schmerzpunkt und die Hauptaufgabe war die Stabilität und Qualität der Datenverarbeitung zu erreichen. Ich und meine QA-Kollegin haben die Verantwortung, Kunden- und Partner Kommunikation übernomen und innerhalb 2 Jahren haben den Bereich komplett umgebaut. Mit über 1000 Unit-Test hat das Anteil des Bugfix-Tickets von ~90% auf ~10% gesunken, die meisten Aufgaben beziehen sich jetzt auf die neuen Features. Obwohl die Anzahl der Import Anbindungen hat sich seit 2014 mehr als verdreifacht, schaffen wir immer noch zu zweit die Arbeit, was am Anfang für 4-5 Mitarbeiter gedacht wurde. Parallel dazu habe ich weitere Aufgaben übernommen wie: Buchungschnittstellen-Anbindungen, Transferschnittstellen-Anbindungen, OTDS Export.
+            Bei TraSo habe ich im Mai 2014 angefangen im Bereich Hotel Import für eine Backend Enterprise Software für Touristische Veranstalter. Meine Vorgänger haben sich einige Monate zuvor verabschiedet und ich musste dringend mich in Legacy Code ohne jegliche Übergabe einarbeiten. Hotel Import Bereich war damals der Schmerzpunkt und die Hauptaufgabe war die Stabilität und Qualität der Datenverarbeitung zu erreichen. Ich und meine QA-Kollegin haben die Verantwortung, Kunden- und Partner Kommunikation übernommen und innerhalb 2 Jahren haben den Bereich komplett umgebaut. Mit über 1000 Unit-Test hat das Anteil des Bugfix-Tickets von ~90% auf ~10% gesunken, die meisten Aufgaben beziehen sich jetzt auf die neuen Features. Obwohl die Anzahl der Import Anbindungen hat sich seit 2014 mehr als verdreifacht, schaffen wir immer noch zu zweit die Arbeit, was am Anfang für 4-5 Mitarbeiter gedacht wurde. Parallel dazu habe ich weitere Aufgaben übernommen wie: Buchungschnittstellen-Anbindungen, Transferschnittstellen-Anbindungen, OTDS Export.
             <br /><br />
             Tools und Technologien: PHP, MySQL, Zend Framework, PHPUnit, Atlassian Stack (Jira, Stash, Bamboo), GitLab, Git, PhpStorm.
         </p>
@@ -164,7 +163,7 @@ title: Lebenslauf
             Beruflich habe ich mir hauptsächlich mit Web/Backend beschäftigt:<br />
             <strong>PHP</strong> (Symfony, Zend, Phalcon, ..), <strong>SQL</strong> (MySQL, Postgresql, SQLite), Betriebssystemen (<strong>Debian</strong>/CentOS/MacOS/Windows), VCS (<b>Git</b>, Mercurial, SVN) und <strong>noch viele</strong> dazugehörige Tools.
             <br /><br />
-            Private unterhalte ich mit allen möglichen technologien und Programmiersprachen:<br />
+            Privat unterhalte ich mit allen möglichen technologien und Programmiersprachen:<br />
             Golang, Python, Haskell, C/C++, Java, MongoDB, Docker
         </div>
         <div class="col-xs-4" style="padding-left: 0px;">
