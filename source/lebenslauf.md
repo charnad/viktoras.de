@@ -52,7 +52,7 @@ title: Lebenslauf
 
 {% block posts %}
 <div id="cv-sidebar" class="col-xs-3">
-    <span style="font-size: 125px;"><img src="img/viktoras.jpg" id="cv-photo" class="img-thumbnail" alt="☺"/></span>
+    <span style="font-size: 125px;"><img src="{{site.url}}/img/viktoras.jpg" id="cv-photo" class="img-thumbnail" alt="☺"/></span>
 
     <h1>Viktoras Bezaras</h1>
 
