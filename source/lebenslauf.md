@@ -97,7 +97,7 @@ title: Lebenslauf
             <br /><br />
             Tools und Technologien: PHP, Phalcon Framework, Postgresql, RabbitMQ, RobotFramework, Redmine, Git, PhpStorm, SCRUM.
             <br /><br />
-            <a href="{{site.url}}/files/meets-ecommerce.pdf">Arbeitszeugnis</a>
+            <a href="{{site.url}}/files/lebenslauf/meets-ecommerce.pdf">Arbeitszeugnis</a>
         </p>
     </div>
 
@@ -108,7 +108,7 @@ title: Lebenslauf
             <br /><br />
             Tools und Technologien: PHP, Symfony Framework, MySQL, SQLite, Lime (Test Framework), SVN.
             <br /><br />
-            <a href="{{site.url}}/files/netforge.pdf">Arbeitszeugnis</a>
+            <a href="{{site.url}}/files/lebenslauf/netforge.pdf">Arbeitszeugnis</a>
         </p>
     </div>
 
@@ -119,7 +119,7 @@ title: Lebenslauf
             <br /><br />
             Tools und Technologien: PHP, Drupal 7, Symfony Framework, MySQL, SQLite, Mercurial.
             <br /><br />
-            <a href="{{site.url}}/files/web-shop-hosting.pdf">Arbeitszeugnis</a>
+            <a href="{{site.url}}/files/lebenslauf/web-shop-hosting.pdf">Arbeitszeugnis</a>
         </p>
     </div>
 
