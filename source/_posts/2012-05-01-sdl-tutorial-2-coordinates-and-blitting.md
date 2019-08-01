@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. Координаты и блиттинг.
+title: "SDL: Как создать игру. Координаты и блиттинг."
 tags: [blitting, gamedev, sdl]
 categories: [c/c++]
 post_date: 01.05.2012

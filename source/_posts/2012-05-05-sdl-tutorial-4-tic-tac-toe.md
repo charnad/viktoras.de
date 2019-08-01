@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. Крестики-нолики.
+title: "SDL: Как создать игру. Крестики-нолики."
 tags: [gamedev, sdl]
 categories: [c/c++]
 post_date: 05.05.2012

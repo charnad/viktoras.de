@@ -1,5 +1,5 @@
 ---
-title: Symfony: Symfony Day 2010 в Кёльне
+title: "Symfony: Symfony Day 2010 в Кёльне"
 tags: [symfony]
 categories: [php]
 post_date: 04.07.2011

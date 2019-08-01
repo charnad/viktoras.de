@@ -1,6 +1,6 @@
 {
-    "name": "charnad/viktoras.de",
-    "description": "Viktoras.de blog",
+    "name": "viktoras/viktoras.de",
+    "description": "viktoras.de blog",
     "type": "sculpin-site",
     "license": "MIT",
     "authors": [

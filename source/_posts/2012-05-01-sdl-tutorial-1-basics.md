@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. Базовое окно.
+title: "SDL: Как создать игру. Базовое окно."
 tags: [code::blocks, gamedev, sdl]
 categories: [c/c++]
 post_date: 01.05.2012

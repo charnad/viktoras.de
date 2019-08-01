@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. Сущности.
+title: "SDL: Как создать игру. Сущности."
 tags: [entities, gamedev, sdl]
 categories: [c/c++]
 post_date: 12.05.2012

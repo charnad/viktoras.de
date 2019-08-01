@@ -1,5 +1,5 @@
 ---
-title: Постинг в WordPress из Git
+title: "Постинг в WordPress из Git"
 tags: [php, wordpress, git]
 categories: [php]
 post_date: 11.02.2013

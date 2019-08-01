@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. Анимация.
+title: "SDL: Как создать игру. Анимация."
 tags: [entities, gamedev, sdl]
 categories: [c/c++]
 post_date: 07.05.2012

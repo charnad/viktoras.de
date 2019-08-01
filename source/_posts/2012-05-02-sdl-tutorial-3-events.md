@@ -1,5 +1,5 @@
 ---
-title: SDL: Как создать игру. События.
+title: "SDL: Как создать игру. События."
 tags: [events, gamedev, sdl]
 categories: [c/c++]
 post_date: 02.05.2012
