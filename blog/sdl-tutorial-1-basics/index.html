@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SDL: Как создать игру. Базовое окно. - It&#039;s a maze ink</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="//viktoras.de/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="//viktoras.de/atom.xml" title="It&#039;s a maze ink activity feed" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link href="//viktoras.de/css/style.css" rel="stylesheet" type="text/css" />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="stylesheet" href="//viktoras.de/js/highlightjs/styles/github.css" />
+
+                    </head>
+    <body class="container">
+
+                <div id="header">
+            <div id="invader-wrapper" class="center-block">
+                <a href="//viktoras.de">
+                    <img id="invader" src="//viktoras.de/img/invader.png" alt="Invader">
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+
+                <div class="post">
+        <div class="content">
+            <div class="postdata">
+                    <span class="title">
+                        <a href="/blog/sdl-tutorial-1-basics/" rel="bookmark">SDL: Как создать игру. Базовое окно.</a>
+                    </span>
+                    <span class="date">01.05.2012</span>
+            </div>
+            <div class="entry">
+                <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
+
+<p>Эти обучающие статьи предназначены для тех, у кого уже есть опыт использования C++ или другого языка программирования. Если у вас возникают сложности с пониманием кода, а не концепций, то я настоятельно советую вам сначала прочитать статью, объясняющую основы языка С++. Необязательно знать все о С++, но чем больше - тем проще вам будет в дальнейшем.</p>
+
+<p>В статьях я буду использовать Code::Blocks в качестве IDE и gcc с mingw для компиляции. [Я лично изначально использовал gcc с cygwin, но такой набор потребует включения cygwin1.dll в дистрибутив, что может накладывать лицензионные ограничения. Поэтому позже я установил mingw компилятор из тех же репозиториев cygwin.] Если вы хотите использовать другую IDE и/или компилятор, вы, конечно, можете это сделать, если достаточно уверены, что сможете включить все библиотеки в линковку. Скачать же Code::Blocks можно на официальном сайте <a href="http://www.codeblocks.org/downloads/26">http://www.codeblocks.org</a> (скачать версию, включающую MinGW). Рекомендуется использовать стабильную версию, если вы не хотите тратить время на ночные сборки.</p>
+
+<p>Эти статьи в значительной степени сосредоточены вокруг SDL (Simple DirectMedia Layer), 2D кросс-платформенной графической библиотеки. Эта библиотека позволит отрисовывать графику, и делать разные классные вещи, которые потом и помогут нам сделать игру. Вам также надо будет загрузить библиотеку с сайта <a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org</a>. Вам нужен tar-файл в разделе "Development Libraries, Win32" и zip-файл в разделе "Runtime Libraries, Win32". Если вы используете Visual Studio - выберите соответствующий файл вместо MinGW версии. После скачивания вы можете скопировать .dll файлы в папку Windows/system32, таким образом любое SDL приложение сможет его использовать. [Я не стал этого делать, достаточно чтобы SDL.dll и другие необходимые dll файлы находились в той же папке, что и исполняемый файл]. <!--more--></p>
+
+<p>Начните новый проект (Blank project) в Code::Blocks, назовите по желанию и сохраните в удобное для вас место. Откройте tar-файл (который вы скачали из раздела "Development Libraries"), из него нам нужны папки include и lib, распакуйте их в папку вашего проекта. Вернемся обратно в Code::Blocks, кликните правой кнопкой на проект, слева в списке проектов, и в появившемся меню выберите "Build Options". Слева в дереве скорее всего будет имя вашего проекта и два пункта: Debug и Release. Выберите корень дерева, таким образом мы установим настройки сразу для всего проекта. Нас интересуют две вкладки: Search Directories и Linker Settings. В Search Directories по умолчанию выбрана вкладка Compiler, снизу нажмите Add и добавьте 2 папки: include и include/SDL. Этим мы облегчили подключение заголовочных файлов. Теперь во вкладке Linker Settings также нажимаем Add и добавляем файлы: libSDLmain.a и libSDL.dll.a (!Именно в таком порядке!). Этим мы подключили библиотеки SDL в наш проект. Нажимайте ОК и настройка проекта на этом закончена. [<em>Если в будущем у вас возникнут проблемы с '_WinMain@16', то в Linker Settings, справа от библиотек в окне Other linker options допишите -lmingw32. Если возникнет проблема с libgcc_s_dw2-1.dll, допишите там же -static.</em>]</p>
+
+<p>Давайте, наконец, создадим два файла, назовем их <strong>App.h</strong> и <strong>App.cpp</strong>, это будет ядром нашей программы. Откройте <strong>App.h</strong> и добавьте туда следующий код:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    public:
+        App();
+        int Execute();
+};
+#endif
+</code></pre>
+
+<p>Теперь в файл <strong>App.cpp</strong> добавим вот этот код:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {}
+
+int App::Execute() {
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+
+    return App.Execute();
+}
+</code></pre>
+
+<p>Класс App - это основа всей нашей программы. Давайте сделаем шаг в сторону и я расскажу как игры обычно устроены. Большинство игр состоят из 5 функций, контролирующих игровой процесс. Обычно это:</p>
+
+<p>Initialize
+Функция обрабатывает загрузку всех данных, текстур, карт, NPC, чего угодно.</p>
+
+<p>Event
+Функция обрабатывает все поступающие события от мышки, клавиатуры, джойстика и других устройств.</p>
+
+<p>Loop
+Функция обрабатывает обновление данных, например движение NPC по экрану, уменьшение здоровье персонажа и так далее.</p>
+
+<p>Render
+Функция занимается отображением всего на экране. Она НЕ обрабатывает манипуляции с данными - этим занимается Loop.</p>
+
+<p>Cleanup
+Функция просто отключает все использующиеся ресурсы и закрывает игру.</p>
+
+<p>Важно понимать, что игра это просто один большой цикл. Внутри этого цикла случаются события, обновляются данные, рисуются картинки. Поэтому базовая структура игры может иметь следующий вид:</p>
+
+<pre><code class="cpp">Initialize();
+
+while(true) {
+    Events();
+    Loop();
+    Render();
+}
+
+Cleanup();
+</code></pre>
+
+<p>На каждом шаге цикла мы что-то делаем с данными и соответствующе их отображаем. События используются для манипуляции данными пользователем. Они в целом не являются необходимыми чтобы создать игру, но нужны, для возможности управлять игровым процессом.</p>
+
+<p>Поясним эту мысль на примере. Например, у нас есть наш рыцарь, герой игры. Все, что мы хотим сделать, это просто его перемещать. Если я нажму влево - он пойдет налево. Сейчас мы выясним, как это сделать в цикле. Во-первых, мы знаем, что мы хотим, проверять события (события клавиатуры). Так как события нужны для управления данными, нам нужны будут переменные, которые будут изменяться. Тогда мы можем использовать эти переменные для отображения нашего рыцаря на экране. У нас могло бы быть что-нибудь навроде:</p>
+
+<pre><code class="cpp">if(Key == LEFT) X--;
+if(Key == RIGHT) X++;
+if(Key == UP) Y--;
+if(Key == DOWN) Y++;
+
+RenderImage(KnightImage, X, Y);
+</code></pre>
+
+<p>Это работает, потому что каждый цикл проверяется, нажата ли кнопка ВЛЕВО, ВПРАВО и т.д., и если да, то уменьшить или увеличить переменную. Так что, если наша игра идет со скоростью 30 кадров в секунду и мы нажимаем НАЛЕВО, то рыцарь будет двигаться влево со скоростью 30 пикселей в секунду. Если вам еще не удалось разобраться в принципе игрового цикла, то вы скоро с этим справитесь. Цикл необходим, чтобы игра правильно функционировала.</p>
+
+<p>Возвращаясь к нашему концептуальному коду (5 функций), мы можем добавить эти дополнительные функции в наш проект, в файле <strong>App.h</strong>:</p>
+
+<pre><code>cpp#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>А в файле <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {
+    Running = true;
+}
+
+bool App::Init() {
+    return true;
+}
+
+int App::Execute() {
+    if(Init() == false) {
+        return -1;
+    }
+
+    SDL_Event Event;
+
+    while(Running) {
+        while(SDL_PollEvent(&amp;Event)) {
+            Event(&amp;Event);
+        }
+
+        Loop();
+        Render();
+    }
+
+    Cleanup();
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+    return App.Execute();
+}
+
+void App::Event(SDL_Event* Event) {}
+void App::Loop() {}
+void App::Render() {}
+void App::Cleanup() {}
+</code></pre>
+
+<p>Вы видите несколько новых переменных, но давайте сначала разберемся что же делает этот код. Во-первых, мы пытаемся инициализировать нашу игру, если не вышло - мы возвращаем -1 (код ошибки), тем самым закрывая программу. Если все хорошо, то мы входим в игровой цикл. В цикла мы используем SDL_PollEvent для проверки событий и передаем их по одному в Event. После этого, мы идем в Loop для перемещения данных вокруг, и всего в таком роде, а затем отображаем нашу игру. Повторяем это бесконечно. Если пользователь выходит из игры, мы попадаем в Cleanup, которая освободит используемые ресурсы. Вот так, достаточно просто.</p>
+
+<p>Теперь, давайте посмотрим на SDL_Event и SDL_PollEvent. Первое - это структура, которая содержит информацию о событиях. Вторая функция, которая будет захватывать любые события, ожидающие в очереди. Очередь может состоять из любого количества событий, поэтому мы должны перебрать их по очереди. Например, позволяет нажимает кнопку А и перемещает мышь, в тот момент, когда исполняется Render(). SDL обнаружит это и поставит два события в очередь, по одному на каждое нажатие клавиши и перемещение мыши. Мы получаем эти события из очереди с помощью SDL_PollEvent, а затем передаем его в Event, чтобы обработать соответствующим образом. Когда в очереди нет событий, SDL_PollEvent вернет false, выйдя из цикла обработки событий.</p>
+
+<p>Другая добавленная переменная Running - это наш выход из цикла игры. Если оно false, значит игра закончилась, и надо выйти из программы. Так что, если, например, если пользователь нажимает клавишу ESC мы можем присвоить ей false, и тем самым выйти из игры.</p>
+
+<p>На данном этапе программа должна компилироваться без проблем, правда, вы можете заметить, что ее нельзя закрыть. Даже, вероятно, придется использовать диспетчер задач для завершения программы.</p>
+
+<p>Теперь, когда все настроено, давайте создадим окно, где будет отрисовываться наша игра. Откройте <strong>App.h</strong> и добавить переменную поверхности SDL:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+        SDL_Surface*    Screen;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Думаю, самое время объяснить что такое SDL поверхность. SDL поверхность это все, что можно нарисовать, и все на чем можно нарисовать. Например, у нас есть лист бумаги, карандаш, и стикеры. Бумаги можно назвать поверхностью. Мы можем рисовать на ней, наклеивать стикеры и прочее. Стикеры тоже можно считать поверхностями, мы можем рисовать и на них, и наклеивать другие стикеры поверх. Таким что, Screen - это просто наш "лист бумаги", на котором мы будем рисовать.</p>
+
+<p>Теперь, давайте отредактируем функцию Init, чтобы инициализировать эту поверхность:</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &gt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Первое, что нужно сделать, это запустить собственно SDL, чтобы мы могли получить доступ к его функциям. Мы командуем SDL инициализировать все, что доступно; есть различные параметры, которые можно передать, но это на данный момент это не важно. Следующая функция: SDL_SetVideoMode. Она и создаст наше окно и поверхность. Она принимает 4 параметра: ширину окна, высота окна, битовое разрешение (рекомендуется 16 или 32), и различные флаги отображения. Есть довольно много флагов, но тех, которые мы используем, достаточно на данный момент. Первый флаг говорит SDL использовать аппаратную памяти для хранения изображений, а второй говорит SDL использовать двойную буферизацию (это предотвратит мерцание на экране). Еще один флаг, который может заинтересовать вас - это SDL_FULLSCREEN, он запускает приложение в полноэкранном режиме.</p>
+
+<p>Теперь, когда окно настроено, давайте сделаем так, чтобы все работало гладко. Изменим функцию App::Cleanup() и добавим следующее:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Мы просто выходим из SDL. Надо учесть, что в этой функции, мы будем освобождать использованные поверхности</p>
+
+<p>Чтобы все было аккуратно, надо также инициализировать указатель Screen значением NULL, в конструкторе класса. В <strong>App.cpp</strong> добавить следующее:</p>
+
+<pre><code class="cpp">App::App() {
+    Screen = NULL;
+    Running = true;
+}
+</code></pre>
+
+<p>Попробуйте скомпилировать проект, посмотрите как он работает. Должно появится пустое окно. Его все еще нельзя закрыть просто так, придется воспользоваться диспетчером задач. Это не очень удобно, поэтому давайте исправим ситуацию. Изменим функцию Event:</p>
+
+<pre><code class="cpp">void App::Event(SDL_Event* Event) {
+    if(Event-&gt;type == SDL_QUIT) {
+        Running = false;
+    }
+}
+</code></pre>
+
+<p>SDL события различаются по типу. Эти типы могут варьироваться от нажатия клавиш, движения мыши, все что нам нужно это проверить его тип. Нужный нам тип - это запрос на закрытие окна (например, когда пользователь нажимает кнопку X). Если это событие произойдет, мы устанавливаем Running = false, тем самым завершив нашу программу. Достаточно просто. Мы рассмотрим больше событий в других статьях.</p>
+
+<p>Если вы хорошо разобрались и понимаете, как работает код в этой статье, вы можете перейти к <a href="//viktoras.de/blog/sdl-tutorial-2-coordinates-and-blitting/">следующей</a>, чтобы узнать больше о поверхности SDL.</p>
+
+            </div>
+        </div>
+    </div>
+
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'viktoras'; // required: replace example with your forum shortname
+
+                                
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered byDisqus.</a>
+    </noscript>
+    
+            <footer class="footer text-center">
+                <small>&copy; 2019 Viktoras Bezaras
+                    <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="//viktoras.de/img/cc-by-sa.png" alt="CC-BY-SA"></a>
+                </small>
+            </footer>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="//viktoras.de/js/jquery/jquery.min.js"><\/script>')</script>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script type="text/javascript">
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+        
+        <!-- Highlight -->
+        <script src="//viktoras.de/js/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        <!-- More page scripts -->
+                    </body>
+</html>

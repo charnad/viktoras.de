@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Why do I hate static methods - It&#039;s a maze ink</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="//viktoras.de/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="//viktoras.de/atom.xml" title="It&#039;s a maze ink activity feed" />
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link href="//viktoras.de/css/style.css" rel="stylesheet" type="text/css" />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="stylesheet" href="//viktoras.de/js/highlightjs/styles/github.css" />
+
+                    </head>
+    <body class="container">
+
+                <div id="header">
+            <div id="invader-wrapper" class="center-block">
+                <a href="//viktoras.de">
+                    <img id="invader" src="//viktoras.de/img/invader.png" alt="Invader">
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+
+                <div class="post">
+        <div class="content">
+            <div class="postdata">
+                    <span class="title">
+                        <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
+                    </span>
+                    <span class="date">10.05.2015</span>
+            </div>
+            <div class="entry">
+                <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
+
+<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
+
+<pre><code class="php">class Helper
+{
+   public static formatA() {...}
+   public static formatB() {...}
+   public static formatC() {...}
+}
+</code></pre>
+
+<p>The thing is, it has absolutely no difference from:</p>
+
+<pre><code class="php">function helper_formatA() {...}
+function helper_formatB() {...}
+function helper_formatC() {...}
+</code></pre>
+
+<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
+
+<p>So we have used this static method somewhere in the code:</p>
+
+<pre><code class="php">// .. within some class
+public function foo()
+{
+    // ...
+    Helper::formatA('bar');
+}
+</code></pre>
+
+<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
+
+<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
+
+<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
+
+<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
+
+            </div>
+        </div>
+    </div>
+
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'viktoras'; // required: replace example with your forum shortname
+
+                                
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered byDisqus.</a>
+    </noscript>
+    
+            <footer class="footer text-center">
+                <small>&copy; 2019 Viktoras Bezaras
+                    <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="//viktoras.de/img/cc-by-sa.png" alt="CC-BY-SA"></a>
+                </small>
+            </footer>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="//viktoras.de/js/jquery/jquery.min.js"><\/script>')</script>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script type="text/javascript">
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+        
+        <!-- Highlight -->
+        <script src="//viktoras.de/js/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        <!-- More page scripts -->
+                    </body>
+</html>
