@@ -4,31 +4,24 @@
         <title>Main Page - It&#039;s a maze ink</title>
         <meta charset="utf-8">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-                    <meta name="robots" content="noindex, follow">
-        
-        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="//viktoras.de/feed/" />
-        <link rel="alternate" type="application/atom+xml" href="//viktoras.de/atom.xml" title="It&#039;s a maze ink activity feed" />
+                
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="It&#039;s a maze ink activity feed" />
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link href="//viktoras.de/css/style.css" rel="stylesheet" type="text/css" />
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
 
-        <link rel="stylesheet" href="//viktoras.de/js/highlightjs/styles/github.css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
 
                     </head>
     <body class="container">
 
-                <div id="header">
-            <div id="invader-wrapper" class="center-block">
-                <a href="//viktoras.de">
-                    <img id="invader" src="//viktoras.de/img/invader.png" alt="Invader">
+                <div id="header" class="col-md-12 text-center">
+            <div id="invader-wrapper" class="">
+                <a href="/">
+                    <img id="invader" src="/img/invader.png" alt="Invader">
                 </a>
             </div>
         </div>
@@ -38,12 +31,13 @@
             
         <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="/blog/forget-about-dry/" rel="bookmark">Forget about DRY</a>
-                    </span>
-                    <span class="date text-right">13.08.2017</span>
+                    </h2>
+                    <div class="date text-right col-md-1">13.08.2017</div>
             </div>
+
             <div class="entry">
                                     <p>I've once had a heated discussion with my colleagues, which eventually motivated me to write this blog post. This goes about DRY programming principle, being oh so loved by many developers. I'm convinced, that many do not really understand what does this principle really promote. DRY suffers from what I would call an "imprinting fallacy" (trying to mimic senior colleagues, while taking barely understood concepts to extreme), the same way the Singleton design pattern does.</p>
 
@@ -55,12 +49,13 @@
     </div>
         <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="/blog/segments-intersection-algorithm/" rel="bookmark">Segments intersection algortihm</a>
-                    </span>
-                    <span class="date text-right">25.01.2017</span>
+                    </h2>
+                    <div class="date text-right col-md-1">25.01.2017</div>
             </div>
+
             <div class="entry">
                                     <p>For my job I needed to write a more efficient function to merge multiple sets of segments. Segments were date ranges where some special offers are applicable. So let's say a 10% discount is valid from 1st Jan to 10th Jan and another 20% discount is valid from 5th Jan to 15th Jan. This means both of them are valid between 5th and 10th. Those are just two ranges, there potentially be two lists of any amount of segments.</p>
 
@@ -136,12 +131,13 @@ func max(a, b int64) int64 {
     </div>
         <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
-                    </span>
-                    <span class="date text-right">10.05.2015</span>
+                    </h2>
+                    <div class="date text-right col-md-1">10.05.2015</div>
             </div>
+
             <div class="entry">
                                     <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
 
@@ -187,12 +183,13 @@ public function foo()
     </div>
         <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="/blog/project-euler-502/" rel="bookmark">Project Euler 502</a>
-                    </span>
-                    <span class="date text-right">11.04.2015</span>
+                    </h2>
+                    <div class="date text-right col-md-1">11.04.2015</div>
             </div>
+
             <div class="entry">
                                     <p>Hello everyone, I've decided to continue writing posts into my blog, when I deal with something interesting. This time my attention has been drawn to Project Euler problems. I tend to refer to those problems when I'm learning a new programming language. Solving easier problems help to get handy with the syntax and language constructs. So it's Haskell now. I'm not going to tell how Haskell is different from anything I've learned before (Coursera Scala course was the closest), so i'll just proceed with the Problem 502, which I found really intriguing.</p>
 
@@ -251,12 +248,13 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
     </div>
         <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="/blog/plasma/" rel="bookmark">Демо: плазма</a>
-                    </span>
-                    <span class="date text-right">13.05.2013</span>
+                    </h2>
+                    <div class="date text-right col-md-1">13.05.2013</div>
             </div>
+
             <div class="entry">
                                     <p><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma-logo.png" class="oppic" height="150px">Эффект плазмы (или попросту плазма) - эффект часто использующийся в демках, чтобы создать переливающийся эффект. Есть много способов создать анимацию плазмы, но я рассмотрю только один: сумма синусов и некоторых других функций. Экспериментируя с параметрами и пробуя различные функции, а так же цвета, можно найти очень круто выглядящие комбинации. Оригинал этой статьи можно найти <a href="http://lodev.org/cgtutor/plasma.html">здесь</a>. В ней примеры указаны с использованием С, я же делал все на HTML5 (JavaScript + canvas). Примеры довольно просты и перенести на любой другой язык будет несложно. Внутри около 5 мегабайт картинок, если кого-то это беспокоит.
                                     <a href="//viktoras.de/blog/plasma/">More...</a>
@@ -264,38 +262,46 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
         </div>
     </div>
     
-    <nav class="text-align-center">
-    <ul class="pagination">
+    <nav class="text-center">
+    <ul class="pagination justify-content-center">
 
                     
                                                     
                                                     
-                <li class="active"><a href="//viktoras.de">1</a></li>
+                <li class="page-item active">
+                    <a class="page-link" href="/">1</a>
+                </li>
             
                                                     
                                                     
-                <li class=""><a href="//viktoras.de/page/2">2</a></li>
+                <li class="page-item ">
+                    <a class="page-link" href="/page/2">2</a>
+                </li>
             
                                                     
                                                     
-                <li class=""><a href="//viktoras.de/page/3">3</a></li>
+                <li class="page-item ">
+                    <a class="page-link" href="/page/3">3</a>
+                </li>
             
                                                     
                                                     
-                <li class=""><a href="//viktoras.de/page/4">4</a></li>
+                <li class="page-item ">
+                    <a class="page-link" href="/page/4">4</a>
+                </li>
                         </ul>
 </nav>
 
 
             <footer class="footer text-center">
                 <small>&copy; 2019 Viktoras Bezaras
-                    <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="//viktoras.de/img/cc-by-sa.png" alt="CC-BY-SA"></a>
+                    <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="/img/cc-by-sa.png" alt="CC-BY-SA"></a>
+                    · <a href="/impressum">Impressum</a>
                 </small>
             </footer>
         </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="//viktoras.de/js/jquery/jquery.min.js"><\/script>')</script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 
         <!-- Page scripts -->
         
@@ -311,7 +317,7 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
             </script>
         
         <!-- Highlight -->
-        <script src="//viktoras.de/js/highlightjs/highlight.pack.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js"></script>
         <script>hljs.initHighlightingOnLoad();</script>
 
         <!-- More page scripts -->
