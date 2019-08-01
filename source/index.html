@@ -13,12 +13,13 @@ use:
     {% for post in page.pagination.items %}
     <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
-                    </span>
-                    <span class="date text-right">{{ post.post_date }}</span>
+                    </h2>
+                    <div class="date text-right col-md-1">{{ post.post_date }}</div>
             </div>
+
             <div class="entry">
                 {% set break_array = post.blocks.content|split('<!--more-->', 2) %}
                     {{ break_array[0]|raw }}

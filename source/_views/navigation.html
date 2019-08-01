@@ -1,11 +1,11 @@
-<nav class="text-align-center">
-    <ul class="pagination">
+<nav class="text-center">
+    <ul class="pagination justify-content-center">
 
         {% if page.pagination.total_pages > 1 %}
             {% for i in 1..page.pagination.total_pages %}
 
                 {% if i == 1 %}
-                    {% set query = '' %}
+                    {% set query = '/' %}
                 {% else %}
                     {% set query = '/page/' ~ i %}
                 {% endif %}
@@ -16,7 +16,9 @@
                     {% set class = '' %}
                 {% endif %}
 
-                <li class="{{class}}"><a href="{{site.url}}{{query}}">{{i}}</a></li>
+                <li class="page-item {{class}}">
+                    <a class="page-link" href="{{query}}">{{i}}</a>
+                </li>
             {% endfor %}
         {% endif %}
     </ul>

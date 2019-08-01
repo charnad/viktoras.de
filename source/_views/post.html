@@ -7,11 +7,11 @@
 {% block posts %}
     <div class="post">
         <div class="content">
-            <div class="postdata">
-                    <span class="title">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
                         <a href="{{ page.url }}" rel="bookmark">{{ page.title }}</a>
-                    </span>
-                    <span class="date">{{ page.post_date }}</span>
+                    </h2>
+                    <div class="date text-right col-md-1">{{ page.post_date }}</div>
             </div>
             <div class="entry">
                 {{ page.blocks.content|raw }}

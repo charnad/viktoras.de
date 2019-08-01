@@ -1,5 +1,6 @@
 body {
     font-size: 16px;
+    padding-top: 20px;
 }
 
 p.img {
@@ -20,22 +21,11 @@ a:hover {
     text-decoration: none;
 }
 
-a:active, 
-a:focus,
-img {
-    outline: 0;
-    border: 0;
-}
-
-#header {
-    padding: 20px 0px 0px 0px;
-    text-align: center;
-}
-
 #header #invader-wrapper {
     height: 150px;
     width: 150px;
-    background-color: #a1bdd1;
+    margin-left: auto;
+    margin-right: auto;
     overflow: hidden;
     border-radius: 100px;
     z-index: 0;
@@ -85,12 +75,6 @@ img {
     min-height: 100px;
 }
 
-.post .postdata .title {
-    padding-bottom: 6px;
-    font-size: 1.83em;
-    vertical-align: middle;
-}
-
 .post .postdata .title a {
     text-decoration: none;
     color: #343434;
@@ -101,16 +85,13 @@ img {
 }
 
 .post .postdata {
-    font-size: 0.9em;
-    padding-bottom: 6px;
     margin-bottom: 8px;
-    border-bottom: 1px solid #DFDFDF;
+    border-bottom: 1px solid #DDDDDD;
 }
 
 .post .date {
-    float: right;
+    font-size: 0.9em;
     color: #919191;
-    vertical-align: middle;
     line-height: 34px;
     padding-top: 9px;
 }
@@ -134,18 +115,16 @@ img {
     color: #91adc1;
 }
 
-.post .navigation {
-    margin-bottom: 40px;
-    text-align: center;
+a.page-link {
+    text-decoration: none;
 }
 
-.footer {
-    text-align: center;
-    padding-top: 45px;
+footer {
+    padding-top: 25px;
     padding-bottom: 25px;
 }
 
-.footer img {
+footer img {
     vertical-align: bottom;
 }
 

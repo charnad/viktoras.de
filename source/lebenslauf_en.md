@@ -7,6 +7,10 @@ title: Résumé
 <div style="padding-top: 3em;"/>
 {% endblock %}
 
+{% block head_meta %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
 {% block head_styles %}
 <style>
     #cv-sidebar #cv-photo {
