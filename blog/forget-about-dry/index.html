@@ -39,7 +39,7 @@
         <div class="content">
             <div class="postdata">
                     <span class="title">
-                        <a href="/blog/forget-about-dry" rel="bookmark">Forget about DRY</a>
+                        <a href="/blog/forget-about-dry/" rel="bookmark">Forget about DRY</a>
                     </span>
                     <span class="date">13.08.2017</span>
             </div>
@@ -53,9 +53,9 @@
 
 <blockquote>Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.</blockquote>
 
-<p>It's not about duplicating code, the idea behind the principle is far grander.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref">1</a></sup> It is to have one single source of knowledge, so that changes to project requirements would only affect that source. The rest - data storage, UI, code, documentation should tap into this source and update accordingly. Because if they don't, then your project is full of duplication. Code represents the same knowledge documentation does, but in a machine-readable way, rather that a human-readable. UI form duplicates database structure, because it needs to show all the same fields a DB table has. Even the comments in your code duplicate some knowledge, because they also can get outdated.</p>
+<p>It's not about duplicating code, the idea behind the principle is far grander.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> It is to have one single source of knowledge, so that changes to project requirements would only affect that source. The rest - data storage, UI, code, documentation should tap into this source and update accordingly. Because if they don't, then your project is full of duplication. Code represents the same knowledge documentation does, but in a machine-readable way, rather that a human-readable. UI form duplicates database structure, because it needs to show all the same fields a DB table has. Even the comments in your code duplicate some knowledge, because they also can get outdated.</p>
 
-<p>So you see, that referring to DRY is not actually an argument in favor of code deduplicaton, as it's a project-level approach. Alright, but what about code duplication, what is so bad about it? If you change some code, you would likely need to update a duplicated part, so that a system remain consistent. This means more work and potentially bugs due to inconsistent behavior. The problem is actually bigger than that. What if a change to the code in one place requires a change in another place even if there is no apparent code duplication? Same thing, more work and potentially buggy software. It's not the duplication itself which is problematic, it's connascence.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref">2</a></sup></p>
+<p>So you see, that referring to DRY is not actually an argument in favor of code deduplicaton, as it's a project-level approach. Alright, but what about code duplication, what is so bad about it? If you change some code, you would likely need to update a duplicated part, so that a system remain consistent. This means more work and potentially bugs due to inconsistent behavior. The problem is actually bigger than that. What if a change to the code in one place requires a change in another place even if there is no apparent code duplication? Same thing, more work and potentially buggy software. It's not the duplication itself which is problematic, it's connascence.<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
 
 <p>You all have probably heard about cohesion and coupling, software quality metrics which help to reason about quality of the code. Connascence is a great addition to them. The stronger the form of connascence is, the more difficult and costly it is to change the elements in the relationship. I absolutely recommend watching this <a href="https://www.youtube.com/watch?v=Ip2o4vbAK3s&amp;t=741">video</a>, a session by Josh Robb about Connascence &amp; Coupling. I don't think I could give a better overview and explanation on the topic, so I humbly leave it to others.</p>
 
@@ -63,16 +63,16 @@
 
 <p>There is no one single principle or rule to live by. Using some principle may make you break another, but that is fine, because these are just guidelines and not unbreakable laws of existence. Every situation is unique and you need to think carefully and choose what better suits yours.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
 <hr />
 <ol>
 
-<li id="fn:1">
-<p><a title="A Conversation with Andy Hunt and Dave Thomas by Bill Venners" href="http://www.artima.com/intv/dry.html">A Conversation with Andy Hunt and Dave Thomas by Bill Venners</a>&#160;<a href="#fnref:1" class="footnote-backref">&#8617;&#xFE0E;</a></p>
+<li id="fn:1" role="doc-endnote">
+<p><a title="A Conversation with Andy Hunt and Dave Thomas by Bill Venners" href="http://www.artima.com/intv/dry.html">A Conversation with Andy Hunt and Dave Thomas by Bill Venners</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
 </li>
 
-<li id="fn:2">
-<p><a title="Connascence" href="https://en.wikipedia.org/wiki/Connascence_(computer_programming)">Connascence - Wikipedia</a>&#160;<a href="#fnref:2" class="footnote-backref">&#8617;&#xFE0E;</a></p>
+<li id="fn:2" role="doc-endnote">
+<p><a title="Connascence" href="https://en.wikipedia.org/wiki/Connascence_(computer_programming)">Connascence - Wikipedia</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
 </li>
 
 </ol>
@@ -102,7 +102,7 @@
     </noscript>
     
             <footer class="footer text-center">
-                <small>&copy; 2018 Viktoras Bezaras
+                <small>&copy; 2019 Viktoras Bezaras
                     <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="//viktoras.de/img/cc-by-sa.png" alt="CC-BY-SA"></a>
                 </small>
             </footer>
