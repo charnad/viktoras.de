@@ -7,10 +7,10 @@
 {% block posts %}
     <article class="post">
         <div class="postdata row no-gutters">
-            <h2 class="title col-md-11">
+            <h2 class="title col">
                 <a href="{{ page.url }}" rel="bookmark">{{ page.title }}</a>
             </h2>
-            <div class="date text-right col-md-1">{{ page.post_date }}</div>
+            <div class="date text-right float-sm-right">{{ page.post_date }}</div>
         </div>
         <div class="entry">
             {{ page.blocks.content|raw }}

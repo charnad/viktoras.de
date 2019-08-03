@@ -27,17 +27,23 @@
     <body class="container">
 
         {% block invader %}
-        <div id="header" class="col-md-12 text-center">
+        <div id="header" class="text-center">
             <div id="invader-wrapper">
                 <a href="/"></a>
             </div>
         </div>
         {% endblock %}
 
-        <main class="col-md-12">
-            {% block posts %}
-            {% endblock %}
-        </main>
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                {% block posts %}
+                {% endblock %}
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
 
         <footer class="footer text-center">
             <small>&copy; {{ "now"|date("Y") }} {{ site.author }}
