@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Euler 502 - It&#039;s a maze ink</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="It&#039;s a maze ink activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="col-md-12 text-center">
+            <div id="invader-wrapper" class="">
+                <a href="/">
+                    <img id="invader" src="/img/invader.png" alt="Invader">
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+
+                <div class="post">
+        <div class="content">
+            <div class="postdata row no-gutters">
+                    <h2 class="title col-md-11">
+                        <a href="/blog/project-euler-502/" rel="bookmark">Project Euler 502</a>
+                    </h2>
+                    <div class="date text-right col-md-1">11.04.2015</div>
+            </div>
+            <div class="entry">
+                <p>Hello everyone, I've decided to continue writing posts into my blog, when I deal with something interesting. This time my attention has been drawn to Project Euler problems. I tend to refer to those problems when I'm learning a new programming language. Solving easier problems help to get handy with the syntax and language constructs. So it's Haskell now. I'm not going to tell how Haskell is different from anything I've learned before (Coursera Scala course was the closest), so i'll just proceed with the Problem 502, which I found really intriguing.</p>
+
+<p>The problem itself can be found <a href="https://projecteuler.net/problem=502">here</a>. Brief comprehension is: how many castles can you build, that follow the rules: no hanging blocks, total amount of blocks is even. I am currently at the first approach stage. The first approach is usually naive: generate every possible castle, check the validity and calculate how many there are.</p>
+
+<p>But there are several concepts I used, which I find quite interesting.
+A castle consists of levels, each level consists of blocks and spaces between them. If you encode blocks and spaces as 0's and 1's you get a binary string, which you can convert to decimal. So, a castle is a just list of integers.</p>
+
+<p>The next thing is, how do we generate a level on top of the previus level. And the answer is again, quite simple. If a level has a width of 3, then there are 8 possible combinations of blocks and spaces, which are also numbers from 0 (no blocks, only spaces) to 7 (one block across the whole level). So on the 2x2 grid there are: 1 for the base level + 3 possible combinations (0, 1, 2) of the second level = 4 castles. At this point there will also be invalid castles (with hanging blocks), but we will filter them out later. On a WxH grid we will have 1 + (2 ^ W - 1) ^ (H - 1) castles. As a simple example in the task it is given a 10x13 grid, which would produce ~1.65*10^35 possible castles (Eeek).</p>
+
+<p>The next idea, which will cut the number of computations by a huge amount is a check, if there are any hanging blocks. Because if there is at least one, we can skip this "branch". How do we do it? Let's see, if a level is a binary number, the next level may not be bigger, than that number, because otherwise most significant bit will hover over 0 of the underlying level, which is not allowed. Moreover, every 1 of the new level must have an underlying 1 from the previous level - bitwise AND. (New level) AND (Old level) must be equal to the (New level), otherwise new level is invalid.</p>
+
+<p>So this is basically it, I start with a base level, add numbers from 0 to (2 ^ W) - 1, if they AND with the previous level, and after all I calculate amonut of blocks by grouping them.</p>
+
+<pre><code class="haskell">import Data.List
+import Data.Bits
+
+{-|
+  Decimal to binary conversion
+ -}
+binary :: Integer -&gt; [Integer]
+binary 0 = [0]
+binary 1 = [1]
+binary x = binary (div x 2) ++ [mod x 2]
+
+{-|
+  Naive implementation of Euler Problem 502. Generate all castles, check validity, count
+-}
+castles :: Integer -&gt; Integer -&gt; Integer
+castles w h = genericLength [c | c &lt;- (allCastles w h), (even . sum . (map (countBlocks))) c]
+
+{-|
+  Generates all possible castles, even invalid ones. Each level is introduced
+  with a number, which in binary form represents blocks
+-}
+allCastles :: Integer -&gt; Integer -&gt; [[Integer]]
+allCastles _ 0 = []
+allCastles 0 _ = []
+allCastles w h = addLevel [[base]] (h-1)
+  where base = (2 ^ w)-1
+        addLevel castles levelsLeft
+            | levelsLeft == 0 = castles
+            | otherwise = addLevel ([c ++ [p] | c &lt;- castles, p &lt;- [0..(last c)], (p == p .&amp;. (last c))]) (levelsLeft-1)
+
+{-|
+  Counts amount of blocks within a castle row
+-}
+countBlocks :: Integer -&gt; Integer
+countBlocks = genericLength . (filter ((== 1).head)) . group . binary
+</code></pre>
+
+<p>This is by no means an optimal solution, I couldn't even compute a 10x13 grid from the simpler example within a reasonable amonut of time. The biggest so far was a 9x7 grid for 28+ millions of castles.</p>
+
+            </div>
+        </div>
+    </div>
+
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'viktoras'; // required: replace example with your forum shortname
+
+                                
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>
+        Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered byDisqus.</a>
+    </noscript>
+    
+            <footer class="footer text-center">
+                <small>&copy; 2019 Viktoras Bezaras
+                    <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA<img src="/img/cc-by-sa.png" alt="CC-BY-SA"></a>
+                    · <a href="/impressum">Impressum</a>
+                </small>
+            </footer>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script type="text/javascript">
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+        
+        <!-- Highlight -->
+        <script src="/js/highlightjs/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        <!-- More page scripts -->
+                    </body>
+</html>
