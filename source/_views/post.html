@@ -5,19 +5,26 @@
 {% endblock %}
 
 {% block posts %}
-    <div class="post">
-        <div class="content">
-            <div class="postdata row no-gutters">
-                    <h2 class="title col-md-11">
-                        <a href="{{ page.url }}" rel="bookmark">{{ page.title }}</a>
-                    </h2>
-                    <div class="date text-right col-md-1">{{ page.post_date }}</div>
-            </div>
-            <div class="entry">
-                {{ page.blocks.content|raw }}
-            </div>
+    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col-md-11">
+                <a href="{{ page.url }}" rel="bookmark">{{ page.title }}</a>
+            </h2>
+            <div class="date text-right col-md-1">{{ page.post_date }}</div>
         </div>
-    </div>
+        <div class="entry">
+            {{ page.blocks.content|raw }}
+        </div>
+    </article>
+
+    <script src="https://utteranc.es/client.js"
+        repo="viktoras25/viktoras25.github.io"
+        issue-term="title"
+        label="💬Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
 
     {% if site.disqus.shortname and site.disqus.shortname != '' %}
     <div id="disqus_thread"></div>

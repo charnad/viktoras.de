@@ -11,24 +11,22 @@ use:
 {% block posts %}
 
     {% for post in page.pagination.items %}
-    <div class="post">
-        <div class="content">
-            <div class="postdata row no-gutters">
-                    <h2 class="title col-md-11">
-                        <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
-                    </h2>
-                    <div class="date text-right col-md-1">{{ post.post_date }}</div>
-            </div>
-
-            <div class="entry">
-                {% set break_array = post.blocks.content|split('<!--more-->', 2) %}
-                    {{ break_array[0]|raw }}
-                {% if break_array|length > 1 %}
-                    <a href="{{ site.url }}{{ post.url }}">More...</a>
-                {% endif %}
-            </div>
+    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col-md-11">
+                <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
+            </h2>
+            <div class="date text-right col-md-1">{{ post.post_date }}</div>
         </div>
-    </div>
+
+        <div class="entry">
+            {% set break_array = post.blocks.content|split('<!--more-->', 2) %}
+                {{ break_array[0]|raw }}
+            {% if break_array|length > 1 %}
+                <a href="{{ site.url }}{{ post.url }}">More...</a>
+            {% endif %}
+        </div>
+    </article>
     {% endfor %}
 
     {% include 'navigation.html' %}
