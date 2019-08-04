@@ -127,6 +127,14 @@ a:hover {
     color: #91adc1;
 }
 
+.post .entry blockquote {
+    border-left: 3px solid black;
+    margin-left: 3em;
+    padding-left: 1em;
+    font-style: italic;
+    font-size: 1.3em;
+}
+
 a.page-link {
     text-decoration: none;
 }
