@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SDL: Как создать игру. Базовое окно. - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/sdl-tutorial-1-basics/" rel="bookmark">SDL: Как создать игру. Базовое окно.</a>
+            </h2>
+            <div class="date text-right float-sm-right">01.05.2012</div>
+        </div>
+        <div class="entry">
+            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
+
+<p>Эти обучающие статьи предназначены для тех, у кого уже есть опыт использования C++ или другого языка программирования. Если у вас возникают сложности с пониманием кода, а не концепций, то я настоятельно советую вам сначала прочитать статью, объясняющую основы языка С++. Необязательно знать все о С++, но чем больше - тем проще вам будет в дальнейшем.</p>
+
+<p>В статьях я буду использовать Code::Blocks в качестве IDE и gcc с mingw для компиляции. [Я лично изначально использовал gcc с cygwin, но такой набор потребует включения cygwin1.dll в дистрибутив, что может накладывать лицензионные ограничения. Поэтому позже я установил mingw компилятор из тех же репозиториев cygwin.] Если вы хотите использовать другую IDE и/или компилятор, вы, конечно, можете это сделать, если достаточно уверены, что сможете включить все библиотеки в линковку. Скачать же Code::Blocks можно на официальном сайте <a href="http://www.codeblocks.org/downloads/26">http://www.codeblocks.org</a> (скачать версию, включающую MinGW). Рекомендуется использовать стабильную версию, если вы не хотите тратить время на ночные сборки.</p>
+
+<p>Эти статьи в значительной степени сосредоточены вокруг SDL (Simple DirectMedia Layer), 2D кросс-платформенной графической библиотеки. Эта библиотека позволит отрисовывать графику, и делать разные классные вещи, которые потом и помогут нам сделать игру. Вам также надо будет загрузить библиотеку с сайта <a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org</a>. Вам нужен tar-файл в разделе "Development Libraries, Win32" и zip-файл в разделе "Runtime Libraries, Win32". Если вы используете Visual Studio - выберите соответствующий файл вместо MinGW версии. После скачивания вы можете скопировать .dll файлы в папку Windows/system32, таким образом любое SDL приложение сможет его использовать. [Я не стал этого делать, достаточно чтобы SDL.dll и другие необходимые dll файлы находились в той же папке, что и исполняемый файл]. <!--more--></p>
+
+<p>Начните новый проект (Blank project) в Code::Blocks, назовите по желанию и сохраните в удобное для вас место. Откройте tar-файл (который вы скачали из раздела "Development Libraries"), из него нам нужны папки include и lib, распакуйте их в папку вашего проекта. Вернемся обратно в Code::Blocks, кликните правой кнопкой на проект, слева в списке проектов, и в появившемся меню выберите "Build Options". Слева в дереве скорее всего будет имя вашего проекта и два пункта: Debug и Release. Выберите корень дерева, таким образом мы установим настройки сразу для всего проекта. Нас интересуют две вкладки: Search Directories и Linker Settings. В Search Directories по умолчанию выбрана вкладка Compiler, снизу нажмите Add и добавьте 2 папки: include и include/SDL. Этим мы облегчили подключение заголовочных файлов. Теперь во вкладке Linker Settings также нажимаем Add и добавляем файлы: libSDLmain.a и libSDL.dll.a (!Именно в таком порядке!). Этим мы подключили библиотеки SDL в наш проект. Нажимайте ОК и настройка проекта на этом закончена. [<em>Если в будущем у вас возникнут проблемы с '_WinMain@16', то в Linker Settings, справа от библиотек в окне Other linker options допишите -lmingw32. Если возникнет проблема с libgcc_s_dw2-1.dll, допишите там же -static.</em>]</p>
+
+<p>Давайте, наконец, создадим два файла, назовем их <strong>App.h</strong> и <strong>App.cpp</strong>, это будет ядром нашей программы. Откройте <strong>App.h</strong> и добавьте туда следующий код:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    public:
+        App();
+        int Execute();
+};
+#endif
+</code></pre>
+
+<p>Теперь в файл <strong>App.cpp</strong> добавим вот этот код:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {}
+
+int App::Execute() {
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+
+    return App.Execute();
+}
+</code></pre>
+
+<p>Класс App - это основа всей нашей программы. Давайте сделаем шаг в сторону и я расскажу как игры обычно устроены. Большинство игр состоят из 5 функций, контролирующих игровой процесс. Обычно это:</p>
+
+<p>Initialize
+Функция обрабатывает загрузку всех данных, текстур, карт, NPC, чего угодно.</p>
+
+<p>Event
+Функция обрабатывает все поступающие события от мышки, клавиатуры, джойстика и других устройств.</p>
+
+<p>Loop
+Функция обрабатывает обновление данных, например движение NPC по экрану, уменьшение здоровье персонажа и так далее.</p>
+
+<p>Render
+Функция занимается отображением всего на экране. Она НЕ обрабатывает манипуляции с данными - этим занимается Loop.</p>
+
+<p>Cleanup
+Функция просто отключает все использующиеся ресурсы и закрывает игру.</p>
+
+<p>Важно понимать, что игра это просто один большой цикл. Внутри этого цикла случаются события, обновляются данные, рисуются картинки. Поэтому базовая структура игры может иметь следующий вид:</p>
+
+<pre><code class="cpp">Initialize();
+
+while(true) {
+    Events();
+    Loop();
+    Render();
+}
+
+Cleanup();
+</code></pre>
+
+<p>На каждом шаге цикла мы что-то делаем с данными и соответствующе их отображаем. События используются для манипуляции данными пользователем. Они в целом не являются необходимыми чтобы создать игру, но нужны, для возможности управлять игровым процессом.</p>
+
+<p>Поясним эту мысль на примере. Например, у нас есть наш рыцарь, герой игры. Все, что мы хотим сделать, это просто его перемещать. Если я нажму влево - он пойдет налево. Сейчас мы выясним, как это сделать в цикле. Во-первых, мы знаем, что мы хотим, проверять события (события клавиатуры). Так как события нужны для управления данными, нам нужны будут переменные, которые будут изменяться. Тогда мы можем использовать эти переменные для отображения нашего рыцаря на экране. У нас могло бы быть что-нибудь навроде:</p>
+
+<pre><code class="cpp">if(Key == LEFT) X--;
+if(Key == RIGHT) X++;
+if(Key == UP) Y--;
+if(Key == DOWN) Y++;
+
+RenderImage(KnightImage, X, Y);
+</code></pre>
+
+<p>Это работает, потому что каждый цикл проверяется, нажата ли кнопка ВЛЕВО, ВПРАВО и т.д., и если да, то уменьшить или увеличить переменную. Так что, если наша игра идет со скоростью 30 кадров в секунду и мы нажимаем НАЛЕВО, то рыцарь будет двигаться влево со скоростью 30 пикселей в секунду. Если вам еще не удалось разобраться в принципе игрового цикла, то вы скоро с этим справитесь. Цикл необходим, чтобы игра правильно функционировала.</p>
+
+<p>Возвращаясь к нашему концептуальному коду (5 функций), мы можем добавить эти дополнительные функции в наш проект, в файле <strong>App.h</strong>:</p>
+
+<pre><code>cpp#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>А в файле <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">#include "App.h"
+
+App::App() {
+    Running = true;
+}
+
+bool App::Init() {
+    return true;
+}
+
+int App::Execute() {
+    if(Init() == false) {
+        return -1;
+    }
+
+    SDL_Event Event;
+
+    while(Running) {
+        while(SDL_PollEvent(&amp;Event)) {
+            Event(&amp;Event);
+        }
+
+        Loop();
+        Render();
+    }
+
+    Cleanup();
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    App App;
+    return App.Execute();
+}
+
+void App::Event(SDL_Event* Event) {}
+void App::Loop() {}
+void App::Render() {}
+void App::Cleanup() {}
+</code></pre>
+
+<p>Вы видите несколько новых переменных, но давайте сначала разберемся что же делает этот код. Во-первых, мы пытаемся инициализировать нашу игру, если не вышло - мы возвращаем -1 (код ошибки), тем самым закрывая программу. Если все хорошо, то мы входим в игровой цикл. В цикла мы используем SDL_PollEvent для проверки событий и передаем их по одному в Event. После этого, мы идем в Loop для перемещения данных вокруг, и всего в таком роде, а затем отображаем нашу игру. Повторяем это бесконечно. Если пользователь выходит из игры, мы попадаем в Cleanup, которая освободит используемые ресурсы. Вот так, достаточно просто.</p>
+
+<p>Теперь, давайте посмотрим на SDL_Event и SDL_PollEvent. Первое - это структура, которая содержит информацию о событиях. Вторая функция, которая будет захватывать любые события, ожидающие в очереди. Очередь может состоять из любого количества событий, поэтому мы должны перебрать их по очереди. Например, позволяет нажимает кнопку А и перемещает мышь, в тот момент, когда исполняется Render(). SDL обнаружит это и поставит два события в очередь, по одному на каждое нажатие клавиши и перемещение мыши. Мы получаем эти события из очереди с помощью SDL_PollEvent, а затем передаем его в Event, чтобы обработать соответствующим образом. Когда в очереди нет событий, SDL_PollEvent вернет false, выйдя из цикла обработки событий.</p>
+
+<p>Другая добавленная переменная Running - это наш выход из цикла игры. Если оно false, значит игра закончилась, и надо выйти из программы. Так что, если, например, если пользователь нажимает клавишу ESC мы можем присвоить ей false, и тем самым выйти из игры.</p>
+
+<p>На данном этапе программа должна компилироваться без проблем, правда, вы можете заметить, что ее нельзя закрыть. Даже, вероятно, придется использовать диспетчер задач для завершения программы.</p>
+
+<p>Теперь, когда все настроено, давайте создадим окно, где будет отрисовываться наша игра. Откройте <strong>App.h</strong> и добавить переменную поверхности SDL:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+class App {
+    private:
+        bool    Running;
+        SDL_Surface*    Screen;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Думаю, самое время объяснить что такое SDL поверхность. SDL поверхность это все, что можно нарисовать, и все на чем можно нарисовать. Например, у нас есть лист бумаги, карандаш, и стикеры. Бумаги можно назвать поверхностью. Мы можем рисовать на ней, наклеивать стикеры и прочее. Стикеры тоже можно считать поверхностями, мы можем рисовать и на них, и наклеивать другие стикеры поверх. Таким что, Screen - это просто наш "лист бумаги", на котором мы будем рисовать.</p>
+
+<p>Теперь, давайте отредактируем функцию Init, чтобы инициализировать эту поверхность:</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &gt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Первое, что нужно сделать, это запустить собственно SDL, чтобы мы могли получить доступ к его функциям. Мы командуем SDL инициализировать все, что доступно; есть различные параметры, которые можно передать, но это на данный момент это не важно. Следующая функция: SDL_SetVideoMode. Она и создаст наше окно и поверхность. Она принимает 4 параметра: ширину окна, высота окна, битовое разрешение (рекомендуется 16 или 32), и различные флаги отображения. Есть довольно много флагов, но тех, которые мы используем, достаточно на данный момент. Первый флаг говорит SDL использовать аппаратную памяти для хранения изображений, а второй говорит SDL использовать двойную буферизацию (это предотвратит мерцание на экране). Еще один флаг, который может заинтересовать вас - это SDL_FULLSCREEN, он запускает приложение в полноэкранном режиме.</p>
+
+<p>Теперь, когда окно настроено, давайте сделаем так, чтобы все работало гладко. Изменим функцию App::Cleanup() и добавим следующее:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Мы просто выходим из SDL. Надо учесть, что в этой функции, мы будем освобождать использованные поверхности</p>
+
+<p>Чтобы все было аккуратно, надо также инициализировать указатель Screen значением NULL, в конструкторе класса. В <strong>App.cpp</strong> добавить следующее:</p>
+
+<pre><code class="cpp">App::App() {
+    Screen = NULL;
+    Running = true;
+}
+</code></pre>
+
+<p>Попробуйте скомпилировать проект, посмотрите как он работает. Должно появится пустое окно. Его все еще нельзя закрыть просто так, придется воспользоваться диспетчером задач. Это не очень удобно, поэтому давайте исправим ситуацию. Изменим функцию Event:</p>
+
+<pre><code class="cpp">void App::Event(SDL_Event* Event) {
+    if(Event-&gt;type == SDL_QUIT) {
+        Running = false;
+    }
+}
+</code></pre>
+
+<p>SDL события различаются по типу. Эти типы могут варьироваться от нажатия клавиш, движения мыши, все что нам нужно это проверить его тип. Нужный нам тип - это запрос на закрытие окна (например, когда пользователь нажимает кнопку X). Если это событие произойдет, мы устанавливаем Running = false, тем самым завершив нашу программу. Достаточно просто. Мы рассмотрим больше событий в других статьях.</p>
+
+<p>Если вы хорошо разобрались и понимаете, как работает код в этой статье, вы можете перейти к <a href="//viktoras.de/blog/sdl-tutorial-2-coordinates-and-blitting/">следующей</a>, чтобы узнать больше о поверхности SDL.</p>
+
+        </div>
+    </article>
+
+    <script src="https://utteranc.es/client.js"
+        repo="viktoras25/viktoras25.github.io"
+        issue-term="title"
+        label="💬Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2019 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">
+                    CC-BY-SA
+                </a>
+                <img height="20px" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                · <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>
