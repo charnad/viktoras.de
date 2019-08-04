@@ -3,11 +3,57 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="//viktoras.de/atom.xml" rel="self"/>
     <link href="//viktoras.de/"/>
-    <updated>2019-08-04T16:44:17+00:00</updated>
+    <updated>2019-08-04T19:22:08+00:00</updated>
     <id>//viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
         <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[Helper classes don&#039;t help]]></title>
+            <link href="//viktoras.de/blog/helper-classes-dont-help/"/>
+            <updated>2019-04-08T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/helper-classes-dont-help/</id>
+            <content type="html"><![CDATA[<p>Some time ago I wrote a post on my hate towards static methods and helper classes. It was more of an emotional rant than anything else and didn't serve the educational purpose. So this is a rewrite of the original post, which I hope can provide more insight.</p>
+
+<p>To begin with, a static method is a method, that can be invoked without instantiating an object of that class. The most common usage of static methods I've seen are helper classes and singleton pattern. A helper class is a collection of static methods, which hopefully has some common topic. So it may look like:</p>
+
+<pre><code class="php">// /helpers/FormatHelper.php
+class FormatHelper
+{
+    public static function formatXml($xmlString) {...}
+    public static function formatJson($jsonString) {...}
+}
+</code></pre>
+
+<p>and the usage would be:</p>
+
+<pre><code class="php">// /lib/ServiceClient.php
+$this-&gt;getLogger()-&gt;debug(FormatHelper::formatXml($response));
+</code></pre>
+
+<p>I hope you get the idea. So here is where I see the problem.</p>
+
+<h4 id="cohesion">Cohesion</h4>
+
+<p>Cohesion is a metric of how much parts of a module or class belong together. You should aim at having cohesive classes. Each class should have a precisely defined task, do that and nothing more. Helper classes usually have methods that are all over the place. Even if there is some general idea, e.g. <code>DateHelper</code>, it's methods can still do a multitude of things: parsing, converting, formatting, calculation. Very often helpers classes are just a dump of functions that would otherwise have one common word in name.</p>
+
+<h4 id="hidden-global-state">Hidden Global State</h4>
+
+<p>An object is a set of data and functions or methods that operate on this particular data. By instantiating a second object we create another set of data which is independent of the first one. You have control over the data you work with. However, helpers and static methods in general do not require an object instance, but that by no means prevent you from having data to work with. Data (class variables) can too be declared static. This data is shared by all instances of a class as well as static methods. This can easily lead to unpredictable behavior in your system, because someone in another part of the system started using your helper and it changes the data in the way you don't expect.</p>
+
+<h4 id="dependency">Dependency</h4>
+
+<p>Every time you call another class, you create a dependency on this class. Since we want to build complex system, it's inevitable that some components will depend on another. We manage these dependencies to hinder coupling problems, for example by <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">dependency inversion</a>. But by calling a static method you create a rigid connection, that cannot be replaced. Moreso, it's not a dependency that is detectable by just looking on class definitions. Unless you look into the code (and you are lucky if there is a <code>use</code> statement), you will never know this dependency is even there.</p>
+
+<h4 id="connascence">Connascence</h4>
+
+<p>If you have a helper, you kinda want to use it everywhere, otherwise what's the point. Some day you may decide to add another parameter to a static function. This may incur a huge wave of changes to every place using this helper. This means your <a href="https://en.wikipedia.org/wiki/Connascence">connascence</a> is high. If your function will never change and is very specific, there is no benefit in putting it into a helper at all. If it's very abstract, you will need to have enough parameters to suit all the cases you may have in the projects. And then you never touch the function, because you can't guarantee the system will work if you do. Instead, you could just build normal functions within the classes that need this logic.</p>
+
+<h4 id="reasonable-usage">Reasonable Usage</h4>
+
+<p>With regard to all the above, there are some legitimate usages of static methods. The most obvious is alternative constructors. And yes, constructor itself is a static function with a special syntax, it creates the instance of a class, which does not exist prior to that. Sometimes you need to be able to create an object instance in different ways, e.g. from a serialized data, from a subclass and so on. Beyond that it's hard for me to imagine another non-exotic case, where static methods would be appropriate.</p>
+]]></content>
+        </entry>
             <entry>
             <title type="html"><![CDATA[Forget about DRY]]></title>
             <link href="//viktoras.de/blog/forget-about-dry/"/>
@@ -1400,276 +1446,6 @@ class App : public Event {
 <p>Перекомпилируйте и попробуйте запустить. Программа должна закрываться по крестику как и раньше. Я рекомендую вам ознакомиться с несколькими другими событиями. В дальнейшем мы будем использовать некоторые из них в нашей игре.</p>
 
 <p>Перейти на более чем на следующем уроке, чтобы взглянуть на создание нашей первой игре, крестики-нолики./strong</p>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[SDL: Как создать игру. Координаты и блиттинг.]]></title>
-            <link href="//viktoras.de/blog/sdl-tutorial-2-coordinates-and-blitting/"/>
-            <updated>2012-05-01T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/sdl-tutorial-2-coordinates-and-blitting/</id>
-            <content type="html"><![CDATA[<p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-coordinates-and-blitting">SDL Coordinates and Bliting</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
-
-<p>Используя <a href="//viktoras.de/blog/sdl-tutorial-1-basics/">первую статью</a>, как базу, углубимся в мир поверхностей SDL. Я пытался донести до вас мысль, что SDL поверхности - это в основном изображения, хранящиеся в памяти. Представьте что, у нас есть пустая поверхность размером 320x240 пикселей. Если добавить к ней систему SDL координат, то получится что-то вроде этого:</p>
-
-<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/coords.jpg"></p>
-
-<p>Эта система координат отличается, от обычной. Обратите внимание, что координата Y увеличивается вниз, а координата X увеличивается вправо. Это важно понимать, чтобы правильно рисовать изображения на экране.<!--more--></p>
-
-<p>Поскольку у нас уже есть основная поверхность (Screen), нам нужен способ, чтобы рисовать на ней. Этот процесс называется блиттинг [<em>Blitting - Перенос битовых блоков</em>], когда мы в общем переносим одно изображение на другое. Но прежде чем мы сможем это сделать, мы должны загрузить эти изображения в память. SDL предлагает простую функцию для этого - SDL_LoadBMP. Примерный код может выглядеть следующим образом:</p>
-
-<pre><code class="cpp">SDL_Surface* TmpSurface;
-
-if((TmpSurface = SDL_LoadBMP("mypicture.bmp")) == NULL) {
-    //Error!
-}
-</code></pre>
-
-<p>Все довольно просто, SDL_LoadBMP принимает один аргумент, имя файла, который вы хотите загрузить, и возвращает поверхность.  Если функция возвращает NULL, то либо файл не найден, либо поврежден или произошла какая-либо другая ошибка. К сожалению, чтобы все работало быстро, одного этого метода недостаточно. Часто изображение будет загружено в другом формате. И, когда мы будем отображать изображение на экране, мы можем столкнуться с потерей производительности, выпадением цветов изображения, и т.п. Но, к счастью SDL предлагает решение этой проблемы - функцию SDL_DisplayFormat. Она принимает уже загруженную поверхность, и возвращает новую, уже использующую тот же формат, что и дисплей.</p>
-
-<p>Давайте этот процесс завернем класс. Возьмем код из предыдущей статьи за основу и добавим два новых файла: <strong>Sprite.h</strong> и <strong>Sprite.cpp</strong>. Откройте <strong>Sprite.h</strong> и добавьте следующее:</p>
-
-<pre><code class="cpp">#ifndef _SPRITE_H_
-#define _SPRITE_H_
-
-#include &lt;SDL.h&gt;
-
-class Sprite {
-    public:
-        Sprite();
-    public:
-        static SDL_Surface* Load(const char* File);
-};
-
-#endif
-</code></pre>
-
-<p>Мы создали простую статическую функцию Load, которая будет загружать файл в поверхность. Теперь откроем <strong>Sprite.cpp</strong>:</p>
-
-<pre><code class="cpp">#include "Sprite.h"
-
-Sprite::Sprite() {}
-
-SDL_Surface* Sprite::Load(const char* File) {
-    SDL_Surface* Temp = NULL;
-    SDL_Surface* Result = NULL;
-
-    if((Temp = SDL_LoadBMP(File)) == NULL) {
-        return NULL;
-    }
-
-    Result = SDL_DisplayFormat(Temp);
-    SDL_FreeSurface(Temp);
-
-    return Result;
-}
-</code></pre>
-
-<p>Надо отменить несколько важных вещей. Во-первых, всегда помните, что когда вы создаете указатель, установите его в значение NULL или 0.  Вы можете столкнуться с проблемами, если вы это не сделаете. Во-вторых, обратите внимание, что SDL_DisplayFormat возвращает новую поверхность, а не перезаписывает оригинальную. Это важно помнить, потому что, поскольку он создает новую поверхность, мы должны освободить старую. В противном случае, у она так и будет занимать память.</p>
-
-<p>Теперь у нас есть способ загрузки поверхностей в памяти, теперь же нужен способ отображать их поверх других поверхностей. Как и в случае с загрузкой изображений, SDL предлагает функцию для блиттинга: SDL_BlitSurface. Она не такая простая как SDL_LoadBMP, но все же достаточно простая. Откроем <strong>Sprite.h</strong> и добавим следующие прототипы функций:</p>
-
-<pre><code class="cpp">#ifndef _SPRITE_H_
-#define _SPRITE_H_
-
-#include &lt;SDL.h&gt;
-
-class Sprite {
-    public:
-        Sprite();
-
-        static SDL_Surface* Load(const char* File);
-        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
-};
-
-#endif
-</code></pre>
-
-<p>Теперь откройте <strong>Sprite.cpp</strong>, и добавьте следующее:</p>
-
-<pre><code class="cpp">#include "Sprite.h"
-
-Sprite::Sprite() {
-}
-
-SDL_Surface* Sprite::Load(const char* File) {
-    SDL_Surface* Temp = NULL;
-    SDL_Surface* Result = NULL;
-
-    if((Temp = SDL_LoadBMP(File)) == NULL) {
-        return NULL;
-    }
-
-    Result = SDL_DisplayFormat(Temp);
-    SDL_FreeSurface(Temp);
-
-    return Result;
-}
-
-bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y) {
-    if(Dest == NULL || Src == NULL) {
-        return false;
-    }
-
-    SDL_Rect Area;
-    Area.x = X;
-    Area.y = Y;
-
-    SDL_BlitSurface(Src, NULL, Dest, &amp;Area);
-
-    return true;
-}
-</code></pre>
-
-<p>Прежде всего, посмотрим на аргументы, которые передаются функции Draw. У нас есть две поверхности, и две переменные типа int. Первая поверхность Dest - на ней мы будем рисовавать, вторая поверхность Src - из нее будут браться данные для отображения. Можно сказать, что мы "наклеиваем" (помните аналогию со стикерами?) Src на Dest. X, Y - это координаты на поверхности Dest где будет находиться верхний левый угол изображения из Src.</p>
-
-<p>Теперь к содержимому функции. Сначала мы проверяем, что у нас есть действительная поверхность, иначе возвращаем false. Далее, определяем SDL_Rect. Это SDL структура, которая состоит из четырех элементов: X, Y, W, H.  Как вы, возможно, догадались, это задает размеры прямоугольника. В нашем случае, мы заботимся только о том, где мы рисуем, а не сколько. Поэтому, мы назначаем X, Y координаты на поверхности Dest. Если вам интересно, что означает NULL среди параметров функции SDL_BlitSurface, то это еще один параметр SDL_Rect. К нему мы вернемся позже. Наконец, мы вызваем функцию переноса изображения, и возвращаем true.</p>
-
-<p>Теперь, чтобы убедиться, что все это работает, давайте создадим тестовую поверхность. Откройте <strong>App.h</strong>, и создайте новую поверхность, и подключите недавно созданный <strong>Sprite.h</strong>:</p>
-
-<pre><code class="cpp">#ifndef _APP_H_
-#define _APP_H_
-
-#include &lt;SDL.h&gt;
-#include "Sprite.h"
-
-class App {
-    private:
-        bool            Running;
-        SDL_Surface*    Screen;
-        SDL_Surface*    Test;
-
-    public:
-        App();
-        int Execute();
-
-    public:
-        bool Init();
-        void Event(SDL_Event* Event);
-        void Loop();
-        void Render();
-        void Cleanup();
-};
-
-#endif
-</code></pre>
-
-<p>Не забудьте инициализировать поверхность значением NULL в конструкторе:</p>
-
-<pre><code class="cpp">App::App() {
-    Test = NULL;
-    Screen = NULL;
-    Running = true;
-}
-</code></pre>
-
-<p>И так же не забудьте "прибраться" за собой:</p>
-
-<pre><code class="cpp">void App::Cleanup() {
-    SDL_FreeSurface(Test);
-    SDL_FreeSurface(Screen);
-    SDL_Quit();
-}
-</code></pre>
-
-<p>Давайте теперь загрузим изображение. Перейдите к функции App::Init(), добавьте код:</p>
-
-<pre><code class="cpp"><br />bool App::Init() {
-    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
-        return false;
-    }
-
-    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
-        return false;
-    }
-
-    if((Test = Sprite::Load("image.bmp")) == NULL) {
-        return false;
-    }
-
-    return true;
-}
-</code></pre>
-
-<p>Не забудьте заменить "image.bmp" реальным изображением, которое у вас есть. Если нету - откройте MSPaint, что-нибудь нарисуйте, и сохраните в той же папке, где будет ваш исполняемый файл. Теперь у нас есть загруженное изображение, которое можно нарисовать. Найдите App::Render и добавьте следующее:</p>
-
-<pre><code class="cpp">void App::Render() {
-    Sprite::Draw(Screen, Test, 0, 0);
-
-    SDL_Flip(Screen);
-}
-</code></pre>
-
-<p>Обратите внимание на новую функцию SDL_Flip. Это просто обновление буфера и вывод Screen на экран. Это называется двойной буферизацией. Это процесс рисования всего в памяти, и, потом вывод на экран. Если этого не делать, получилось бы мерцающее изображение. Помните флаг SDL_DOUBLEBUF? Это он и включает двойную буферизацию.</p>
-
-<p>Скомпилируйте код и убедитесь, что все работает правильно. Вы должны увидеть изображение в верхнем левом углу экрана.  Если да, то поздравляю, вы на один шаг ближе к самой игре. Если нет, убедитесь, что ваш image.bmp находится в той же папке, что и исполняемый файл. Кроме того, убедитесь, что это действительно bitmap файл.</p>
-
-<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/ss1.jpg"></p>
-
-<p>Теперь давайте продвинемся немного дальше. Хотя это круто уметь рисовать изображение на экране, часто нам нужна только его часть. Возьмем, к примеру, набор тайлов (tileset):</p>
-
-<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/tileset.png"></p>
-
-<p>Хотя это одно изображение, мы хотим нарисовать отдельную его часть. Открытие еще раз <strong>Sprite.h</strong> и добавьте следующий код:</p>
-
-<pre><code class="cpp">#ifndef _SPRITE_H_
-#define _SPRITE_H_
-
-#include &lt;SDL.h&gt;
-
-class Sprite {
-    public:
-        Sprite();
-
-        static SDL_Surface* Load(const char* File);
-        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
-        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H);
-};
-
-#endif
-</code></pre>
-
-<p>Теперь в <strong>Sprite.cpp</strong><span style="color: red;"> (Внимание, мы добавляем еще одну функцию Draw, мы не заменяем первую)</span>:</p>
-
-<pre><code class="cpp">bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H) {
-    if(Dest == NULL || Src == NULL) {
-        return false;
-    }
-
-    SDL_Rect DestArea;
-
-    DestArea.x = X;
-    DestArea.y = Y;
-
-    SDL_Rect SrcArea;
-
-    SrcArea.x = X2;
-    SrcArea.y = Y2;
-    SrcArea.w = W;
-    SrcArea.h = H;
-
-    SDL_BlitSurface(Src, &amp;SrcArea, Dest, &amp;DestArea);
-
-    return true;
-}
-</code></pre>
-
-<p>Обратите внимание, что это в основном точно такая же функция, как и первыая, за исключением того, мы добавили еще один SDL_Rect. Этот SDL_Rect прямоугольник определяет, какие пикселы из исходного изображения скопировать в итоговое. Если, например, указаны параметры 0, 0, 50, 50, то отрисовано было бы лишь левая верхняя часть поверхности (квадрат размером 50х50).</p>
-
-<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/draw2.jpg"></p>
-
-<p>Давайте проверим как это работает, найдите App::Render(), и добавьте следующее:</p>
-
-<pre><code class="cpp">void App::Render() {
-    Sprite::Draw(Screen, Test, 0, 0);
-    Sprite::Draw(Screen, Test, 70, 110, 90, 90, 50, 50);
-
-    SDL_Flip(Screen);
-}
-</code></pre>
-
-<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/ss2.jpg" alt="coordinates"></p>
-
-<p>Должно получиться, что ваше изображение отображается по координатам 70, 110 и видна только его часть. Надо обратить особое внимание на то, как эти функции работают, и как устроена система SDL координат, мы будем еще не раз это использовать.</p>
 ]]></content>
         </entry>
     </feed>
