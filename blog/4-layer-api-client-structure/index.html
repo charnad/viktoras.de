@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Main Page - viktoras.de</title>
+        <title>4 Layer API Client Structure - viktoras.de</title>
         <meta charset="utf-8">
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-                
+            <meta name="robots" content="index, follow">
+
         <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
         <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
 
@@ -32,17 +33,15 @@
             <aside class="col-lg-1"></aside>
 
             <main class="col-lg-10">
-                
-        <article class="post">
+                    <article class="post">
         <div class="postdata row no-gutters">
             <h2 class="title col">
                 <a href="/blog/4-layer-api-client-structure/" rel="bookmark">4 Layer API Client Structure</a>
             </h2>
             <div class="date text-right float-sm-right">13.08.2017</div>
         </div>
-
         <div class="entry">
-                            <p>One of common tasks in software development is building a client library for some service API. Over the years I've come up with a way of structuring these libraries, which has served me well. The evolution of my approach went all the way from 2 layer (Business - Client) to now 4 layers. In some specific cases you might need more than these 4, but in usual case it enough. So the layers are:</p>
+            <p>One of common tasks in software development is building a client library for some service API. Over the years I've come up with a way of structuring these libraries, which has served me well. The evolution of my approach went all the way from 2 layer (Business - Client) to now 4 layers. In some specific cases you might need more than these 4, but in usual case it enough. So the layers are:</p>
 
 <ol>
 <li>Business/Domain Layer</li>
@@ -59,218 +58,59 @@
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="353px" height="84px" viewBox="-0.5 -0.5 353 84"><defs/><g><path d="M 270 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(149.5,55.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="59" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $statistics </div></div></foreignObject><text x="30" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $statistics </text></switch></g><rect x="270" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="270" y="0" width="80" height="80" fill="#fff2cc" stroke="#d6b656" pointer-events="none"/><g transform="translate(289.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="40" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Service</div></div></foreignObject><text x="20" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Service</text></switch></g><path d="M 80 20 L 263.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 268.88 20 L 261.88 23.5 L 263.63 20 L 261.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(107.5,14.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="135" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $service-&gt;getStatistics() </div></div></foreignObject><text x="68" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $service-&gt;getStatistics() </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#ffe6cc" stroke="#d79b00" pointer-events="none"/><g transform="translate(18.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="42" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Domain</div></div></foreignObject><text x="21" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Domain</text></switch></g></g></svg>
 </div>
 
+<!--more-->
 
-                            <a href="//viktoras.de/blog/4-layer-api-client-structure/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/helper-classes-dont-help/" rel="bookmark">Helper classes don&#039;t help</a>
-            </h2>
-            <div class="date text-right float-sm-right">04.08.2019</div>
+<h4 id="service-layer">Service Layer</h4>
+
+<p>Service layer is also application specific and is not shipped with a library. This layer can translate business requirement into Client terms. In the previous layer we have stated, that we need visitor statistics. This layer knows how to instantiate a Client and which request to invoke to get the data. Also here you get the data from the response object and prepare it to pass back to business layer. This layer can be implemented as an Adapter pattern, which adapts Client Library to the required interface.</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="343px" height="84px" viewBox="-0.5 -0.5 343 84"><defs/><g><path d="M 80 20 L 253.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 258.88 20 L 251.88 23.5 L 253.63 20 L 251.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(94.5,13.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="147" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> request(StatisticsRequest) </div></div></foreignObject><text x="74" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> request(StatisticsRequest) </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#fff2cc" stroke="#d6b656" pointer-events="none"/><g transform="translate(19.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="40" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Service</div></div></foreignObject><text x="20" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Service</text></switch></g><path d="M 260 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(126.5,53.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="102" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;">StatisticsResponse</div></div></foreignObject><text x="51" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">StatisticsResponse</text></switch></g><rect x="260" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="260" y="0" width="80" height="80" fill="#d5e8d4" stroke="#82b366" pointer-events="none"/><g transform="translate(284.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Client</div></div></foreignObject><text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Client</text></switch></g></g></svg>
+</div>
+
+<h4 id="client-layer">Client Layer</h4>
+
+<p>Now we have crossed application boundry. This is no longer a part of the application, but a distributable and reusable library by itself. Client knows how send requests. It has a public method <code>request(RequestInterface);</code> and that is basically it. In this layer we define Request and Response classes, which contain the that data you pass to the API and receive from the it. If it's a SOAP client, Request can produce XML (or an array, because PHP's SoapClient in WSDL mode is smart enough) or a JSON string. Response must be able to parse response SOAP XML or JSON and provide you all the methods you need to retrieve data. It can be argued, that I'm missing a presenter layer here, which is true. From my experience, if a format changes most of the request structure change as well. So while these concerns are separate, in practice they usually change together.</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="283px" height="84px" viewBox="-0.5 -0.5 283 84"><defs/><g><path d="M 80 20 L 100 20 L 193.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 198.88 20 L 191.88 23.5 L 193.63 20 L 191.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(105.5,13.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="64" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> get($body) </div></div></foreignObject><text x="32" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> get($body) </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#d5e8d4" stroke="#82b366" pointer-events="none"/><g transform="translate(24.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Client</div></div></foreignObject><text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Client</text></switch></g><path d="M 200 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(95.5,54.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="90" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $responseBody </div></div></foreignObject><text x="45" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $responseBody </text></switch></g><rect x="200" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="200" y="0" width="80" height="80" fill="#dae8fc" stroke="#6c8ebf" pointer-events="none"/><g transform="translate(214.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="50" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 52px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Transport</div></div></foreignObject><text x="25" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Transport</text></switch></g></g></svg>
+</div>
+
+<h4 id="transport-layer">Transport Layer</h4>
+
+<p>This is your HTTP client, SOAP client or any other client, that doesn't care about contents of your request. It's  just a transmission tool, a separate library which hides behind an interface (e.g. <a href="https://www.php-fig.org/psr/psr-18/">PSR-18</a>).</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="313px" height="84px" viewBox="-0.5 -0.5 313 84"><defs/><g><path d="M 80 20 L 223.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 228.88 20 L 221.88 23.5 L 223.63 20 L 221.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(99.5,14.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="112" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> GET host HTTP/1.1 </div></div></foreignObject><text x="56" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> GET host HTTP/1.1 </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#dae8fc" stroke="#6c8ebf" pointer-events="none"/><g transform="translate(14.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="50" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 52px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Transport</div></div></foreignObject><text x="25" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Transport</text></switch></g><path d="M 230 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(108.5,51.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="102" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> HTTP/1.1 200 OK </div></div></foreignObject><text x="51" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> HTTP/1.1 200 OK </text></switch></g><rect x="230" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="230" y="0" width="80" height="80" fill="#f5f5f5" stroke="#666666" pointer-events="none"/><g transform="translate(259.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="20" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(51, 51, 51); line-height: 1.2; vertical-align: top; width: 20px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">API</div></div></foreignObject><text x="10" y="12" fill="#333333" text-anchor="middle" font-size="12px" font-family="Helvetica">API</text></switch></g></g></svg>
+</div>
+
+<p>File structure of the client looks like this.</p>
+
+<div class="text-center">
+    <img src="/img/posts/2019-08-11-4-layer-api-client-structure/file-structure.png" alt="file-structure" width="255px">
+</div>
+
+<h4 id="advantages">Advantages</h4>
+
+<p>This structure helps me to create clients blazingly fast.</p>
+
+<ul>
+<li>It's easy to test. You can isolate every layer and mock the adjacent layers.</li>
+<li>Every layer concentrates on a specific concern. If changes are required, they usually involve just one layer.</li>
+<li>Extending is easy. To create new requests you just need to add new Request classes, no changes to client needed.</li>
+</ul>
+
         </div>
-
-        <div class="entry">
-                            <p>Some time ago I wrote a post on my hate towards static methods and helper classes. It was more of an emotional rant than anything else and didn't serve the educational purpose. So this is a rewrite of the original post, which I hope can provide more insight.</p>
-
-<p>To begin with, a static method is a method, that can be invoked without instantiating an object of that class. The most common usage of static methods I've seen are helper classes and singleton pattern. A helper class is a collection of static methods, which hopefully has some common topic. So it may look like:</p>
-
-<pre><code class="php">// /helpers/FormatHelper.php
-class FormatHelper
-{
-    public static function formatXml($xmlString) {...}
-    public static function formatJson($jsonString) {...}
-}
-</code></pre>
-
-<p>and the usage would be:</p>
-
-<pre><code class="php">// /lib/ServiceClient.php
-$this-&gt;getLogger()-&gt;debug(FormatHelper::formatXml($response));
-</code></pre>
-
-<p>I hope you get the idea. So here is where I see the problem. 
-                            <a href="//viktoras.de/blog/helper-classes-dont-help/">More...</a>
-                    </div>
     </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/forget-about-dry/" rel="bookmark">Forget about DRY</a>
-            </h2>
-            <div class="date text-right float-sm-right">13.08.2017</div>
-        </div>
 
-        <div class="entry">
-                            <p>I've once had a heated discussion with my colleagues, which eventually motivated me to write this blog post. This goes about DRY programming principle, being oh so loved by many developers. I'm convinced, that many do not really understand what does this principle really promote. DRY suffers from what I would call an "imprinting fallacy" (trying to mimic senior colleagues, while taking barely understood concepts to extreme), the same way the Singleton design pattern does.</p>
-
-<p>An inexperienced developer, lets say Joe, starts working in a team, where words like "design patterns" are frequently used. Joe looks through some online articles and sees a lot of scary words and complex schemes. But then a simple enough passage pops up - a single instance of some class. So Joe starts to use Singleton extensively, as he thinks it makes him a more senior developer, because he now uses a design pattern. He does not know about all the hidden flaws he's building into the project. Same goes for DRY. It's deceptively easy to understand, while the devil is in the details. DRY - Don't repeat yourself, don't duplicate programming code, what's more to it? The same Joe, is happy to use a programming principle he has heard about. He vigorously finds out all repeated lines of code and extracts them into separate (usually into static methods) classes. By doing that, he is most likely damaging the project once again.
-
-                            <a href="//viktoras.de/blog/forget-about-dry/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/segments-intersection-algorithm/" rel="bookmark">Segments intersection algortihm</a>
-            </h2>
-            <div class="date text-right float-sm-right">25.01.2017</div>
-        </div>
-
-        <div class="entry">
-                            <p>For my job I needed to write a more efficient function to merge multiple sets of segments. Segments were date ranges where some special offers are applicable. So let's say a 10% discount is valid from 1st Jan to 10th Jan and another 20% discount is valid from 5th Jan to 15th Jan. This means both of them are valid between 5th and 10th. Those are just two ranges, there potentially be two lists of any amount of segments.</p>
-
-<p>Now, I've said more efficient, because the code I inherited has been creating an list of all the dates within given ranges and calling <a href="http://php.net/manual/en/function.array-merge.php">array_merge</a> on them. This has worked until we've started getting dates ranges like "0001-01-01 to 9999-12-31". I've came up with an algorithm, which might not be the most optimal, but I'm pretty happy with it. Especially because I've developed it without stealing parts from Google or StackOverflow. For funsies I'll reproduce the algorithm in Golang (it was in PHP originally).</p>
-
-<p>Funnily enough, while writing this article I've come up with even easier solution. It seems much more obvious and looks like it doesn't deserve an article, but I've already wrote it. So there. Update 2: A day after posting I've simplified the algorithm even more by removing the flattening. It's now about 3 times shorter and 100 times easier to comprehend, than the first PHP version I wrote.</p>
-
-<p>Prerequisites are: segments within a set are not overlapping with each other and are sorted.
-Let's start with a couple of definitions. I'll use ints for segment begin and end, but generally any comparable type will do (like in PHP I just use date strings "2017-01-25", which are perfectly comparable). You can also view the gist with the source + test <a href="https://gist.github.com/viktoras25/1582c22c69ee7d2bd70478eefe30f0c0">here</a>.</p>
-
-<pre><code class="go">type segment struct {
-    from, to int64
-}
-
-type segments []segment
-</code></pre>
-
-<p>A couple of functions I'm going to use are flatten, min and max. Flatten removes "borders" between ranges flattening them to an int array, min and max are pretty self-explanatory.</p>
-
-<pre><code class="go">func min(a, b int64) int64 {
-    if a &lt; b { return a }
-    return b
-}
-
-func max(a, b int64) int64 {
-    if a &gt; b { return a }
-    return b
-}
-
-</code></pre>
-
-<p>So here it goes:</p>
-
-<pre><code class="go">func Merge(a, b segments) segments {
-
-    result := segments{}
-
-    // While there are entries left
-    for len(a) &gt; 0 &amp;&amp; len(b) &gt; 0 {
-
-        // Set A will be the one, starting with the earliest date (smallest entry)
-        if a[0].from &gt; b[0].from {
-            a, b = b, a
-        }
-
-        // While A has segments before the B starts, remove those
-        if a[0].to &lt; b[0].from {
-            a = a[1:]
-            continue
-        }
-
-        // We've thrown away all the non-intersecting segments at the beginning
-        // So here we will have an intersection between a and b
-        result = append(result, segment{
-            max(a[0].from, b[0].from),
-            min(a[0].to, b[0].to),
-        })
-
-        // Remove the segment of these two, which ends first
-        if a[0].to &lt; b[0].to {
-            a = a[1:]
-        } else {
-            b = b[1:]
-        }
-    }
-
-    return result
-}
-</code></pre>
-
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
-            </h2>
-            <div class="date text-right float-sm-right">10.05.2015</div>
-        </div>
-
-        <div class="entry">
-                            <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
-
-<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
-
-<pre><code class="php">class Helper
-{
-   public static formatA() {...}
-   public static formatB() {...}
-   public static formatC() {...}
-}
-</code></pre>
-
-<p>The thing is, it has absolutely no difference from:</p>
-
-<pre><code class="php">function helper_formatA() {...}
-function helper_formatB() {...}
-function helper_formatC() {...}
-</code></pre>
-
-<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
-
-<p>So we have used this static method somewhere in the code:</p>
-
-<pre><code class="php">// .. within some class
-public function foo()
-{
-    // ...
-    Helper::formatA('bar');
-}
-</code></pre>
-
-<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
-
-<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
-
-<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
-
-<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
-
-                    </div>
-    </article>
-    
-    <nav class="text-center" role="navigation">
-    <ul class="pagination justify-content-center">
-
-                    
-                                                    
-                                                    
-                <li class="page-item active">
-                    <a class="page-link" href="/">1</a>
-                </li>
-            
-                                                    
-                                                    
-                <li class="page-item ">
-                    <a class="page-link" href="/page/2">2</a>
-                </li>
-            
-                                                    
-                                                    
-                <li class="page-item ">
-                    <a class="page-link" href="/page/3">3</a>
-                </li>
-            
-                                                    
-                                                    
-                <li class="page-item ">
-                    <a class="page-link" href="/page/4">4</a>
-                </li>
-                        </ul>
-</nav>
-
+    <script src="https://utteranc.es/client.js"
+        repo="viktoras25/viktoras25.github.io"
+        issue-term="title"
+        label="💬Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
             </main>
 
             <aside class="col-lg-1"></aside>

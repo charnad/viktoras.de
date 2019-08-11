@@ -36,6 +36,23 @@
         <article class="post">
         <div class="postdata row no-gutters">
             <h2 class="title col">
+                <a href="/blog/sdl-tutorial-3-events/" rel="bookmark">SDL: Как создать игру. События.</a>
+            </h2>
+            <div class="date text-right float-sm-right">02.05.2012</div>
+        </div>
+
+        <div class="entry">
+                            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-events">SDL Events</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>Говоря об основах разработки игр нельзя не упомянуть о том, что называется событиями (Events). Все видеоигры, от Pong до очень сложных игр для ПК и консоли, используют события для взаимодействия с игроком. Эти события могут поступать от клавиатуры, мыши, джойстика, геймпада, и так далее, даже из операционной системы. Важно понять, как работают события, если мы хотим позволить пользователю взаимодействовать с игрой. Мы уже использовали события, но только для закрытия нашего окна, теперь мы посмотрим, как получать события от пользователя.</p>
+
+<p>Если вы еще не догадались, каждая статья построена на основе предыдущих, так что будем использовать код из предыдущей статьи. Чтобы отслеживать все эти события и использовать их в наших функциях, давайте создадим новый класс. Создайте два файла с названиями: <strong>Event.h</strong> и <strong>Event.cpp</strong>. Эти два файла будет обрабатывать наши события, и вызвать соответствующую функцию. Класс App будет наследовать этот класс, поэтому, когда нам нужно будет поймать событие мы просто переопределим функцию.
+                            <a href="//viktoras.de/blog/sdl-tutorial-3-events/">More...</a>
+                    </div>
+    </article>
+        <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
                 <a href="/blog/sdl-tutorial-2-coordinates-and-blitting/" rel="bookmark">SDL: Как создать игру. Координаты и блиттинг.</a>
             </h2>
             <div class="date text-right float-sm-right">01.05.2012</div>
@@ -115,19 +132,6 @@
                             <a href="//viktoras.de/blog/symfony-day-2010-in-cologne/">More...</a>
                     </div>
     </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/symfony-custom-filter-in-admin-generator/" rel="bookmark">Symfony: свой фильтр в admin generator</a>
-            </h2>
-            <div class="date text-right float-sm-right">08.09.2010</div>
-        </div>
-
-        <div class="entry">
-                            <p><img class="oppic" src="//viktoras.de/img/symfony_logo.gif"/>Кратко о том, как сделать фильтр для админ генератора. В моем проекте используется Doctrine с поведением NestedSet, и фильтр мне нужен был по родительскому полю. Точнее, показать потомков выбранного элемента. Для этого я пошел в папку /lib/filters и открыл файл фильтров для нужной модели. Там будем править метод configure. В моем случае дело происходит в плагине, поэтому метод, который я буду править называется setupInheritance.
-                            <a href="//viktoras.de/blog/symfony-custom-filter-in-admin-generator/">More...</a>
-                    </div>
-    </article>
     
     <nav class="text-center" role="navigation">
     <ul class="pagination justify-content-center">
@@ -149,6 +153,12 @@
                                                     
                 <li class="page-item active">
                     <a class="page-link" href="/page/3">3</a>
+                </li>
+            
+                                                    
+                                                    
+                <li class="page-item ">
+                    <a class="page-link" href="/page/4">4</a>
                 </li>
                         </ul>
 </nav>
