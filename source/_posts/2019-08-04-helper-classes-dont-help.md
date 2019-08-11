@@ -24,7 +24,7 @@ and the usage would be:
 $this->getLogger()->debug(FormatHelper::formatXml($response));
 ```
 
-I hope you get the idea. So here is where I see the problem.
+I hope you get the idea. So here is where I see the problem. <!--more-->
 
 #### Cohesion
 Cohesion is a metric of how much parts of a module or class belong together. You should aim at having cohesive classes. Each class should have a precisely defined task, do that and nothing more. Helper classes usually have methods that are all over the place. Even if there is some general idea, e.g. `DateHelper`, it's methods can still do a multitude of things: parsing, converting, formatting, calculation. Very often helpers classes are just a dump of functions that would otherwise have one common word in name.
