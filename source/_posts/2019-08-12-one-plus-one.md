@@ -22,7 +22,7 @@ Answers below <!--more-->
 
 2. PHP
 ```php
-echo '1' + 1;"
+echo '1' + 1;
 2
 ```
 
