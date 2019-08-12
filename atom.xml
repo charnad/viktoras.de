@@ -3,7 +3,7 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="//viktoras.de/atom.xml" rel="self"/>
     <link href="//viktoras.de/"/>
-    <updated>2019-08-12T19:17:48+00:00</updated>
+    <updated>2019-08-12T19:21:43+00:00</updated>
     <id>//viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
@@ -45,6 +45,7 @@
 </ol>
 
 <pre><code class="c">printf("%d", '1' + 1);
+50
 </code></pre>
 
 <ol start="4">
@@ -52,6 +53,7 @@
 </ol>
 
 <pre><code class="python">print '1' + 1;
+TypeError: cannot concatenate 'str' and 'int' objects
 </code></pre>
 ]]></content>
         </entry>
