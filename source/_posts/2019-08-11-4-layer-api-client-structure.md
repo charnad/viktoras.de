@@ -2,7 +2,7 @@
 title: 4 Layer API Client Structure
 tags: []
 categories: []
-post_date: 13.08.2017
+post_date: 11.08.2019
 ---
 
 One of common tasks in software development is building a client library for some service API. Over the years I've come up with a way of structuring these libraries, which has served me well. The evolution of my approach went all the way from 2 layer (Business - Client) to now 4 layers. In some specific cases you might need more than these 4, but in usual case it enough. So the layers are:
