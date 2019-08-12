@@ -36,6 +36,56 @@
         <article class="post">
         <div class="postdata row no-gutters">
             <h2 class="title col">
+                <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
+            </h2>
+            <div class="date text-right float-sm-right">10.05.2015</div>
+        </div>
+
+        <div class="entry">
+                            <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
+
+<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
+
+<pre><code class="php">class Helper
+{
+   public static formatA() {...}
+   public static formatB() {...}
+   public static formatC() {...}
+}
+</code></pre>
+
+<p>The thing is, it has absolutely no difference from:</p>
+
+<pre><code class="php">function helper_formatA() {...}
+function helper_formatB() {...}
+function helper_formatC() {...}
+</code></pre>
+
+<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
+
+<p>So we have used this static method somewhere in the code:</p>
+
+<pre><code class="php">// .. within some class
+public function foo()
+{
+    // ...
+    Helper::formatA('bar');
+}
+</code></pre>
+
+<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
+
+<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
+
+<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
+
+<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
+
+                    </div>
+    </article>
+        <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
                 <a href="/blog/project-euler-502/" rel="bookmark">Project Euler 502</a>
             </h2>
             <div class="date text-right float-sm-right">11.04.2015</div>
@@ -139,21 +189,6 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
 
 <p>Мы создадим новый класс для обработки анимации, и в следующем уроке мы создадим класс для сущностей (Entities). Имейте в виду, что эти две разные вещи, и, хотя я знаю, они могут быть выражены через один класс, я не хочу использовать такой подход. Поэтому, пожалуйста, попридержите вашу критику.
                             <a href="//viktoras.de/blog/sdl-tutorial-5-animation/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/sdl-tutorial-4-tic-tac-toe/" rel="bookmark">SDL: Как создать игру. Крестики-нолики.</a>
-            </h2>
-            <div class="date text-right float-sm-right">05.05.2012</div>
-        </div>
-
-        <div class="entry">
-                            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-tic-tac-toe">SDL Tutorial - Tic Tac Toe</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
-
-<p>До этого момента мы закладывали основу для создания игры. Мы создавали базовую структуру для обработки общих задач, создали специальный класс для обработки событий, и создали класс для работы с поверхностями. В этом уроке мы их объединим для создания игры в крестики-нолики. Не волнуйтесь, все будет довольно просто. Будем использовать код из последней статьи.
-                            <a href="//viktoras.de/blog/sdl-tutorial-4-tic-tac-toe/">More...</a>
                     </div>
     </article>
     

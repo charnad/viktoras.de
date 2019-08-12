@@ -36,9 +36,31 @@
         <article class="post">
         <div class="postdata row no-gutters">
             <h2 class="title col">
+                <a href="/blog/one-plus-one/" rel="bookmark">One plus one</a>
+            </h2>
+            <div class="date text-right float-sm-right">12.08.2019</div>
+        </div>
+
+        <div class="entry">
+                            <p>A little funny quiz I've came up with. Guess programming language:</p>
+
+<ol>
+<li>'1' + 1 = 11</li>
+<li>'1' + 1 = 2</li>
+<li>'1' + 1 = 50</li>
+<li>'1' + 1 = TypeError</li>
+</ol>
+
+<p>Answers below 
+                            <a href="//viktoras.de/blog/one-plus-one/">More...</a>
+                    </div>
+    </article>
+        <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
                 <a href="/blog/4-layer-api-client-structure/" rel="bookmark">4 Layer API Client Structure</a>
             </h2>
-            <div class="date text-right float-sm-right">13.08.2017</div>
+            <div class="date text-right float-sm-right">11.08.2019</div>
         </div>
 
         <div class="entry">
@@ -187,56 +209,6 @@ func max(a, b int64) int64 {
     return result
 }
 </code></pre>
-
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters">
-            <h2 class="title col">
-                <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
-            </h2>
-            <div class="date text-right float-sm-right">10.05.2015</div>
-        </div>
-
-        <div class="entry">
-                            <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
-
-<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
-
-<pre><code class="php">class Helper
-{
-   public static formatA() {...}
-   public static formatB() {...}
-   public static formatC() {...}
-}
-</code></pre>
-
-<p>The thing is, it has absolutely no difference from:</p>
-
-<pre><code class="php">function helper_formatA() {...}
-function helper_formatB() {...}
-function helper_formatC() {...}
-</code></pre>
-
-<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
-
-<p>So we have used this static method somewhere in the code:</p>
-
-<pre><code class="php">// .. within some class
-public function foo()
-{
-    // ...
-    Helper::formatA('bar');
-}
-</code></pre>
-
-<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
-
-<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
-
-<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
-
-<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
 
                     </div>
     </article>
