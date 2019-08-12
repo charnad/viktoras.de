@@ -29,9 +29,11 @@ echo '1' + 1;"
 3. C. '1' has **char** type, which is also an ASCII code of the symbol '1', which is 49. Plus one makes it 50.
 ```c
 printf("%d", '1' + 1);
+50
 ```
 
 4. Python.
 ```python
 print '1' + 1;
+TypeError: cannot concatenate 'str' and 'int' objects
 ```
