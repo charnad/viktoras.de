@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SDL: Как создать игру. Крестики-нолики. - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10 row">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/sdl-tutorial-4-tic-tac-toe/" rel="bookmark">SDL: Как создать игру. Крестики-нолики.</a>
+            </h2>
+            <div class="date text-right float-sm-right">05.05.2012</div>
+        </div>
+        <div class="entry">
+            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-tic-tac-toe">SDL Tutorial - Tic Tac Toe</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>До этого момента мы закладывали основу для создания игры. Мы создавали базовую структуру для обработки общих задач, создали специальный класс для обработки событий, и создали класс для работы с поверхностями. В этом уроке мы их объединим для создания игры в крестики-нолики. Не волнуйтесь, все будет довольно просто. Будем использовать код из последней статьи.<!--more--></p>
+
+<p>Первое, что мы надо сделать - спланировать игру. Все мы знаем, что крестики-нолики имеют поле 3x3, где игроки ставят крестики или нолики. Итак, для этого нам будет нужно 3 изображения, одно для игрового поля, одно для X, и одно для О. Нам не нужно многокрестиков или ноликов, потому что мы можем отрисовывать их в программе сколько угодно раз. Наше игровое поле будет размером 600x600, а наши X и O будут 200x200 (1/3 площади).</p>
+
+<p><img src="//viktoras.de/img/posts/2012-05-07-sdl-tutorial-4/o.png" style="float: left;"/>
+<img src="//viktoras.de/img/posts/2012-05-07-sdl-tutorial-4/x.png" style="float: left" />
+<img src="//viktoras.de/img/posts/2012-05-07-sdl-tutorial-4/grid.png"/>
+<br clear="both">
+[<em>Это png изображения, для работы вам нужны bmp. Их можно взять в репозитории на гитхабе, ссылка в начале поста.</em>]</p>
+
+<p>Теперь у нас есть изображения, и нам нужен способ, чтобы загрузить их в нашу программу. Откройте <strong>App.h</strong> и внесите некоторые изменения. Удалите поверхность Test, и добавьте три новых поверхности.</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+
+        SDL_Surface*    G;
+        SDL_Surface*    X;
+        SDL_Surface*    O;
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+        void Exit();
+};
+
+#endif
+
+</code></pre>
+
+<p>Далее, откройте <strong>App.cpp</strong> и проделайте то же самое, удалите Test и добавьте три новых поверхности. В конструкторе:</p>
+
+<pre><code class="cpp">App::App() {
+    G = NULL;
+    X = NULL;
+    O = NULL;
+    Screen = NULL;
+
+    Running = true;
+}
+</code></pre>
+
+<p>и не забудьте об освобождении ресурсов:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_FreeSurface(G);
+    SDL_FreeSurface(X);
+    SDL_FreeSurface(O);
+    SDL_FreeSurface(Screen);
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Теперь у нас есть три готовые поверхности, давайте загрузим туда изображения. Найдите App::Init(), и внесите изменения: избавимся от поверхности Test (опять), и загрузим три новых изображения. Обратите внимание, что мы изменили размер окна до размеров игрового поля - 600х600.</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Как вы могли заметить, теперь графические файлы находятся в папке gfx. Со временем, когда игра растет, становится очень удобно держать все изображения в одной папке. Давайте теперь нарисуем игровое поле на экране. Откройте App::Render.cpp и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, G, 0, 0);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Скомпилируйте программу, и если все хорошо - вы должны увидеть игровое поле. Помните, что есть 5 основных моментов использования поверхностей: объявить ее, установите ее в NULL, загрузите изображение, нарисуйте поверхность, а затем освободите ее. Я советую вам, запомнить эти 5 шагов сейчас, потому что позже, если вы пропустите один из них, вы можете столкнуться с проблемами. Например, не установленная в NULL поверхность, может привести к непредсказуемому поведению или, не освобожденная поверхность, может привести к утечке памяти.</p>
+
+<p>Вы наверняка удивляетесь, почему наши X и O на розовом фоне. Для этого, конечно же, есть причина. Мы собираемся реализовать прозрачность у этих поверхностей. По существу, везде, где сейчас розовый цвет, поверхность будет прозрачной. В SDL есть простая функция для этого SDL_SetColorKey. Давайте добавим ее в <strong>Sprite.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H);
+        static bool Transparent(SDL_Surface* Surface, int R, int G, int B);
+};
+
+#endif
+
+</code></pre>
+
+<p>Теперь, в <strong>Sprite.cpp</strong> добавим ее реализацию:</p>
+
+<pre><code class="cpp">bool Sprite::Transparent(SDL_Surface* Surface, int R, int G, int B) {
+    if(Surface == NULL) {
+        return false;
+    }
+
+    SDL_SetColorKey(Surface, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(Surface-&gt;format, R, G, B));
+
+    return true;
+}
+</code></pre>
+
+<p>Обратите внимание на 3 дополнительных параметра, которые передаются помимо поверхности. Эти параметры обозначают цвет, в системе RGB, который мы хотим сделать прозрачным, это не обязательно должен быть розовый. Например, если бы мы хотели, чтобы прозрачным был красный, то передали бы в функцию: 255, 0, 0.</p>
+
+<p>Функция Transparent сначала проверяет, есть ли у нас действительная поверхность. Если да, то установливает цветовой ключ[<em>aka [хромакей][http://ru.wikipedia.org/wiki/%D5%F0%EE%EC%E0%EA%E5%E9]</em>] (прозрачность). Первым аргументом идет поверхность к которой применяется хромакей, вторым параметром идут различные флаги, а третьим цвет, который будет прозрачным. Флаги, которые мы передаем вполне обычные, первый говорит SDL применять хромакей для переданной поверхности, а второй говорит SDL попытаться использовать RLE ускорение (чтобы сделать отрисовку быстрее). Третий аргумент выглядит чуть более сложным, мы используем SDL_MapRGB для создания цвета. SDL_MapRGB принимает параметром поверхность, и желаемый цвет (R, G, B), и подобрать наиболее близкий к нему для этой поверхности. Не все поверхности имеют одинаковую цветовую палитру. Вспомните старые времена Денди, там можно было использовать всего несколько цветов. Та же идея здесь, SDL_MapRGB берет цвет и сопоставляет его с ближайшим цветом в палитре этой поверхности.</p>
+
+<p>Давайте теперь применим эту новую функцию к нашим поверхностям, откройте App::Init и внесите следующие изменения:</p>
+
+<pre><code class="cpp">bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    Sprite::Transparent(X, 255, 0, 255);
+    Sprite::Transparent(O, 255, 0, 255);
+
+    return true;
+}
+</code></pre>
+
+<p>Теперь все, что касается поверхностей, должно быть готово. Следующее, что нам нужно сделать, это выяснить как рисовать эти X и O. Мы не можем просто рисовать их везде по полю, потому что они не всегда будут в одинаковых местах. И вот что мы сделаем, мы создадим массив из 9 контейнеров, значения в этом массиве будет говорить о том, какая фигура стоит в каждой ячейке клетки, а индекс - номер ячейки. То есть, ячейка с индексом 0 будет в верхнем левом углу, с индексом 1 будет вверху посередине, 2 в правом верхнем углу, 3 в середине слева, и так далее.</p>
+
+<p>Каждая ячейка может иметь три значения: Empty, X, и О. Чтобы все выглядело немного аккуратнее, чем просто 0, 1, 2, в массиве, мы будем использовать перечисление (enum). Обозначим GRID_TYPE_NONE = 0, GRID_TYPE_X = 1, и GRID_TYPE_O = 2.</p>
+
+<p>Теперь добавим массив и перечисление в <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+
+#include "Event.h"
+#include "Sprite.h"
+
+enum {
+    GRID_TYPE_NONE = 0,
+    GRID_TYPE_X,
+    GRID_TYPE_O
+};
+
+class App : public Event {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+
+        SDL_Surface*    G;
+        SDL_Surface*    X;
+        SDL_Surface*    O;
+
+        int             Grid[9];
+
+    public:
+        App();
+        int Execute();
+
+        bool Init();
+        void Event(SDL_Event* Evt);
+        void Loop();
+        void Render();
+        void Cleanup();
+        void Exit();
+};
+
+#endif
+
+</code></pre>
+
+<p>С этого момента, я буду давать только код требуемых функций, а не код из файла. Надеюсь, что вы уже запомнили где находятся основные функции, и это не станет проблемой. Нам нужно добавить функцию сброса игрового поля. Она установит все значения массива в GRID_TYPE_NONE, и это будет означать, что все клетки поля пусты. Добавим так же вызов этой функции в инициализацию:</p>
+
+<p>В <strong>App.h</strong>:</p>
+
+<pre><code class="cpp">public:
+    void Reset();
+</code></pre>
+
+<p>В <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::Reset() {
+    for(int i = 0;i &lt; 9;i++) {
+        Grid[i] = GRID_TYPE_NONE;
+    }
+}
+
+bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(600, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((G = Sprite::Load("./gfx/grid.bmp")) == NULL) {
+    return false;
+    }
+
+    if((X = Sprite::Load("./gfx/x.bmp")) == NULL) {
+    return false;
+    }
+
+    if((O = Sprite::Load("./gfx/o.bmp")) == NULL) {
+    return false;
+    }
+
+    Sprite::Transparent(X, 255, 0, 255);
+    Sprite::Transparent(O, 255, 0, 255);
+
+    Reset();
+
+    return true;
+}
+</code></pre>
+
+<p>Следующее, что мы должны сделать, это функция размещения X и O на экране. Давайте ее создадим. Откройте опять <strong>App.h</strong> и добавьте функцию ниже Reset:</p>
+
+<pre><code class="cpp">void SetCell(int ID, int Type);
+</code></pre>
+
+<p>И в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::SetCell(int ID, int Type) {
+    if(ID &lt; 0 || ID &gt;= 9) return;
+    if(Type &lt; 0 || Type &gt; GRID_TYPE_O) return;
+
+    Grid[ID] = Type;
+}
+</code></pre>
+
+<p>Эта функция принимает два аргумента: во-первых, id изменяемой ячейки, а во-вторых тип, в который мы ее устанавливаем. У нас есть два условия, во-первых, убедимся, что мы не выходим за границы массива (иначе наша программа бы упала), а во-вторых, убедимся, что мы задаем правильный тип. Теперь давайте сделаем так, чтобы X и O отрисовывались на экране. Добавим следующий код в <strong>App::Render</strong>:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, G, 0, 0);
+
+    for(int i = 0;i &lt; 9;i++) {
+        int cX = (i % 3) * 200;
+        int cY = (i / 3) * 200;
+
+        if(Grid[i] == GRID_TYPE_X) {
+            Sprite::Draw(Screen, X, cX, cY);
+        }else
+        if(Grid[i] == GRID_TYPE_O) {
+            Sprite::Draw(Screen, O, cX, cY);
+        }
+    }
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Это немного сложнее, чем то, что мы делали до сих пор. Во-первых, мы проходим по каждой ячейке поля, переводим ID клетки в X и Y координаты. Чтобы найти X, мы берем остаток от деления на 3. Это даст нам 0, когда i = 0, 1, когда i = 1, 2, когда i = 2, 0, когда i 3, и так далее. Умножим полученное число на 200, потому что каждая клетка размером 200x200 пикселей, и получаем координату X. Чтобы найти Y, мы делим на 3 без остатка, это дает 0, когда i = [0, 1, 2], 1, когда i = [3, 4, 5], и так далее. Затем опять умножаем на 200. Я настоятельно советую вам разобраться, как это работает, потому что методы такого рода используются для tile-based игр.</p>
+
+<p>Наконец, нам нужно обрабатывать пользовательские действия. Для этого мы будем отлавливать события мышки. Когда пользователь нажимает на ячейку будем ставить в нее X или O. Переопределим один из методов Event для этого. Откройте <strong>App.h</strong> и добавьте функцию и переменную, про нее я скажу чуть позже:</p>
+
+<pre><code class="cpp">int CurrentPlayer;
+
+void OnLButtonDown(int mX, int mY);
+</code></pre>
+
+<p>И в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">void App::OnLButtonDown(int mX, int mY) {
+    int ID = mX / 200;
+    ID = ID + ((mY / 200) * 3);
+
+    if(Grid[ID] != GRID_TYPE_NONE) {
+        return;
+    }
+
+    if(CurrentPlayer == 0) {
+        SetCell(ID, GRID_TYPE_X);
+        CurrentPlayer = 1;
+    }else{
+        SetCell(ID, GRID_TYPE_O);
+        CurrentPlayer = 0;
+    }
+}
+</code></pre>
+
+<p>Сначала мы делаем обратное преобразование, из координат в ID. Затем проверяем, что клетка еще не занята, иначе выходим из функции. Потом проверяем, чей сейчас ход, ставим соответствующую фигуру и передаем ход другому игроку. Как раз CurrentPlayer и говорит нам о том, чей сейчас ход. Кстати, ее надо инициализировать в конструкторе в <strong>App.cpp</strong>:</p>
+
+<pre><code class="cpp">App::App() {
+    CurrentPlayer = 0;
+
+    G = NULL;
+    X = NULL;
+    O = NULL;
+
+    Screen = NULL;
+
+    Running = true;
+}
+</code></pre>
+
+<p>Скомпилируйте программу и вы должны получить почти полностью работающую версию крестиков-ноликов. Поздравляем!</p>
+
+<p>Попробуйте дальше сделать самостоятельно. У нас есть прочный фундамент для нашей игры. Попробуйте добавить "X победил", "О победил" и "Ничья" в конце каждой игры (нужны дополнительные изображения). Подумайте, как вы собираетесь определять, кто выиграл. Попробуйте добавить способ сбросить игру после того, как она закончилась. Если хотите, можете даже попробовать добавить некий искуственный интеллект, который будет играть против пользователей. Или, если вам и этого мало, попробуйте добавить возможность играть игрок против игрока, или игрока против компьютера.</p>
+
+<p>Когда у вас будет твердое понимание, как все работает в этой статье - вы можете перейти к следующей, для изучения покадровой анимации.</p>
+
+        </div>
+    </article>
+
+    <script src="https://utteranc.es/client.js"
+        repo="viktoras25/viktoras25.github.io"
+        issue-term="title"
+        label="💬Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2019 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">
+                    CC-BY-SA
+                </a>
+                <img height="20px" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                · <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>
