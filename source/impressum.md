@@ -6,17 +6,19 @@ title: Lebenslauf
 {% block head_meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block posts %}
-## Impressum<br />
-#### Angaben gemäß § 5 Telemediengesetz (TMG):<br />
+## Impressum
 
-Viktoras Bezaras<br />
-Kasseler Str. 37<br />
-04155 Leipzig<br />
-Deutschland<br />
+
+#### Angaben gemäß § 5 Telemediengesetz (TMG):
+
+    Viktoras Bezaras
+    Kasseler Str. 37
+    04155 Leipzig
+    Deutschland
 
 #### Kontakt:
-Tel.: +49 (176) 38930891<br />
-E-Mail: mail@viktoras.de<br />
+    Tel.: +49 (176) 38930891
+    E-Mail: mail@viktoras.de
 
 #### 1. Haftung für Inhalte
 
