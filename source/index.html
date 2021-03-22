@@ -25,7 +25,7 @@ use:
             {% set break_array = post.blocks.content|split('<!--more-->', 2) %}
                 {{ break_array[0]|raw }}
             {% if break_array|length > 1 %}
-                <a href="{{ site.url }}{{ post.url }}">More...</a>
+                <a href="{{ post.url }}">More...</a>
             {% endif %}
         </div>
     </article>
