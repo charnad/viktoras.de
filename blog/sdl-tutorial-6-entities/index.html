@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SDL: Как создать игру. Сущности. - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/sdl-tutorial-6-entities/" rel="bookmark">SDL: Как создать игру. Сущности.</a>
+            </h2>
+            <div class="date text-right float-sm-right">12.05.2012</div>
+        </div>
+        <div class="entry">
+            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>В этой статьей мы направим наши силы на создание сущностей (Entities). Сущности - это все, с чем можно взаимодействовать. Например, это может быть монстр или сундук с сокровищами, который можно открыть. В этом смысле, практически все в игре, что движется, это сущность. Камень, который является частью карты, который никогда не двигается, не является сущностью. Но если вы хотите, чтобы камень двигался, не важно по какой причине, то мы сделаем его сущностью.<!--more--></p>
+
+<p>Давайте начнем с создания двух новых файлов: <strong>Entity.cpp</strong> и <strong>Entity.h</strong>. Откройте заголовочный файл и добавьте следующее:</p>
+
+<pre><code class="cpp">#include &lt;vector&gt;
+
+#include "Animation.h"
+#include "Sprite.h"
+
+class Entity {
+    public:
+        static std::vector&lt;Entity*&gt;    EntityList;
+
+    protected:
+        Animation      Anim;
+        SDL_Surface*    Surface;
+
+    public:
+        float           X;
+        float           Y;
+
+        int             Width;
+        int             Height;
+
+        int             AnimState;
+
+    public:
+        Entity();
+        virtual ~Entity();
+
+        virtual bool Load(char* File, int Width, int Height, int MaxFrames);
+        virtual void Loop();
+        virtual void Render(SDL_Surface* Screen);
+        virtual void Cleanup();
+};
+</code></pre>
+
+<p>Теперь откройте Entity.cpp и добавьте это:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+std::vector&lt;Entity*&gt; Entity::EntityList;
+
+Entity::Entity() {
+    Surface = NULL;
+
+    X = Y = 0.0f;
+
+    Width = Height = 0;
+
+    AnimState = 0;
+}
+
+Entity::~Entity() {}
+
+bool Entity::Load(char* File, int Width, int Height, int MaxFrames) {
+    if((Surface = Sprite::Load(File)) == NULL) {
+        return false;
+    }
+
+    Sprite::Transparent(Surface, 255, 0, 255);
+
+    this-&gt;Width = Width;
+    this-&gt;Height = Height;
+
+    Anim.MaxFrames = MaxFrames;
+
+    return true;
+}
+
+void Entity::Loop() {
+    Anim.Animate();
+}
+
+void Entity::Render(SDL_Surface* Screen) {
+    if(Surface == NULL || Screen == NULL) return;
+
+    Sprite::Draw(Screen, Surface, X, Y, AnimState * Width, Anim.GetCurrentFrame() * Height, Width, Height);
+}
+
+void Entity::Cleanup() {
+    if(Surface) {
+        SDL_FreeSurface(Surface);
+    }
+
+    Surface = NULL;
+}
+</code></pre>
+
+<p>Теперь поясню. В этом классе мы инкапсулируем 5 основных компонентов, о которых я упоминал в первой статье. Это позволит нам работать с сущностями в игре гораздо проще, чем смешивать их в кучу со всем остальным в классе App. Первое, что вы можете заметить, это статический вектор, который называется EntityList. Этот вектор будет содержать все наши сущности, они будут легко доступны через Entity::EntityList, потому что он объявлен статическим. Надо особо отметить: мы объявляем EntityList в Entity, поскольку это предотвратит циклические зависимости в будущем. То есть, например мы попытаемся получить карту, чтобы обработать сущности на ней, а также хотим получить сущности, чтобы обработать карту. Map объявляет Entity, Entity объявляет Map, это повлечет за собой проблемы во время компиляции.</p>
+
+<p>Так что этот вектор содержит все наши сущности в игре. Обратите внимание, что каждый член вектора - указатель. Это потому, что в дальнейшем мы будем наследовать все последующие классы сущностей от класса Entity. Так, например, если мы собираемся сделать игру Megaman, мы бы создали класс Megaman и унаследовали бы его от класс Entity. И, благодаря полиморфизму, мы можем хранить объекты класса Megaman в EntityList. Собственно поэтому, мы заявили функции в классе, как virtual, а некоторые члены как protected.</p>
+
+<p>Далее, у нас есть базовая информация о сущности, общая для всех: координаты, размеры, поверхность для ее(сущности) изображения. Также, у нас есть функция загрузки, она получает имя файла и загружает изображение из него. По умолчанию, устанавливается прозрачный цвет. Я хочу чтобы вы понимали, что все, что я делаю не высечено в камне. Вы можете, и я даже советую вам менять код по своему вкусу. Вы можете передавать функции Load больше или меньше параметров, может вы не хотите устанавливать прозрачность по умолчанию, кто знает. Пробуйте и не волнуйтесь, если где-то запутаетесь или ошибетесь, вы всегда сможете достать мой код.</p>
+
+<p>Итак, у нас есть основная функция Loop, которая обрабатывает основные расчеты. Сейчас мы только занимаемся анимацией. Мы лишь меняем  MaxFrames, а остальное оставляем по умолчанию. Далее, функция Render, в качестве параметра передается поверхность для отображения. Чтобы можно было рисовать не только сразу на экран, но и на любую другую поверхность по вашему выбору. Ну и наконец, функция Cleanup, которая освобождает память и все такое.</p>
+
+<p>Как я уже говорил в начале, это лишь базовая структура класса Entity, она еще может не так много, но не волнуйтесь, в будущем сможет сделать все, что вы захотите. Итак, давайте заставим сущности работать. Откройте <strong>App.h</strong> и добавьте файл заголовка в начале, и объявить две сущности:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+//...
+
+private:
+    Entity         Entity1;
+    Entity         Entity2;
+</code></pre>
+
+<p>Давайте теперь загрузим в них изображения, в App::Init.cpp добавьте следующее:</p>
+
+<pre><code class="cpp">if(Entity1.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+if(Entity2.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+Entity2.X = 100;
+
+Entity::EntityList.push_back(&amp;Entity1);
+Entity::EntityList.push_back(&amp;Entity2);
+</code></pre>
+
+<p>Я еще раз использую изображение Йоши и прошлой статьи.</p>
+
+<p>Вспомните, что я говорил, про инкапсуляцию основных функции игры в классе Entity. Мы должны вызывать эти функции в соответствующих функциях App. Поэтому, откройте App::Loop и добавьте следующее:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Loop();
+}
+</code></pre>
+
+<p>Мы в обходим каждый элемент вектора и вызываем функцию Loop. Довольно просто. (И мы проверяем на NULL, чтобы не было ошибок). Теперь, давайте сделаем то же самое в App::Render:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Render(Screen);
+}
+</code></pre>
+
+<p>и еще раз то же самое в App::Cleanup:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Cleanup();
+}
+
+Entity::EntityList.clear();
+</code></pre>
+
+<p>Обратите внимание, я добавил вызов функции очистки вектора.</p>
+
+<p>Отлично, теперь скомпилируйте то, что получилось. Вы должны увидеть две фигурки Йоши на экране. В следующей статье мы рассмотрим создание карты.</p>
+
+        </div>
+    </article>
+
+    <script src="https://utteranc.es/client.js"
+        repo="viktoras25/viktoras25.github.io"
+        issue-term="title"
+        label="💬Comments"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2020 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA</a>
+                ·
+                <img height="20px" alt="CC" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="BY" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="SA" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                ·
+                <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>
