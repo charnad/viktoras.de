@@ -26,6 +26,10 @@ a:hover {
     text-decoration: none;
 }
 
+#header {
+    margin-bottom: 1em;
+}
+
 #header #invader-wrapper {
     height: 150px;
     width: 150px;
@@ -132,7 +136,7 @@ a:hover {
     margin-left: 3em;
     padding-left: 1em;
     font-style: italic;
-    font-size: 1.3em;
+    font-size: 1.1em;
 }
 
 a.page-link {
