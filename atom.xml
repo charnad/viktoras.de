@@ -1,0 +1,847 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[viktoras.de]]></title>
+    <link href="//viktoras.de/atom.xml" rel="self"/>
+    <link href="//viktoras.de/"/>
+    <updated>2021-03-29T07:56:05+00:00</updated>
+    <id>//viktoras.de/</id>
+            <author>
+            <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
+        <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[&#039;Good Enough&#039; Architecture by Stefan Tilkov Brief]]></title>
+            <link href="//viktoras.de/blog/good-enough-architecture-brief/"/>
+            <updated>2021-03-22T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/good-enough-architecture-brief/</id>
+            <content type="html"><![CDATA[<p>Takeouts from a talk from GOTO 2019 conference "'Good Enough' Architecture" by Stefan Tilkov. Found on <a href="https://www.youtube.com/watch?v=PzEox3szeRc">youtube</a>.</p>
+
+<div class="text-center">
+    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/1-intro.jpg" alt="intro">
+</div>
+
+<p>Theory:
+<em>"Architecture represents the significant design decisions that shape a system, where significant is measure by cost of change".</em> (Grady Booch)</p>
+
+<p>Practice:
+<em>"Whatever the architect considers important enough to merit their attention"</em></p>
+
+<p>There can be lots of things that really don't matter, that should be left to the developer. At the same time there are many important things are not being considered.</p>
+
+<!--more-->
+
+<h4 id="misconceptions">Misconceptions</h4>
+
+<p>Architecture is not an upfront activity performed by somebody in charge of telling everyone else what to do.</p>
+
+<p>Architecture is not a description, it is the actual system. "Architecture is a property of a system, not a description of its intended design".</p>
+
+<h4 id="what-is-a-good-architecture%3F">What is a good architecture?</h4>
+
+<p>It's the same question as "what is a good car?". You have to take architecture in relation to the actual quality aspect that you care about. You might care about security more, than performance, you have to figure it out, what that is.</p>
+
+<div class="text-center">
+    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/2-scaling-dimensions.jpg" alt="scaling-dimensions">
+</div>
+
+<p>There is no "good" and "bad" architecture without context; architecture needs to take specific quality attributes into account.</p>
+
+<h4 id="1.-non-extensible-extensibility">1. Non-extensible extensibility</h4>
+
+<p>If your design attempts to satisfy everyone, you'll likely end up satisfying no one.</p>
+
+<div class="text-center">
+    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/3-configurability-cost.jpg" alt="configurability-cost">
+</div>
+
+<p>Solution was way too complex to small customer and not flexible enough large customers. They ended up building custom solution for specific clients. "Highly specific code is often preferable to sophisticated configuration".</p>
+
+<h4 id="2.-perilously-fine-grained">2. Perilously fine-grained</h4>
+
+<p>An architect of a project went to a conference, that pitched microservices. Which was a sad thing for that particular service. What architect decided to do was of course to separate everything into tiny little services, which felt good for developers for a while. As the team grew, people started to compete about who got access to a particular microservice.</p>
+
+<p>A common anti-pattern is an "orders service". You will have a bunch of services that depend on this service and you will have to manage these dependencies. The problem is, this particular orders service isn't a generic thing, it actually has aspects of all those dependencies. It does many things for many people. If you aggregate it into a little entity thing it will become a problem.</p>
+
+<p>Everybody wants to be Netflix, but nobody is.</p>
+
+<ul>
+<li>Small is not always beautiful</li>
+<li>Refactoring within team boundaries much easier than globally</li>
+<li>You can't ignore organisational parameters, it will always hurt you</li>
+</ul>
+
+<h4 id="3.-your-system-will-be-dynamic">3. Your system will be dynamic</h4>
+
+<ul>
+<li>Centralized responsibility hurts</li>
+<li>Faced with too much rigidity, a way around the rules will be found</li>
+</ul>
+
+<h4 id="4.-free-style-architecture">4. Free-style architecture</h4>
+
+<div class="text-center">
+    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/4-decoupling-developers.jpg" alt="configurability-cost">
+</div>
+
+<ul>
+<li>Lack of standardization led to inefficient UI integration at runtime</li>
+<li>Vast differences in API style, formats, documentation created needless extra work</li>
+<li>Despite no centralised frontend, a central frontend team created a new bottleneck</li>
+</ul>
+
+<p>You can not decide to not have an architecture; if you don't actively create it, be prepared to deal with the one that emerges.</p>
+
+<h4 id="5.-cancerous-growth">5. Cancerous growth</h4>
+
+<ul>
+<li>Successful systems often end up the worst architecture</li>
+<li>Unmanaged evolution will lead to complete chaos</li>
+<li>Don't be afraid of some light architectural governance</li>
+</ul>
+
+<h4 id="6.-improve-with-less-intelligence">6. Improve with less intelligence</h4>
+
+<ul>
+<li>Smart endpoints, dumb pipes</li>
+<li>Value of specific over generic solution</li>
+</ul>
+
+<h4 id="final-thoughts">Final thoughts</h4>
+
+<ol>
+<li>Don't be afraid of architecture</li>
+<li>Choose the simplest thing that will work</li>
+<li>Create evolvable structures</li>
+<li>Manage your system's architectural evolution</li>
+<li>Don't build road blocks - create value and get out of the way</li>
+</ol>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[One plus one]]></title>
+            <link href="//viktoras.de/blog/one-plus-one/"/>
+            <updated>2019-08-12T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/one-plus-one/</id>
+            <content type="html"><![CDATA[<p>A little funny quiz I've came up with. Guess programming language:</p>
+
+<ol>
+<li>'1' + 1 = 11</li>
+<li>'1' + 1 = 2</li>
+<li>'1' + 1 = 50</li>
+<li>'1' + 1 = TypeError</li>
+</ol>
+
+<p>Answers below <!--more--></p>
+
+<ol>
+<li>Javascript. Press F12 in your browser (open dev tools console) and try for yourself</li>
+</ol>
+
+<pre><code class="javascript">&gt; '1' + 1
+&lt; "11"
+</code></pre>
+
+<ol start="2">
+<li>PHP</li>
+</ol>
+
+<pre><code class="php">echo '1' + 1;
+2
+</code></pre>
+
+<ol start="3">
+<li>C. '1' has <strong>char</strong> type, which is also an ASCII code of the symbol '1', which is 49. Plus one makes it 50.</li>
+</ol>
+
+<pre><code class="c">printf("%d", '1' + 1);
+50
+</code></pre>
+
+<ol start="4">
+<li>Python.</li>
+</ol>
+
+<pre><code class="python">print '1' + 1;
+TypeError: cannot concatenate 'str' and 'int' objects
+</code></pre>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[4 Layer API Client Structure]]></title>
+            <link href="//viktoras.de/blog/4-layer-api-client-structure/"/>
+            <updated>2019-08-11T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/4-layer-api-client-structure/</id>
+            <content type="html"><![CDATA[<p>One of common tasks in software development is building a client library for some service API. Over the years I've come up with a way of structuring these libraries, which has served me well. The evolution of my approach went all the way from 2 layer (Business - Client) to now 4 layers. In some specific cases you might need more than these 4, but in usual case it enough. So the layers are:</p>
+
+<ol>
+<li>Business/Domain Layer</li>
+<li>Service Layer</li>
+<li>Client Layer</li>
+<li>Transport Layer</li>
+</ol>
+
+<h4 id="business%2Fdomain-layer">Business/Domain layer</h4>
+
+<p>Business layer doesn't really belong to the library itself, it is application specific. This layer contains business logic, which operates in business terms. For example, your use case requires you to create a Google Analystics visitor statistics widget for your backend panel. It is important to note, that use case does not define which protocol do you need to use or which request you need to make. All because it's irrelevant, the use case is still valid regardless of technical details. We can use some pseudocode to describe usage of the client library in the use case: <code>gaService.getVisitorStatistics()</code>. Actually, the real code shouldn't look much different. As we see, business layer makes use of a service class, which belongs to a service layer.</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="353px" height="84px" viewBox="-0.5 -0.5 353 84"><defs/><g><path d="M 270 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(149.5,55.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="59" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $statistics </div></div></foreignObject><text x="30" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $statistics </text></switch></g><rect x="270" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="270" y="0" width="80" height="80" fill="#fff2cc" stroke="#d6b656" pointer-events="none"/><g transform="translate(289.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="40" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Service</div></div></foreignObject><text x="20" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Service</text></switch></g><path d="M 80 20 L 263.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 268.88 20 L 261.88 23.5 L 263.63 20 L 261.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(107.5,14.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="135" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $service-&gt;getStatistics() </div></div></foreignObject><text x="68" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $service-&gt;getStatistics() </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#ffe6cc" stroke="#d79b00" pointer-events="none"/><g transform="translate(18.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="42" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Domain</div></div></foreignObject><text x="21" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Domain</text></switch></g></g></svg>
+</div>
+
+<!--more-->
+
+<h4 id="service-layer">Service Layer</h4>
+
+<p>Service layer is also application specific and is not shipped with a library. This layer can translate business requirement into Client terms. In the previous layer we have stated, that we need visitor statistics. This layer knows how to instantiate a Client and which request to invoke to get the data. Also here you get the data from the response object and prepare it to pass back to business layer. This layer can be implemented as an Adapter pattern, which adapts Client Library to the required interface.</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="343px" height="84px" viewBox="-0.5 -0.5 343 84"><defs/><g><path d="M 80 20 L 253.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 258.88 20 L 251.88 23.5 L 253.63 20 L 251.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(94.5,13.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="147" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> request(StatisticsRequest) </div></div></foreignObject><text x="74" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> request(StatisticsRequest) </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#fff2cc" stroke="#d6b656" pointer-events="none"/><g transform="translate(19.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="40" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 42px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Service</div></div></foreignObject><text x="20" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Service</text></switch></g><path d="M 260 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(126.5,53.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="102" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;">StatisticsResponse</div></div></foreignObject><text x="51" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">StatisticsResponse</text></switch></g><rect x="260" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="260" y="0" width="80" height="80" fill="#d5e8d4" stroke="#82b366" pointer-events="none"/><g transform="translate(284.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Client</div></div></foreignObject><text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Client</text></switch></g></g></svg>
+</div>
+
+<h4 id="client-layer">Client Layer</h4>
+
+<p>Now we have crossed application boundry. This is no longer a part of the application, but a distributable and reusable library by itself. Client knows how send requests. It has a public method <code>request(RequestInterface);</code> and that is basically it. In this layer we define Request and Response classes, which contain the that data you pass to the API and receive from the it. If it's a SOAP client, Request can produce XML (or an array, because PHP's SoapClient in WSDL mode is smart enough) or a JSON string. Response must be able to parse response SOAP XML or JSON and provide you all the methods you need to retrieve data. It can be argued, that I'm missing a presenter layer here, which is true. From my experience, if a format changes most of the request structure change as well. So while these concerns are separate, in practice they usually change together.</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="283px" height="84px" viewBox="-0.5 -0.5 283 84"><defs/><g><path d="M 80 20 L 100 20 L 193.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 198.88 20 L 191.88 23.5 L 193.63 20 L 191.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(105.5,13.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="64" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> get($body) </div></div></foreignObject><text x="32" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> get($body) </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#d5e8d4" stroke="#82b366" pointer-events="none"/><g transform="translate(24.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="30" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 32px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Client</div></div></foreignObject><text x="15" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Client</text></switch></g><path d="M 200 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(95.5,54.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="90" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> $responseBody </div></div></foreignObject><text x="45" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> $responseBody </text></switch></g><rect x="200" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="200" y="0" width="80" height="80" fill="#dae8fc" stroke="#6c8ebf" pointer-events="none"/><g transform="translate(214.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="50" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 52px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Transport</div></div></foreignObject><text x="25" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Transport</text></switch></g></g></svg>
+</div>
+
+<h4 id="transport-layer">Transport Layer</h4>
+
+<p>This is your HTTP client, SOAP client or any other client, that doesn't care about contents of your request. It's  just a transmission tool, a separate library which hides behind an interface (e.g. <a href="https://www.php-fig.org/psr/psr-18/">PSR-18</a>).</p>
+
+<div class="text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="313px" height="84px" viewBox="-0.5 -0.5 313 84"><defs/><g><path d="M 80 20 L 223.63 20" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 228.88 20 L 221.88 23.5 L 223.63 20 L 221.88 16.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(99.5,14.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="112" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> GET host HTTP/1.1 </div></div></foreignObject><text x="56" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> GET host HTTP/1.1 </text></switch></g><rect x="0" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="0" y="0" width="80" height="80" fill="#dae8fc" stroke="#6c8ebf" pointer-events="none"/><g transform="translate(14.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="50" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; width: 52px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">Transport</div></div></foreignObject><text x="25" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica">Transport</text></switch></g><path d="M 230 60 L 86.37 60" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><path d="M 81.12 60 L 88.12 56.5 L 86.37 60 L 88.12 63.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="none"/><g transform="translate(108.5,51.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="102" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; vertical-align: top; white-space: nowrap; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;background-color:#ffffff;"> HTTP/1.1 200 OK </div></div></foreignObject><text x="51" y="12" fill="#000000" text-anchor="middle" font-size="12px" font-family="Helvetica"> HTTP/1.1 200 OK </text></switch></g><rect x="230" y="0" width="80" height="80" fill="#000000" stroke="#000000" transform="translate(2,3)" opacity="0.25"/><rect x="230" y="0" width="80" height="80" fill="#f5f5f5" stroke="#666666" pointer-events="none"/><g transform="translate(259.5,33.5)"><switch><foreignObject style="overflow:visible;" pointer-events="all" width="20" height="12" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; font-size: 12px; font-family: Helvetica; color: rgb(51, 51, 51); line-height: 1.2; vertical-align: top; width: 20px; white-space: nowrap; overflow-wrap: normal; text-align: center;"><div xmlns="http://www.w3.org/1999/xhtml" style="display:inline-block;text-align:inherit;text-decoration:inherit;white-space:normal;">API</div></div></foreignObject><text x="10" y="12" fill="#333333" text-anchor="middle" font-size="12px" font-family="Helvetica">API</text></switch></g></g></svg>
+</div>
+
+<p>File structure of the client looks like this.</p>
+
+<div class="text-center">
+    <img src="/img/posts/2019-08-11-4-layer-api-client-structure/file-structure.png" alt="file-structure" width="255px">
+</div>
+
+<h4 id="advantages">Advantages</h4>
+
+<p>This structure helps me to create clients blazingly fast.</p>
+
+<ul>
+<li>It's easy to test. You can isolate every layer and mock the adjacent layers.</li>
+<li>Every layer concentrates on a specific concern. If changes are required, they usually involve just one layer.</li>
+<li>Extending is easy. To create new requests you just need to add new Request classes, no changes to client needed.</li>
+</ul>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Helper classes don&#039;t help]]></title>
+            <link href="//viktoras.de/blog/helper-classes-dont-help/"/>
+            <updated>2019-08-04T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/helper-classes-dont-help/</id>
+            <content type="html"><![CDATA[<p>Some time ago I wrote a post on my hate towards static methods and helper classes. It was more of an emotional rant than anything else and didn't serve the educational purpose. So this is a rewrite of the original post, which I hope can provide more insight.</p>
+
+<p>To begin with, a static method is a method, that can be invoked without instantiating an object of that class. The most common usage of static methods I've seen are helper classes and singleton pattern. A helper class is a collection of static methods, which hopefully has some common topic. So it may look like:</p>
+
+<pre><code class="php">// /helpers/FormatHelper.php
+class FormatHelper
+{
+    public static function formatXml($xmlString) {...}
+    public static function formatJson($jsonString) {...}
+}
+</code></pre>
+
+<p>and the usage would be:</p>
+
+<pre><code class="php">// /lib/ServiceClient.php
+$this-&gt;getLogger()-&gt;debug(FormatHelper::formatXml($response));
+</code></pre>
+
+<p>I hope you get the idea. So here is where I see the problem. <!--more--></p>
+
+<h4 id="cohesion">Cohesion</h4>
+
+<p>Cohesion is a metric of how much parts of a module or class belong together. You should aim at having cohesive classes. Each class should have a precisely defined task, do that and nothing more. Helper classes usually have methods that are all over the place. Even if there is some general idea, e.g. <code>DateHelper</code>, it's methods can still do a multitude of things: parsing, converting, formatting, calculation. Very often helpers classes are just a dump of functions that would otherwise have one common word in name.</p>
+
+<h4 id="hidden-global-state">Hidden Global State</h4>
+
+<p>An object is a set of data and functions or methods that operate on this particular data. By instantiating a second object we create another set of data which is independent of the first one. You have control over the data you work with. However, helpers and static methods in general do not require an object instance, but that by no means prevent you from having data to work with. Data (class variables) can too be declared static. This data is shared by all instances of a class as well as static methods. This can easily lead to unpredictable behavior in your system, because someone in another part of the system started using your helper and it changes the data in the way you don't expect.</p>
+
+<h4 id="dependency">Dependency</h4>
+
+<p>Every time you call another class, you create a dependency on this class. Since we want to build complex system, it's inevitable that some components will depend on another. We manage these dependencies to hinder coupling problems, for example by <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">dependency inversion</a>. But by calling a static method you create a rigid connection, that cannot be replaced. Moreso, it's not a dependency that is detectable by just looking on class definitions. Unless you look into the code (and you are lucky if there is a <code>use</code> statement), you will never know this dependency is even there.</p>
+
+<h4 id="connascence">Connascence</h4>
+
+<p>If you have a helper, you kinda want to use it everywhere, otherwise what's the point. Some day you may decide to add another parameter to a static function. This may incur a huge wave of changes to every place using this helper. This means your <a href="https://en.wikipedia.org/wiki/Connascence">connascence</a> is high. If your function will never change and is very specific, there is no benefit in putting it into a helper at all. If it's very abstract, you will need to have enough parameters to suit all the cases you may have in the projects. And then you never touch the function, because you can't guarantee the system will work if you do. Instead, you could just build normal functions within the classes that need this logic.</p>
+
+<h4 id="reasonable-usage">Reasonable Usage</h4>
+
+<p>With regard to all the above, there are some legitimate usages of static methods. The most obvious is alternative constructors. And yes, constructor itself is a static function with a special syntax, it creates the instance of a class, which does not exist prior to that. Sometimes you need to be able to create an object instance in different ways, e.g. from a serialized data, from a subclass and so on. Beyond that it's hard for me to imagine another non-exotic case, where static methods would be appropriate.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Forget about DRY]]></title>
+            <link href="//viktoras.de/blog/forget-about-dry/"/>
+            <updated>2017-08-13T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/forget-about-dry/</id>
+            <content type="html"><![CDATA[<p>I've once had a heated discussion with my colleagues, which eventually motivated me to write this blog post. This goes about DRY programming principle, being oh so loved by many developers. I'm convinced, that many do not really understand what does this principle really promote. DRY suffers from what I would call an "imprinting fallacy" (trying to mimic senior colleagues, while taking barely understood concepts to extreme), the same way the Singleton design pattern does.</p>
+
+<p>An inexperienced developer, lets say Joe, starts working in a team, where words like "design patterns" are frequently used. Joe looks through some online articles and sees a lot of scary words and complex schemes. But then a simple enough passage pops up - a single instance of some class. So Joe starts to use Singleton extensively, as he thinks it makes him a more senior developer, because he now uses a design pattern. He does not know about all the hidden flaws he's building into the project. Same goes for DRY. It's deceptively easy to understand, while the devil is in the details. DRY - Don't repeat yourself, don't duplicate programming code, what's more to it? The same Joe, is happy to use a programming principle he has heard about. He vigorously finds out all repeated lines of code and extracts them into separate (usually into static methods) classes. By doing that, he is most likely damaging the project once again.
+<!--more--></p>
+
+<p>DRY principle is most likely not what you think it is. The idea comes from the book "The Pragmatic Programmer" by Andrew Hunt and David Thomas and is defined as follows:</p>
+
+<blockquote>Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.</blockquote>
+
+<p>It's not about duplicating code, the idea behind the principle is far grander.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> It is to have one single source of knowledge, so that changes to project requirements would only affect that source. The rest - data storage, UI, code, documentation should tap into this source and update accordingly. Because if they don't, then your project is full of duplication. Code represents the same knowledge documentation does, but in a machine-readable way, rather that a human-readable. UI form duplicates database structure, because it needs to show all the same fields a DB table has. Even the comments in your code duplicate some knowledge, because they also can get outdated. So you see, that referring to DRY is not actually an argument in favor of code deduplicaton, as it's a project-level approach.</p>
+
+<p>But still, what about code duplication? If you change some code, you would likely need to update all the duplicated parts as well, so that a system remains consistent. This means more work and potentially bugs due to inconsistent behavior if you forget to update every place. Code duplication is just one side of the problem. What if a change to the code in one place requires a change in another place even if there is no apparent code duplication? Same thing, more work and potentially buggy software. It's not just duplication itself which is problematic, it's connascence<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</p>
+
+<p>You have probably heard about cohesion and coupling, software quality metrics which help to reason about quality of the code. Connascence is a great addition to them. The stronger the form of connascence is, the more difficult and costly it is to change the elements in the relationship. I absolutely recommend watching this <a href="https://www.youtube.com/watch?v=Ip2o4vbAK3s&amp;t=741">video</a>, a session by Josh Robb about Connascence &amp; Coupling. I don't think I could give a better overview and explanation on the topic, so I humbly leave it to others.</p>
+
+<p>So now we know, that duplication is not harmful by itself, rather than by inducing a connascence of algorithm. By duplicating the code we expect different parts to behave the same way and a change in one part requires a change in the copy. But what if the copy does not have to be updated with the original? What if it's a completely separate module, or even a separate project? The way we process some file format in different modules may be identical now, but may be not so in the future. It is the accursed code duplication, but there is no connascence and there is also no coupling! By duplicating the code we've achieved the best level of these metrics. If you follow the way of deduplication, you will have to introduce coupling and eventually connascence. These modules will depend on the same library, and a change in the library may require a change in both modules, which we initially tried to avoid.</p>
+
+<p>There is no one single principle or rule to live by. Using some principle may make you break another, but that is fine, because these are just guidelines and not unbreakable laws of existence. Every situation is unique and you need to think carefully and choose what better suits yours.</p>
+
+<div class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+
+<li id="fn:1" role="doc-endnote">
+<p><a title="A Conversation with Andy Hunt and Dave Thomas by Bill Venners" href="http://www.artima.com/intv/dry.html">A Conversation with Andy Hunt and Dave Thomas by Bill Venners</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
+</li>
+
+<li id="fn:2" role="doc-endnote">
+<p><a title="Connascence" href="https://en.wikipedia.org/wiki/Connascence_(computer_programming)">Connascence - Wikipedia</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
+</li>
+
+</ol>
+</div>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Segments intersection algortihm]]></title>
+            <link href="//viktoras.de/blog/segments-intersection-algorithm/"/>
+            <updated>2017-01-25T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/segments-intersection-algorithm/</id>
+            <content type="html"><![CDATA[<p>For my job I needed to write a more efficient function to merge multiple sets of segments. Segments were date ranges where some special offers are applicable. So let's say a 10% discount is valid from 1st Jan to 10th Jan and another 20% discount is valid from 5th Jan to 15th Jan. This means both of them are valid between 5th and 10th. Those are just two ranges, there potentially be two lists of any amount of segments.</p>
+
+<p>Now, I've said more efficient, because the code I inherited has been creating an list of all the dates within given ranges and calling <a href="http://php.net/manual/en/function.array-merge.php">array_merge</a> on them. This has worked until we've started getting dates ranges like "0001-01-01 to 9999-12-31". I've came up with an algorithm, which might not be the most optimal, but I'm pretty happy with it. Especially because I've developed it without stealing parts from Google or StackOverflow. For funsies I'll reproduce the algorithm in Golang (it was in PHP originally).</p>
+
+<p>Funnily enough, while writing this article I've come up with even easier solution. It seems much more obvious and looks like it doesn't deserve an article, but I've already wrote it. So there. Update 2: A day after posting I've simplified the algorithm even more by removing the flattening. It's now about 3 times shorter and 100 times easier to comprehend, than the first PHP version I wrote.</p>
+
+<p>Prerequisites are: segments within a set are not overlapping with each other and are sorted.
+Let's start with a couple of definitions. I'll use ints for segment begin and end, but generally any comparable type will do (like in PHP I just use date strings "2017-01-25", which are perfectly comparable). You can also view the gist with the source + test <a href="https://gist.github.com/viktoras25/1582c22c69ee7d2bd70478eefe30f0c0">here</a>.</p>
+
+<pre><code class="go">type segment struct {
+    from, to int64
+}
+
+type segments []segment
+</code></pre>
+
+<p>A couple of functions I'm going to use are flatten, min and max. Flatten removes "borders" between ranges flattening them to an int array, min and max are pretty self-explanatory.</p>
+
+<pre><code class="go">func min(a, b int64) int64 {
+    if a &lt; b { return a }
+    return b
+}
+
+func max(a, b int64) int64 {
+    if a &gt; b { return a }
+    return b
+}
+
+</code></pre>
+
+<p>So here it goes:</p>
+
+<pre><code class="go">func Merge(a, b segments) segments {
+
+    result := segments{}
+
+    // While there are entries left
+    for len(a) &gt; 0 &amp;&amp; len(b) &gt; 0 {
+
+        // Set A will be the one, starting with the earliest date (smallest entry)
+        if a[0].from &gt; b[0].from {
+            a, b = b, a
+        }
+
+        // While A has segments before the B starts, remove those
+        if a[0].to &lt; b[0].from {
+            a = a[1:]
+            continue
+        }
+
+        // We've thrown away all the non-intersecting segments at the beginning
+        // So here we will have an intersection between a and b
+        result = append(result, segment{
+            max(a[0].from, b[0].from),
+            min(a[0].to, b[0].to),
+        })
+
+        // Remove the segment of these two, which ends first
+        if a[0].to &lt; b[0].to {
+            a = a[1:]
+        } else {
+            b = b[1:]
+        }
+    }
+
+    return result
+}
+</code></pre>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Why do I hate static methods]]></title>
+            <link href="//viktoras.de/blog/why-do-i-hate-static-methods/"/>
+            <updated>2015-05-10T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/why-do-i-hate-static-methods/</id>
+            <content type="html"><![CDATA[<p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
+
+<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
+
+<pre><code class="php">class Helper
+{
+   public static formatA() {...}
+   public static formatB() {...}
+   public static formatC() {...}
+}
+</code></pre>
+
+<p>The thing is, it has absolutely no difference from:</p>
+
+<pre><code class="php">function helper_formatA() {...}
+function helper_formatB() {...}
+function helper_formatC() {...}
+</code></pre>
+
+<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
+
+<p>So we have used this static method somewhere in the code:</p>
+
+<pre><code class="php">// .. within some class
+public function foo()
+{
+    // ...
+    Helper::formatA('bar');
+}
+</code></pre>
+
+<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
+
+<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
+
+<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
+
+<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Project Euler 502]]></title>
+            <link href="//viktoras.de/blog/project-euler-502/"/>
+            <updated>2015-04-11T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/project-euler-502/</id>
+            <content type="html"><![CDATA[<p>Hello everyone, I've decided to continue writing posts into my blog, when I deal with something interesting. This time my attention has been drawn to Project Euler problems. I tend to refer to those problems when I'm learning a new programming language. Solving easier problems help to get handy with the syntax and language constructs. So it's Haskell now. I'm not going to tell how Haskell is different from anything I've learned before (Coursera Scala course was the closest), so i'll just proceed with the Problem 502, which I found really intriguing.</p>
+
+<p>The problem itself can be found <a href="https://projecteuler.net/problem=502">here</a>. Brief comprehension is: how many castles can you build, that follow the rules: no hanging blocks, total amount of blocks is even. I am currently at the first approach stage. The first approach is usually naive: generate every possible castle, check the validity and calculate how many there are.</p>
+
+<p>But there are several concepts I used, which I find quite interesting.
+A castle consists of levels, each level consists of blocks and spaces between them. If you encode blocks and spaces as 0's and 1's you get a binary string, which you can convert to decimal. So, a castle is a just list of integers.</p>
+
+<p>The next thing is, how do we generate a level on top of the previus level. And the answer is again, quite simple. If a level has a width of 3, then there are 8 possible combinations of blocks and spaces, which are also numbers from 0 (no blocks, only spaces) to 7 (one block across the whole level). So on the 2x2 grid there are: 1 for the base level + 3 possible combinations (0, 1, 2) of the second level = 4 castles. At this point there will also be invalid castles (with hanging blocks), but we will filter them out later. On a WxH grid we will have 1 + (2 ^ W - 1) ^ (H - 1) castles. As a simple example in the task it is given a 10x13 grid, which would produce ~1.65*10^35 possible castles (Eeek).</p>
+
+<p>The next idea, which will cut the number of computations by a huge amount is a check, if there are any hanging blocks. Because if there is at least one, we can skip this "branch". How do we do it? Let's see, if a level is a binary number, the next level may not be bigger, than that number, because otherwise most significant bit will hover over 0 of the underlying level, which is not allowed. Moreover, every 1 of the new level must have an underlying 1 from the previous level - bitwise AND. (New level) AND (Old level) must be equal to the (New level), otherwise new level is invalid.</p>
+
+<p>So this is basically it, I start with a base level, add numbers from 0 to (2 ^ W) - 1, if they AND with the previous level, and after all I calculate amonut of blocks by grouping them.</p>
+
+<pre><code class="haskell">import Data.List
+import Data.Bits
+
+{-|
+  Decimal to binary conversion
+ -}
+binary :: Integer -&gt; [Integer]
+binary 0 = [0]
+binary 1 = [1]
+binary x = binary (div x 2) ++ [mod x 2]
+
+{-|
+  Naive implementation of Euler Problem 502. Generate all castles, check validity, count
+-}
+castles :: Integer -&gt; Integer -&gt; Integer
+castles w h = genericLength [c | c &lt;- (allCastles w h), (even . sum . (map (countBlocks))) c]
+
+{-|
+  Generates all possible castles, even invalid ones. Each level is introduced
+  with a number, which in binary form represents blocks
+-}
+allCastles :: Integer -&gt; Integer -&gt; [[Integer]]
+allCastles _ 0 = []
+allCastles 0 _ = []
+allCastles w h = addLevel [[base]] (h-1)
+  where base = (2 ^ w)-1
+        addLevel castles levelsLeft
+            | levelsLeft == 0 = castles
+            | otherwise = addLevel ([c ++ [p] | c &lt;- castles, p &lt;- [0..(last c)], (p == p .&amp;. (last c))]) (levelsLeft-1)
+
+{-|
+  Counts amount of blocks within a castle row
+-}
+countBlocks :: Integer -&gt; Integer
+countBlocks = genericLength . (filter ((== 1).head)) . group . binary
+</code></pre>
+
+<p>This is by no means an optimal solution, I couldn't even compute a 10x13 grid from the simpler example within a reasonable amonut of time. The biggest so far was a 9x7 grid for 28+ millions of castles.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[Демо: плазма]]></title>
+            <link href="//viktoras.de/blog/plasma/"/>
+            <updated>2013-05-14T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/plasma/</id>
+            <content type="html"><![CDATA[<p><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma-logo.png" class="oppic" height="150px">Эффект плазмы (или попросту плазма) - эффект часто использующийся в демках, чтобы создать переливающийся эффект. Есть много способов создать анимацию плазмы, но я рассмотрю только один: сумма синусов и некоторых других функций. Экспериментируя с параметрами и пробуя различные функции, а так же цвета, можно найти очень круто выглядящие комбинации. Оригинал этой статьи можно найти <a href="http://lodev.org/cgtutor/plasma.html">здесь</a>. В ней примеры указаны с использованием С, я же делал все на HTML5 (JavaScript + canvas). Примеры довольно просты и перенести на любой другой язык будет несложно. Внутри около 5 мегабайт картинок, если кого-то это беспокоит.<!--more--></p>
+
+<p>Перед тем, как мы приступим к собственно созданию плазмы, давайте рассмотрим функцию, которая нам в этом поможет. Значения функции синус лежат в промежутке от -1 до +1, выглядит вот так:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/sine.png"></p>
+
+<p>Для наших целей мы отобразим ее немного иначе, а именно будем устанавливать цвет пикселя равным синусу его x-координаты:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example1.png"></p>
+
+<p>Белые полосы это места, где синус близок или равен единице, черные, соответственно, близко к -1. Такого эффекта можно добиться следующим кодом:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.width; y++) {
+    for (x = 0; x &lt; canvas.height; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 4));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Мы проходим через каждый пиксель, расчитываем его цвет на основе синуса, и выводим. Значение цвета должно быть в пределах от 0 до 256 (0x00 - 0xFF), а так как синус всегда имеет значение между -1 и 1, мы преобразуем его в 0-256, умножив на 128 и прибавив 128. X делим на 4 чтобы значение функции менялось медленнее. Если разделить на меньшее значение, то полосы станут уже:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example2.png"></p>
+
+<p>Если использовать синус от суммы sin((x + y) / 8.0), то линии будут скошенными:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example3.png"></p>
+
+<p>Другая интересная функция для плазмы это синус расстояния от пикселя до определенной точки. Расстояние от пикселя до точки отсчета (0, 0) равняется sqrt(x * x + y * y). А расстояние от пикселя до центра экрана (холста): sqrt((x - w / 2) * (x - w / 2) + (y - h / 2) * (y - h / 2)). Если взять от этого синус, то получится:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example4.png"></p>
+
+<p>Вот код, который генерирует такую картинку (в этом примере, я перенес точку координат в центр изображения, для простоты [charnad]):</p>
+
+<pre><code class="javascript">for (y = -cY; y &lt; cY; y++) {
+    for (x = -cX; x &lt; cX; x++) {
+        color = 128 + Math.floor(128 * Math.sin(Math.sqrt(x*x + y*y) / 8));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Складывая эти функции (с различными коэффициентами, точками отсчета, и т.д.), и используя лучшую цветовую палитру, чем оттенки серого, которые мы использовали до сих пор, мы можем создавать крутую плазму. Для разогрева, вот плазма сгенерированная суммой двух функций:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example5.png"></p>
+
+<p>Несмотря на то, что выглядит не очень круто, это уже настоящая плазма. Она получается из суммы синусов x и y. Код ничуть не сложнее предыдущих примеров, но для ясности я расписал формулу на несколько строк. Также, в конце результат делится на два, таким образом мы остаемся в пределах 0-255:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Чтобы получить и цвета и анимацию, мы будем использовать цветовую палитру (параметр "цвет" будет использоваться как индекс для выбора цвета из палитры), и каждый фрейм будем сдвигать палитру на небольшое значение, так что все цвета палитры будут проходить по кругу. В таком режиме нам нужно будет нарисовать плазму только один раз и дальше только сдвигать палитру. Так как цвета меняются по кругу, палитра не должна быть "прерывистой", и заканчиваться должна тем же цветом, что и начинаться.
+Следующие две "прерываются" и не могут быть использованы для плазмы, потому что тогда анимация будет рваной или перескакивать:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette1.png"></p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette2.png"></p>
+
+<p>А вот эта палитра может быть использована:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette3.png"></p>
+
+<p>Теперь чтобы у нас получился эффект плазмы: создаем палитру, создаем буфер, где будут хранится значения вычисленной функции синусов для разных пикселей, рисуем пиксели с цветом из палитры, смещаем палитру каждый фрейм. Плазма сама по себе такая же, как и в предыдущем примере, но использование палитры делает ее гораздо интереснее. Вот упрощенная часть кода, которая реализует этот алгоритм:</p>
+
+<pre><code class="javascript">// Просчитываем значения цвета, как и в предыдущих примерах
+for (y = 0; y &lt; canvas.height; y++) {
+    data[y] = [];
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        data[y][x] = color;
+    }
+}
+
+// Далее в цикле отрисовываем
+// n - сдвиг палитры
+for (y = 0; y &lt; data.length; y++) {
+    for (x = 0; x &lt; data[y].length; x++) {
+        color = palette[Math.floor(data[y][x] + n) % 360];
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>и это дает нам примерно следующую картину:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma1.gif"></p>
+
+<p>Вторая картинка показывает ту же плазму, но с упрощенной палитрой состоящей всего из 2х цветов, чтобы можно было лучше проследить движение цвета.</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma2.gif"></p>
+
+<p>Теперь, если в коде генерации плазмы мы заменим функцию на сумму 4 синусов, один из которых синус расстояния до верхнего левого угла картинки, то получим:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 8));
+color += 128 + (128 * Math.sin((x+y) / 16));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma4.gif"></p>
+
+<p>И вот, что еще можно попробовать:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 32));
+color += 128 + (128 * Math.sin(Math.sqrt(Math.pow(cX-x, 2)+Math.pow(cY-y, 2)) / 8));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma5.gif"></p>
+
+<p>Как видите, можно менять параметры и функции, пока не будет достигнут желаемый результат.
+Давайте теперь попробуем другие палитры.</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 32.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 64.0));
+    b = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette4.png"></p>
+
+<p>Это все та же плазма, но уже с новой палитрой. Чтобы цвета не "перескакивали", палитра должна начинаться и заканчиваться одним и тем же цветом.</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma6.gif"></p>
+
+<p>Следующая палитра дает довольно крутой эффект (хотя это дело вкуса):</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 16.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    b = 0;
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette5.png"></p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma7.gif"></p>
+
+<p>Наконец, вместо использования палитры и ее смещения, можно так же пересчитывать синусы каждый фрейм, каждый раз меняя значения, используя время в функции. Можно генерировать RBG-составляющие отдельно. Это все в сумме довольно много вычислений, так что плазма может тормозить. Но упомянуть об этом стоит. Каждый фрейм, для каждого пикселя расчитывается сумма 4х расстояний. Затем, из полученного значения вычисляется цвет, и он же используется чтобы создать R, G и B составляющие цвета этого пикселя. Из-за такого способа подсчета цвета картинка получится немного пикселизированной.</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = Math.sin(dist(x + time, y, 128.0, 128.0) / 8.0)
+        color += Math.sin(dist(x, y, 64.0, 64.0) / 8.0)
+        color += Math.sin(dist(x, y + time / 7, 192.0, 64) / 7.0)
+        color += Math.sin(dist(x, y, 192.0, 100.0) / 8.0);
+        color = Math.floor((4 + color)) * 32;
+        color = rgbString(color, color * 2, 255 - color);
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma8.gif"></p>
+
+<p>Можно так же расчитывать отдельную плазму для каждого цветового канала и т.д. Возможности безграничны, но это все будет медленнее, чем смещение палитры, особенно с неоптимизированными алгоритмами, которые приведены тут.</p>
+]]></content>
+        </entry>
+            <entry>
+            <title type="html"><![CDATA[SDL: Как создать игру. Сущности.]]></title>
+            <link href="//viktoras.de/blog/sdl-tutorial-6-entities/"/>
+            <updated>2012-05-12T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/sdl-tutorial-6-entities/</id>
+            <content type="html"><![CDATA[<p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>В этой статьей мы направим наши силы на создание сущностей (Entities). Сущности - это все, с чем можно взаимодействовать. Например, это может быть монстр или сундук с сокровищами, который можно открыть. В этом смысле, практически все в игре, что движется, это сущность. Камень, который является частью карты, который никогда не двигается, не является сущностью. Но если вы хотите, чтобы камень двигался, не важно по какой причине, то мы сделаем его сущностью.<!--more--></p>
+
+<p>Давайте начнем с создания двух новых файлов: <strong>Entity.cpp</strong> и <strong>Entity.h</strong>. Откройте заголовочный файл и добавьте следующее:</p>
+
+<pre><code class="cpp">#include &lt;vector&gt;
+
+#include "Animation.h"
+#include "Sprite.h"
+
+class Entity {
+    public:
+        static std::vector&lt;Entity*&gt;    EntityList;
+
+    protected:
+        Animation      Anim;
+        SDL_Surface*    Surface;
+
+    public:
+        float           X;
+        float           Y;
+
+        int             Width;
+        int             Height;
+
+        int             AnimState;
+
+    public:
+        Entity();
+        virtual ~Entity();
+
+        virtual bool Load(char* File, int Width, int Height, int MaxFrames);
+        virtual void Loop();
+        virtual void Render(SDL_Surface* Screen);
+        virtual void Cleanup();
+};
+</code></pre>
+
+<p>Теперь откройте Entity.cpp и добавьте это:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+std::vector&lt;Entity*&gt; Entity::EntityList;
+
+Entity::Entity() {
+    Surface = NULL;
+
+    X = Y = 0.0f;
+
+    Width = Height = 0;
+
+    AnimState = 0;
+}
+
+Entity::~Entity() {}
+
+bool Entity::Load(char* File, int Width, int Height, int MaxFrames) {
+    if((Surface = Sprite::Load(File)) == NULL) {
+        return false;
+    }
+
+    Sprite::Transparent(Surface, 255, 0, 255);
+
+    this-&gt;Width = Width;
+    this-&gt;Height = Height;
+
+    Anim.MaxFrames = MaxFrames;
+
+    return true;
+}
+
+void Entity::Loop() {
+    Anim.Animate();
+}
+
+void Entity::Render(SDL_Surface* Screen) {
+    if(Surface == NULL || Screen == NULL) return;
+
+    Sprite::Draw(Screen, Surface, X, Y, AnimState * Width, Anim.GetCurrentFrame() * Height, Width, Height);
+}
+
+void Entity::Cleanup() {
+    if(Surface) {
+        SDL_FreeSurface(Surface);
+    }
+
+    Surface = NULL;
+}
+</code></pre>
+
+<p>Теперь поясню. В этом классе мы инкапсулируем 5 основных компонентов, о которых я упоминал в первой статье. Это позволит нам работать с сущностями в игре гораздо проще, чем смешивать их в кучу со всем остальным в классе App. Первое, что вы можете заметить, это статический вектор, который называется EntityList. Этот вектор будет содержать все наши сущности, они будут легко доступны через Entity::EntityList, потому что он объявлен статическим. Надо особо отметить: мы объявляем EntityList в Entity, поскольку это предотвратит циклические зависимости в будущем. То есть, например мы попытаемся получить карту, чтобы обработать сущности на ней, а также хотим получить сущности, чтобы обработать карту. Map объявляет Entity, Entity объявляет Map, это повлечет за собой проблемы во время компиляции.</p>
+
+<p>Так что этот вектор содержит все наши сущности в игре. Обратите внимание, что каждый член вектора - указатель. Это потому, что в дальнейшем мы будем наследовать все последующие классы сущностей от класса Entity. Так, например, если мы собираемся сделать игру Megaman, мы бы создали класс Megaman и унаследовали бы его от класс Entity. И, благодаря полиморфизму, мы можем хранить объекты класса Megaman в EntityList. Собственно поэтому, мы заявили функции в классе, как virtual, а некоторые члены как protected.</p>
+
+<p>Далее, у нас есть базовая информация о сущности, общая для всех: координаты, размеры, поверхность для ее(сущности) изображения. Также, у нас есть функция загрузки, она получает имя файла и загружает изображение из него. По умолчанию, устанавливается прозрачный цвет. Я хочу чтобы вы понимали, что все, что я делаю не высечено в камне. Вы можете, и я даже советую вам менять код по своему вкусу. Вы можете передавать функции Load больше или меньше параметров, может вы не хотите устанавливать прозрачность по умолчанию, кто знает. Пробуйте и не волнуйтесь, если где-то запутаетесь или ошибетесь, вы всегда сможете достать мой код.</p>
+
+<p>Итак, у нас есть основная функция Loop, которая обрабатывает основные расчеты. Сейчас мы только занимаемся анимацией. Мы лишь меняем  MaxFrames, а остальное оставляем по умолчанию. Далее, функция Render, в качестве параметра передается поверхность для отображения. Чтобы можно было рисовать не только сразу на экран, но и на любую другую поверхность по вашему выбору. Ну и наконец, функция Cleanup, которая освобождает память и все такое.</p>
+
+<p>Как я уже говорил в начале, это лишь базовая структура класса Entity, она еще может не так много, но не волнуйтесь, в будущем сможет сделать все, что вы захотите. Итак, давайте заставим сущности работать. Откройте <strong>App.h</strong> и добавьте файл заголовка в начале, и объявить две сущности:</p>
+
+<pre><code class="cpp">#include "Entity.h"
+
+//...
+
+private:
+    Entity         Entity1;
+    Entity         Entity2;
+</code></pre>
+
+<p>Давайте теперь загрузим в них изображения, в App::Init.cpp добавьте следующее:</p>
+
+<pre><code class="cpp">if(Entity1.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+if(Entity2.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
+    return false;
+}
+
+Entity2.X = 100;
+
+Entity::EntityList.push_back(&amp;Entity1);
+Entity::EntityList.push_back(&amp;Entity2);
+</code></pre>
+
+<p>Я еще раз использую изображение Йоши и прошлой статьи.</p>
+
+<p>Вспомните, что я говорил, про инкапсуляцию основных функции игры в классе Entity. Мы должны вызывать эти функции в соответствующих функциях App. Поэтому, откройте App::Loop и добавьте следующее:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Loop();
+}
+</code></pre>
+
+<p>Мы в обходим каждый элемент вектора и вызываем функцию Loop. Довольно просто. (И мы проверяем на NULL, чтобы не было ошибок). Теперь, давайте сделаем то же самое в App::Render:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Render(Screen);
+}
+</code></pre>
+
+<p>и еще раз то же самое в App::Cleanup:</p>
+
+<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
+    if(!Entity::EntityList[i]) continue;
+
+    Entity::EntityList[i]-&gt;Cleanup();
+}
+
+Entity::EntityList.clear();
+</code></pre>
+
+<p>Обратите внимание, я добавил вызов функции очистки вектора.</p>
+
+<p>Отлично, теперь скомпилируйте то, что получилось. Вы должны увидеть две фигурки Йоши на экране. В следующей статье мы рассмотрим создание карты.</p>
+]]></content>
+        </entry>
+    </feed>
