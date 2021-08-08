@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SDL: Как создать игру. Координаты и блиттинг. - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/sdl-tutorial-2-coordinates-and-blitting/" rel="bookmark">SDL: Как создать игру. Координаты и блиттинг.</a>
+            </h2>
+            <div class="date text-right float-sm-right">01.05.2012</div>
+        </div>
+        <div class="entry">
+            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-coordinates-and-blitting">SDL Coordinates and Bliting</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>Используя <a href="//viktoras.de/blog/sdl-tutorial-1-basics/">первую статью</a>, как базу, углубимся в мир поверхностей SDL. Я пытался донести до вас мысль, что SDL поверхности - это в основном изображения, хранящиеся в памяти. Представьте что, у нас есть пустая поверхность размером 320x240 пикселей. Если добавить к ней систему SDL координат, то получится что-то вроде этого:</p>
+
+<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/coords.jpg"></p>
+
+<p>Эта система координат отличается, от обычной. Обратите внимание, что координата Y увеличивается вниз, а координата X увеличивается вправо. Это важно понимать, чтобы правильно рисовать изображения на экране.<!--more--></p>
+
+<p>Поскольку у нас уже есть основная поверхность (Screen), нам нужен способ, чтобы рисовать на ней. Этот процесс называется блиттинг [<em>Blitting - Перенос битовых блоков</em>], когда мы в общем переносим одно изображение на другое. Но прежде чем мы сможем это сделать, мы должны загрузить эти изображения в память. SDL предлагает простую функцию для этого - SDL_LoadBMP. Примерный код может выглядеть следующим образом:</p>
+
+<pre><code class="cpp">SDL_Surface* TmpSurface;
+
+if((TmpSurface = SDL_LoadBMP("mypicture.bmp")) == NULL) {
+    //Error!
+}
+</code></pre>
+
+<p>Все довольно просто, SDL_LoadBMP принимает один аргумент, имя файла, который вы хотите загрузить, и возвращает поверхность.  Если функция возвращает NULL, то либо файл не найден, либо поврежден или произошла какая-либо другая ошибка. К сожалению, чтобы все работало быстро, одного этого метода недостаточно. Часто изображение будет загружено в другом формате. И, когда мы будем отображать изображение на экране, мы можем столкнуться с потерей производительности, выпадением цветов изображения, и т.п. Но, к счастью SDL предлагает решение этой проблемы - функцию SDL_DisplayFormat. Она принимает уже загруженную поверхность, и возвращает новую, уже использующую тот же формат, что и дисплей.</p>
+
+<p>Давайте этот процесс завернем класс. Возьмем код из предыдущей статьи за основу и добавим два новых файла: <strong>Sprite.h</strong> и <strong>Sprite.cpp</strong>. Откройте <strong>Sprite.h</strong> и добавьте следующее:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+    public:
+        static SDL_Surface* Load(const char* File);
+};
+
+#endif
+</code></pre>
+
+<p>Мы создали простую статическую функцию Load, которая будет загружать файл в поверхность. Теперь откроем <strong>Sprite.cpp</strong>:</p>
+
+<pre><code class="cpp">#include "Sprite.h"
+
+Sprite::Sprite() {}
+
+SDL_Surface* Sprite::Load(const char* File) {
+    SDL_Surface* Temp = NULL;
+    SDL_Surface* Result = NULL;
+
+    if((Temp = SDL_LoadBMP(File)) == NULL) {
+        return NULL;
+    }
+
+    Result = SDL_DisplayFormat(Temp);
+    SDL_FreeSurface(Temp);
+
+    return Result;
+}
+</code></pre>
+
+<p>Надо отменить несколько важных вещей. Во-первых, всегда помните, что когда вы создаете указатель, установите его в значение NULL или 0.  Вы можете столкнуться с проблемами, если вы это не сделаете. Во-вторых, обратите внимание, что SDL_DisplayFormat возвращает новую поверхность, а не перезаписывает оригинальную. Это важно помнить, потому что, поскольку он создает новую поверхность, мы должны освободить старую. В противном случае, у она так и будет занимать память.</p>
+
+<p>Теперь у нас есть способ загрузки поверхностей в памяти, теперь же нужен способ отображать их поверх других поверхностей. Как и в случае с загрузкой изображений, SDL предлагает функцию для блиттинга: SDL_BlitSurface. Она не такая простая как SDL_LoadBMP, но все же достаточно простая. Откроем <strong>Sprite.h</strong> и добавим следующие прототипы функций:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+};
+
+#endif
+</code></pre>
+
+<p>Теперь откройте <strong>Sprite.cpp</strong>, и добавьте следующее:</p>
+
+<pre><code class="cpp">#include "Sprite.h"
+
+Sprite::Sprite() {
+}
+
+SDL_Surface* Sprite::Load(const char* File) {
+    SDL_Surface* Temp = NULL;
+    SDL_Surface* Result = NULL;
+
+    if((Temp = SDL_LoadBMP(File)) == NULL) {
+        return NULL;
+    }
+
+    Result = SDL_DisplayFormat(Temp);
+    SDL_FreeSurface(Temp);
+
+    return Result;
+}
+
+bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y) {
+    if(Dest == NULL || Src == NULL) {
+        return false;
+    }
+
+    SDL_Rect Area;
+    Area.x = X;
+    Area.y = Y;
+
+    SDL_BlitSurface(Src, NULL, Dest, &amp;Area);
+
+    return true;
+}
+</code></pre>
+
+<p>Прежде всего, посмотрим на аргументы, которые передаются функции Draw. У нас есть две поверхности, и две переменные типа int. Первая поверхность Dest - на ней мы будем рисовавать, вторая поверхность Src - из нее будут браться данные для отображения. Можно сказать, что мы "наклеиваем" (помните аналогию со стикерами?) Src на Dest. X, Y - это координаты на поверхности Dest где будет находиться верхний левый угол изображения из Src.</p>
+
+<p>Теперь к содержимому функции. Сначала мы проверяем, что у нас есть действительная поверхность, иначе возвращаем false. Далее, определяем SDL_Rect. Это SDL структура, которая состоит из четырех элементов: X, Y, W, H.  Как вы, возможно, догадались, это задает размеры прямоугольника. В нашем случае, мы заботимся только о том, где мы рисуем, а не сколько. Поэтому, мы назначаем X, Y координаты на поверхности Dest. Если вам интересно, что означает NULL среди параметров функции SDL_BlitSurface, то это еще один параметр SDL_Rect. К нему мы вернемся позже. Наконец, мы вызваем функцию переноса изображения, и возвращаем true.</p>
+
+<p>Теперь, чтобы убедиться, что все это работает, давайте создадим тестовую поверхность. Откройте <strong>App.h</strong>, и создайте новую поверхность, и подключите недавно созданный <strong>Sprite.h</strong>:</p>
+
+<pre><code class="cpp">#ifndef _APP_H_
+#define _APP_H_
+
+#include &lt;SDL.h&gt;
+#include "Sprite.h"
+
+class App {
+    private:
+        bool            Running;
+        SDL_Surface*    Screen;
+        SDL_Surface*    Test;
+
+    public:
+        App();
+        int Execute();
+
+    public:
+        bool Init();
+        void Event(SDL_Event* Event);
+        void Loop();
+        void Render();
+        void Cleanup();
+};
+
+#endif
+</code></pre>
+
+<p>Не забудьте инициализировать поверхность значением NULL в конструкторе:</p>
+
+<pre><code class="cpp">App::App() {
+    Test = NULL;
+    Screen = NULL;
+    Running = true;
+}
+</code></pre>
+
+<p>И так же не забудьте "прибраться" за собой:</p>
+
+<pre><code class="cpp">void App::Cleanup() {
+    SDL_FreeSurface(Test);
+    SDL_FreeSurface(Screen);
+    SDL_Quit();
+}
+</code></pre>
+
+<p>Давайте теперь загрузим изображение. Перейдите к функции App::Init(), добавьте код:</p>
+
+<pre><code class="cpp"><br />bool App::Init() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) &lt; 0) {
+        return false;
+    }
+
+    if((Screen = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+        return false;
+    }
+
+    if((Test = Sprite::Load("image.bmp")) == NULL) {
+        return false;
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Не забудьте заменить "image.bmp" реальным изображением, которое у вас есть. Если нету - откройте MSPaint, что-нибудь нарисуйте, и сохраните в той же папке, где будет ваш исполняемый файл. Теперь у нас есть загруженное изображение, которое можно нарисовать. Найдите App::Render и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, Test, 0, 0);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p>Обратите внимание на новую функцию SDL_Flip. Это просто обновление буфера и вывод Screen на экран. Это называется двойной буферизацией. Это процесс рисования всего в памяти, и, потом вывод на экран. Если этого не делать, получилось бы мерцающее изображение. Помните флаг SDL_DOUBLEBUF? Это он и включает двойную буферизацию.</p>
+
+<p>Скомпилируйте код и убедитесь, что все работает правильно. Вы должны увидеть изображение в верхнем левом углу экрана.  Если да, то поздравляю, вы на один шаг ближе к самой игре. Если нет, убедитесь, что ваш image.bmp находится в той же папке, что и исполняемый файл. Кроме того, убедитесь, что это действительно bitmap файл.</p>
+
+<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/ss1.jpg"></p>
+
+<p>Теперь давайте продвинемся немного дальше. Хотя это круто уметь рисовать изображение на экране, часто нам нужна только его часть. Возьмем, к примеру, набор тайлов (tileset):</p>
+
+<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/tileset.png"></p>
+
+<p>Хотя это одно изображение, мы хотим нарисовать отдельную его часть. Открытие еще раз <strong>Sprite.h</strong> и добавьте следующий код:</p>
+
+<pre><code class="cpp">#ifndef _SPRITE_H_
+#define _SPRITE_H_
+
+#include &lt;SDL.h&gt;
+
+class Sprite {
+    public:
+        Sprite();
+
+        static SDL_Surface* Load(const char* File);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y);
+        static bool Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H);
+};
+
+#endif
+</code></pre>
+
+<p>Теперь в <strong>Sprite.cpp</strong><span style="color: red;"> (Внимание, мы добавляем еще одну функцию Draw, мы не заменяем первую)</span>:</p>
+
+<pre><code class="cpp">bool Sprite::Draw(SDL_Surface* Dest, SDL_Surface* Src, int X, int Y, int X2, int Y2, int W, int H) {
+    if(Dest == NULL || Src == NULL) {
+        return false;
+    }
+
+    SDL_Rect DestArea;
+
+    DestArea.x = X;
+    DestArea.y = Y;
+
+    SDL_Rect SrcArea;
+
+    SrcArea.x = X2;
+    SrcArea.y = Y2;
+    SrcArea.w = W;
+    SrcArea.h = H;
+
+    SDL_BlitSurface(Src, &amp;SrcArea, Dest, &amp;DestArea);
+
+    return true;
+}
+</code></pre>
+
+<p>Обратите внимание, что это в основном точно такая же функция, как и первыая, за исключением того, мы добавили еще один SDL_Rect. Этот SDL_Rect прямоугольник определяет, какие пикселы из исходного изображения скопировать в итоговое. Если, например, указаны параметры 0, 0, 50, 50, то отрисовано было бы лишь левая верхняя часть поверхности (квадрат размером 50х50).</p>
+
+<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/draw2.jpg"></p>
+
+<p>Давайте проверим как это работает, найдите App::Render(), и добавьте следующее:</p>
+
+<pre><code class="cpp">void App::Render() {
+    Sprite::Draw(Screen, Test, 0, 0);
+    Sprite::Draw(Screen, Test, 70, 110, 90, 90, 50, 50);
+
+    SDL_Flip(Screen);
+}
+</code></pre>
+
+<p><img src="//viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/ss2.jpg" alt="coordinates"></p>
+
+<p>Должно получиться, что ваше изображение отображается по координатам 70, 110 и видна только его часть. Надо обратить особое внимание на то, как эти функции работают, и как устроена система SDL координат, мы будем еще не раз это использовать.</p>
+
+        </div>
+    </article>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2021 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA</a>
+                ·
+                <img height="20px" alt="CC" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="BY" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="SA" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                ·
+                <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>
