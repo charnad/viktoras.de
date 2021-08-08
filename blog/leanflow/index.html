@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>On git branching. Leanflow - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/leanflow/" rel="bookmark">On git branching. Leanflow</a>
+            </h2>
+            <div class="date text-right float-sm-right">30.05.2021</div>
+        </div>
+        <div class="entry">
+            <p>For productive work software teams need a version control system (VCS) flow. A set of rules, that describes how code changes will be integrated into the existing code and delivered to testing and production. Obviously the VCS itself is the first factor that affects the flow, what you can do with git may not work with svn. At the moment of writing git has become the industry standard, so the ideas are based on that premise.</p>
+
+<p>There already exist frameworks like Gitflow (I suppose this is where the popularity of the word flow comes), but as with any framework, it brings a lot of tools you might never need in your project. So lets consider the leanest flow, that is still organized and effective.</p>
+
+<!--more-->
+
+<h3 id="naming-schema">Naming schema</h3>
+
+<p>What git has brought to the table in comparison to the previous generation of VSCs is the ease of working with branches. Since then, branching has become a tremendous tool in software development. The work on a project is done in branches, that are being merged together to form the final product. Just as with code style, naturally you need a convention for naming the branches you use. I have worked with different naming policies, but just the same way as with the code style, the style itself is not that important, as long as it is consistent throughout the project. A schema I can suggest is: "type/name". E.g. "release/1.2.3" or "testing/PROJ-10". More on that in sections dedicated to specific branches.</p>
+
+<p>Commits in branches should also have a naming schema. It is again suggested to use a common prefix in the commit message, e.g. "PROJ-10: Added login form layout". Later, if you look through commits (or look for a bug) you can look up that ticket to understand what was the initial purpose. It may also be helpful to grep the commit list looking for commits that were a result of work on a specific ticket.</p>
+
+<p>It will be our rule number 0.</p>
+
+<blockquote>
+  <ol>
+  <li>Have a naming convention for your branches and commits.</li>
+  </ol>
+</blockquote>
+
+<h3 id="master-branch">Master branch</h3>
+
+<p>When a developer starts working on a project, they need some code state to start with. In a repository there has to be a branch, that contains the latest stable state of the project. Normally it's the last released version. This is what's working in the production and is the status quo. In git this branch is usually the master branch. So the first rule of the flow is:</p>
+
+<blockquote>
+  <ol>
+  <li>Master branch contains the latest stable version (latest release)</li>
+  </ol>
+</blockquote>
+
+<p>Can you base your work on a different branch? Well, another branch may contain changes, that are not present in the master and will not ever be present, e.g. never go live due to any reason. Master is the most compatible branch, and thus it's least problematic to merge your changes later.</p>
+
+<h3 id="feature-branches">Feature branches</h3>
+
+<p>Every developer in the team can work on their task in their own branch, called feature branch. These branches are forked from master branch and the whole work on a task is done in that branch. In a feature branch, a developer has freedom to commit as often or infrequently as they wish.</p>
+
+<p>Feature branches can be named like "feature/PROJ-10", where PROJ-10 is the issue tracker ticket number. Another option is "PROJ-10-implement-login-form". The idea is, it should be easy for anyone to find the branch just by an issue number. This is why having a standard prefix format is helpful. Your colleague may mention, that they're having a problem with their ticket, and you don't have to ask how is the branch named, you can easily find it yourself. Your command shell may also provide autocompletion, making it possible to checkout the code in question just in a couple of seconds.</p>
+
+<p>I also find including a short name/description helpful. Later, when you clean up stale branches you will not need to look up issues/tickets by their number, it will be mostly obvious what part of work has been done there. It also helps if you establish a single format to write names, e.g. "kebab-case".</p>
+
+<p>So we come to rule number two:</p>
+
+<blockquote>
+  <ol start="2">
+  <li>Developer's work on a task is done in a feature branches.</li>
+  </ol>
+</blockquote>
+
+<h3 id="integration-branch">Integration branch</h3>
+
+<p>When work is done it is time to bring it to testing. I am not covering code reviews here, as it's not the part of the branching flow. Usually there is some testing/staging server where testers can try out new changes. We do not yet know if these changes are making it into the release or if they work as expected. It may so happen, that the feature gets cancelled altogether. So we need a branch, that temporarily holds the changes, so that they can be rolled out and tested.</p>
+
+<p>For that purpose, integration branches are created. Feature branches are merged into integration branches without squashing. In git, squashing is creating one commit, that contains all of changes from a branch instead of taking them as they are. The idea is, if you need to add further improvements to your feature branch and subsequently integration branch, you may face merge conflicts if you have squashed your previous work.</p>
+
+<p>Integration branch is permanently "dirty", they contain features, that may be broken, released later or never released. Many teams use develop branch for the same purpose. However, over time these branches (integration or develop) accumulated changes that will not be released, a multitude of merge commits and other temporary things. It is a little easier to dispose integration branches once a cycle, than to reset develop branch and make all developers checkout the new state.</p>
+
+<p>Naming for integration branches can be as straightforward as: "integration/21.01", where 21.01 could be current iteration or next version number.</p>
+
+<blockquote>
+  <ol start="3">
+  <li>Ready to test code is merged into integration branch.</li>
+  </ol>
+</blockquote>
+
+<h3 id="release-branch">Release branch</h3>
+
+<p>Now we have some tested features we want to release. For this a release branch is created. All features planned for release are merged into corresponding release branch. Some teams merge directly into master branch, however here's why extra step can be useful. Once you've merged something, it's hard to unmerge it (reverts can be quite a pain). And again, you might discover a bug in the very last moment, or release of some feature gets blocked. It is usually far easier to remove and re-create a release branch if this happens.</p>
+
+<p>When merging into release branch I like to squash commits. At this point it is much less likely that we will have follow-up commits. And nobody is really interested in seeing 50 commits with "Fixed tests" comments, so this helps to keep git history a little cleaner without much work. You can also do practically the same with rebasing, that is really up to you.</p>
+
+<p>So a release branch has one (or two if we count merge commit) commits per feature and is usually called something like "release/21.01". Where the number is the same as in the integration branch.</p>
+
+<blockquote>
+  <ol start="4">
+  <li>Tested code is merged (squashed) into release branch.</li>
+  </ol>
+</blockquote>
+
+<h3 id="releases">Releases</h3>
+
+<p>Ok, we got all the way through, now we want to release the changes. We assume, that at this moment release branch only contains the changes that we want to release. For a release you create a tag (a tag is a named commit), for example "v21.01". Depending on your processes, you might want to create a tag from a release branch and then merge it into master, or merge into master first and then create a tag based on a master branch. This makes no real difference. Tagging is a very easy and lightweight way of tracking released versions.</p>
+
+<blockquote>
+  <ol start="5">
+  <li>Release branch is merged into master and a tag is created to mark the release.</li>
+  </ol>
+</blockquote>
+
+<p>Now master has been updated, and we have a new base state of the code. All of merged feature branches, integration branch and release branches can be disposed and new integration and release branches are created with the next version/iteration number.</p>
+
+<blockquote>
+  <ol start="6">
+  <li>After release feature, integration and release branches are disposed and new ones are created.</li>
+  </ol>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>So there we go, we have defined an organized and effective VCS flow in just 7 rules:</p>
+
+<blockquote>
+  <ol>
+  <li>Have a naming convention for your branches and commits.</li>
+  <li>Master branch contains the latest stable version (latest release)</li>
+  <li>Developer's work on a task is done in a feature branches.</li>
+  <li>Ready to test code is merged into integration branch.</li>
+  <li>Tested code is merged (squashed) into release branch.</li>
+  <li>Release branch is merged into master and a tag is created to mark the release.</li>
+  <li>After release feature, integration and release branches are disposed and new ones are created.</li>
+  </ol>
+</blockquote>
+
+        </div>
+    </article>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2021 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA</a>
+                ·
+                <img height="20px" alt="CC" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="BY" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="SA" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                ·
+                <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>

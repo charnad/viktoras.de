@@ -3,11 +3,129 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="//viktoras.de/atom.xml" rel="self"/>
     <link href="//viktoras.de/"/>
-    <updated>2021-03-29T07:56:05+00:00</updated>
+    <updated>2021-08-08T14:48:47+00:00</updated>
     <id>//viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
         <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[On git branching. Leanflow]]></title>
+            <link href="//viktoras.de/blog/leanflow/"/>
+            <updated>2021-05-30T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/leanflow/</id>
+            <content type="html"><![CDATA[<p>For productive work software teams need a version control system (VCS) flow. A set of rules, that describes how code changes will be integrated into the existing code and delivered to testing and production. Obviously the VCS itself is the first factor that affects the flow, what you can do with git may not work with svn. At the moment of writing git has become the industry standard, so the ideas are based on that premise.</p>
+
+<p>There already exist frameworks like Gitflow (I suppose this is where the popularity of the word flow comes), but as with any framework, it brings a lot of tools you might never need in your project. So lets consider the leanest flow, that is still organized and effective.</p>
+
+<!--more-->
+
+<h3 id="naming-schema">Naming schema</h3>
+
+<p>What git has brought to the table in comparison to the previous generation of VSCs is the ease of working with branches. Since then, branching has become a tremendous tool in software development. The work on a project is done in branches, that are being merged together to form the final product. Just as with code style, naturally you need a convention for naming the branches you use. I have worked with different naming policies, but just the same way as with the code style, the style itself is not that important, as long as it is consistent throughout the project. A schema I can suggest is: "type/name". E.g. "release/1.2.3" or "testing/PROJ-10". More on that in sections dedicated to specific branches.</p>
+
+<p>Commits in branches should also have a naming schema. It is again suggested to use a common prefix in the commit message, e.g. "PROJ-10: Added login form layout". Later, if you look through commits (or look for a bug) you can look up that ticket to understand what was the initial purpose. It may also be helpful to grep the commit list looking for commits that were a result of work on a specific ticket.</p>
+
+<p>It will be our rule number 0.</p>
+
+<blockquote>
+  <ol>
+  <li>Have a naming convention for your branches and commits.</li>
+  </ol>
+</blockquote>
+
+<h3 id="master-branch">Master branch</h3>
+
+<p>When a developer starts working on a project, they need some code state to start with. In a repository there has to be a branch, that contains the latest stable state of the project. Normally it's the last released version. This is what's working in the production and is the status quo. In git this branch is usually the master branch. So the first rule of the flow is:</p>
+
+<blockquote>
+  <ol>
+  <li>Master branch contains the latest stable version (latest release)</li>
+  </ol>
+</blockquote>
+
+<p>Can you base your work on a different branch? Well, another branch may contain changes, that are not present in the master and will not ever be present, e.g. never go live due to any reason. Master is the most compatible branch, and thus it's least problematic to merge your changes later.</p>
+
+<h3 id="feature-branches">Feature branches</h3>
+
+<p>Every developer in the team can work on their task in their own branch, called feature branch. These branches are forked from master branch and the whole work on a task is done in that branch. In a feature branch, a developer has freedom to commit as often or infrequently as they wish.</p>
+
+<p>Feature branches can be named like "feature/PROJ-10", where PROJ-10 is the issue tracker ticket number. Another option is "PROJ-10-implement-login-form". The idea is, it should be easy for anyone to find the branch just by an issue number. This is why having a standard prefix format is helpful. Your colleague may mention, that they're having a problem with their ticket, and you don't have to ask how is the branch named, you can easily find it yourself. Your command shell may also provide autocompletion, making it possible to checkout the code in question just in a couple of seconds.</p>
+
+<p>I also find including a short name/description helpful. Later, when you clean up stale branches you will not need to look up issues/tickets by their number, it will be mostly obvious what part of work has been done there. It also helps if you establish a single format to write names, e.g. "kebab-case".</p>
+
+<p>So we come to rule number two:</p>
+
+<blockquote>
+  <ol start="2">
+  <li>Developer's work on a task is done in a feature branches.</li>
+  </ol>
+</blockquote>
+
+<h3 id="integration-branch">Integration branch</h3>
+
+<p>When work is done it is time to bring it to testing. I am not covering code reviews here, as it's not the part of the branching flow. Usually there is some testing/staging server where testers can try out new changes. We do not yet know if these changes are making it into the release or if they work as expected. It may so happen, that the feature gets cancelled altogether. So we need a branch, that temporarily holds the changes, so that they can be rolled out and tested.</p>
+
+<p>For that purpose, integration branches are created. Feature branches are merged into integration branches without squashing. In git, squashing is creating one commit, that contains all of changes from a branch instead of taking them as they are. The idea is, if you need to add further improvements to your feature branch and subsequently integration branch, you may face merge conflicts if you have squashed your previous work.</p>
+
+<p>Integration branch is permanently "dirty", they contain features, that may be broken, released later or never released. Many teams use develop branch for the same purpose. However, over time these branches (integration or develop) accumulated changes that will not be released, a multitude of merge commits and other temporary things. It is a little easier to dispose integration branches once a cycle, than to reset develop branch and make all developers checkout the new state.</p>
+
+<p>Naming for integration branches can be as straightforward as: "integration/21.01", where 21.01 could be current iteration or next version number.</p>
+
+<blockquote>
+  <ol start="3">
+  <li>Ready to test code is merged into integration branch.</li>
+  </ol>
+</blockquote>
+
+<h3 id="release-branch">Release branch</h3>
+
+<p>Now we have some tested features we want to release. For this a release branch is created. All features planned for release are merged into corresponding release branch. Some teams merge directly into master branch, however here's why extra step can be useful. Once you've merged something, it's hard to unmerge it (reverts can be quite a pain). And again, you might discover a bug in the very last moment, or release of some feature gets blocked. It is usually far easier to remove and re-create a release branch if this happens.</p>
+
+<p>When merging into release branch I like to squash commits. At this point it is much less likely that we will have follow-up commits. And nobody is really interested in seeing 50 commits with "Fixed tests" comments, so this helps to keep git history a little cleaner without much work. You can also do practically the same with rebasing, that is really up to you.</p>
+
+<p>So a release branch has one (or two if we count merge commit) commits per feature and is usually called something like "release/21.01". Where the number is the same as in the integration branch.</p>
+
+<blockquote>
+  <ol start="4">
+  <li>Tested code is merged (squashed) into release branch.</li>
+  </ol>
+</blockquote>
+
+<h3 id="releases">Releases</h3>
+
+<p>Ok, we got all the way through, now we want to release the changes. We assume, that at this moment release branch only contains the changes that we want to release. For a release you create a tag (a tag is a named commit), for example "v21.01". Depending on your processes, you might want to create a tag from a release branch and then merge it into master, or merge into master first and then create a tag based on a master branch. This makes no real difference. Tagging is a very easy and lightweight way of tracking released versions.</p>
+
+<blockquote>
+  <ol start="5">
+  <li>Release branch is merged into master and a tag is created to mark the release.</li>
+  </ol>
+</blockquote>
+
+<p>Now master has been updated, and we have a new base state of the code. All of merged feature branches, integration branch and release branches can be disposed and new integration and release branches are created with the next version/iteration number.</p>
+
+<blockquote>
+  <ol start="6">
+  <li>After release feature, integration and release branches are disposed and new ones are created.</li>
+  </ol>
+</blockquote>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>So there we go, we have defined an organized and effective VCS flow in just 7 rules:</p>
+
+<blockquote>
+  <ol>
+  <li>Have a naming convention for your branches and commits.</li>
+  <li>Master branch contains the latest stable version (latest release)</li>
+  <li>Developer's work on a task is done in a feature branches.</li>
+  <li>Ready to test code is merged into integration branch.</li>
+  <li>Tested code is merged (squashed) into release branch.</li>
+  <li>Release branch is merged into master and a tag is created to mark the release.</li>
+  <li>After release feature, integration and release branches are disposed and new ones are created.</li>
+  </ol>
+</blockquote>
+]]></content>
+        </entry>
             <entry>
             <title type="html"><![CDATA[&#039;Good Enough&#039; Architecture by Stefan Tilkov Brief]]></title>
             <link href="//viktoras.de/blog/good-enough-architecture-brief/"/>
@@ -675,173 +793,6 @@ color = Math.floor(color/4);
 <p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma8.gif"></p>
 
 <p>Можно так же расчитывать отдельную плазму для каждого цветового канала и т.д. Возможности безграничны, но это все будет медленнее, чем смещение палитры, особенно с неоптимизированными алгоритмами, которые приведены тут.</p>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[SDL: Как создать игру. Сущности.]]></title>
-            <link href="//viktoras.de/blog/sdl-tutorial-6-entities/"/>
-            <updated>2012-05-12T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/sdl-tutorial-6-entities/</id>
-            <content type="html"><![CDATA[<p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
-
-<p>В этой статьей мы направим наши силы на создание сущностей (Entities). Сущности - это все, с чем можно взаимодействовать. Например, это может быть монстр или сундук с сокровищами, который можно открыть. В этом смысле, практически все в игре, что движется, это сущность. Камень, который является частью карты, который никогда не двигается, не является сущностью. Но если вы хотите, чтобы камень двигался, не важно по какой причине, то мы сделаем его сущностью.<!--more--></p>
-
-<p>Давайте начнем с создания двух новых файлов: <strong>Entity.cpp</strong> и <strong>Entity.h</strong>. Откройте заголовочный файл и добавьте следующее:</p>
-
-<pre><code class="cpp">#include &lt;vector&gt;
-
-#include "Animation.h"
-#include "Sprite.h"
-
-class Entity {
-    public:
-        static std::vector&lt;Entity*&gt;    EntityList;
-
-    protected:
-        Animation      Anim;
-        SDL_Surface*    Surface;
-
-    public:
-        float           X;
-        float           Y;
-
-        int             Width;
-        int             Height;
-
-        int             AnimState;
-
-    public:
-        Entity();
-        virtual ~Entity();
-
-        virtual bool Load(char* File, int Width, int Height, int MaxFrames);
-        virtual void Loop();
-        virtual void Render(SDL_Surface* Screen);
-        virtual void Cleanup();
-};
-</code></pre>
-
-<p>Теперь откройте Entity.cpp и добавьте это:</p>
-
-<pre><code class="cpp">#include "Entity.h"
-
-std::vector&lt;Entity*&gt; Entity::EntityList;
-
-Entity::Entity() {
-    Surface = NULL;
-
-    X = Y = 0.0f;
-
-    Width = Height = 0;
-
-    AnimState = 0;
-}
-
-Entity::~Entity() {}
-
-bool Entity::Load(char* File, int Width, int Height, int MaxFrames) {
-    if((Surface = Sprite::Load(File)) == NULL) {
-        return false;
-    }
-
-    Sprite::Transparent(Surface, 255, 0, 255);
-
-    this-&gt;Width = Width;
-    this-&gt;Height = Height;
-
-    Anim.MaxFrames = MaxFrames;
-
-    return true;
-}
-
-void Entity::Loop() {
-    Anim.Animate();
-}
-
-void Entity::Render(SDL_Surface* Screen) {
-    if(Surface == NULL || Screen == NULL) return;
-
-    Sprite::Draw(Screen, Surface, X, Y, AnimState * Width, Anim.GetCurrentFrame() * Height, Width, Height);
-}
-
-void Entity::Cleanup() {
-    if(Surface) {
-        SDL_FreeSurface(Surface);
-    }
-
-    Surface = NULL;
-}
-</code></pre>
-
-<p>Теперь поясню. В этом классе мы инкапсулируем 5 основных компонентов, о которых я упоминал в первой статье. Это позволит нам работать с сущностями в игре гораздо проще, чем смешивать их в кучу со всем остальным в классе App. Первое, что вы можете заметить, это статический вектор, который называется EntityList. Этот вектор будет содержать все наши сущности, они будут легко доступны через Entity::EntityList, потому что он объявлен статическим. Надо особо отметить: мы объявляем EntityList в Entity, поскольку это предотвратит циклические зависимости в будущем. То есть, например мы попытаемся получить карту, чтобы обработать сущности на ней, а также хотим получить сущности, чтобы обработать карту. Map объявляет Entity, Entity объявляет Map, это повлечет за собой проблемы во время компиляции.</p>
-
-<p>Так что этот вектор содержит все наши сущности в игре. Обратите внимание, что каждый член вектора - указатель. Это потому, что в дальнейшем мы будем наследовать все последующие классы сущностей от класса Entity. Так, например, если мы собираемся сделать игру Megaman, мы бы создали класс Megaman и унаследовали бы его от класс Entity. И, благодаря полиморфизму, мы можем хранить объекты класса Megaman в EntityList. Собственно поэтому, мы заявили функции в классе, как virtual, а некоторые члены как protected.</p>
-
-<p>Далее, у нас есть базовая информация о сущности, общая для всех: координаты, размеры, поверхность для ее(сущности) изображения. Также, у нас есть функция загрузки, она получает имя файла и загружает изображение из него. По умолчанию, устанавливается прозрачный цвет. Я хочу чтобы вы понимали, что все, что я делаю не высечено в камне. Вы можете, и я даже советую вам менять код по своему вкусу. Вы можете передавать функции Load больше или меньше параметров, может вы не хотите устанавливать прозрачность по умолчанию, кто знает. Пробуйте и не волнуйтесь, если где-то запутаетесь или ошибетесь, вы всегда сможете достать мой код.</p>
-
-<p>Итак, у нас есть основная функция Loop, которая обрабатывает основные расчеты. Сейчас мы только занимаемся анимацией. Мы лишь меняем  MaxFrames, а остальное оставляем по умолчанию. Далее, функция Render, в качестве параметра передается поверхность для отображения. Чтобы можно было рисовать не только сразу на экран, но и на любую другую поверхность по вашему выбору. Ну и наконец, функция Cleanup, которая освобождает память и все такое.</p>
-
-<p>Как я уже говорил в начале, это лишь базовая структура класса Entity, она еще может не так много, но не волнуйтесь, в будущем сможет сделать все, что вы захотите. Итак, давайте заставим сущности работать. Откройте <strong>App.h</strong> и добавьте файл заголовка в начале, и объявить две сущности:</p>
-
-<pre><code class="cpp">#include "Entity.h"
-
-//...
-
-private:
-    Entity         Entity1;
-    Entity         Entity2;
-</code></pre>
-
-<p>Давайте теперь загрузим в них изображения, в App::Init.cpp добавьте следующее:</p>
-
-<pre><code class="cpp">if(Entity1.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
-    return false;
-}
-
-if(Entity2.Load("./gfx/yoshi.bmp", 64, 64, 8) == false) {
-    return false;
-}
-
-Entity2.X = 100;
-
-Entity::EntityList.push_back(&amp;Entity1);
-Entity::EntityList.push_back(&amp;Entity2);
-</code></pre>
-
-<p>Я еще раз использую изображение Йоши и прошлой статьи.</p>
-
-<p>Вспомните, что я говорил, про инкапсуляцию основных функции игры в классе Entity. Мы должны вызывать эти функции в соответствующих функциях App. Поэтому, откройте App::Loop и добавьте следующее:</p>
-
-<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
-    if(!Entity::EntityList[i]) continue;
-
-    Entity::EntityList[i]-&gt;Loop();
-}
-</code></pre>
-
-<p>Мы в обходим каждый элемент вектора и вызываем функцию Loop. Довольно просто. (И мы проверяем на NULL, чтобы не было ошибок). Теперь, давайте сделаем то же самое в App::Render:</p>
-
-<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
-    if(!Entity::EntityList[i]) continue;
-
-    Entity::EntityList[i]-&gt;Render(Screen);
-}
-</code></pre>
-
-<p>и еще раз то же самое в App::Cleanup:</p>
-
-<pre><code class="cpp">for(int i = 0;i &lt; Entity::EntityList.size();i++) {
-    if(!Entity::EntityList[i]) continue;
-
-    Entity::EntityList[i]-&gt;Cleanup();
-}
-
-Entity::EntityList.clear();
-</code></pre>
-
-<p>Обратите внимание, я добавил вызов функции очистки вектора.</p>
-
-<p>Отлично, теперь скомпилируйте то, что получилось. Вы должны увидеть две фигурки Йоши на экране. В следующей статье мы рассмотрим создание карты.</p>
 ]]></content>
         </entry>
     </feed>
