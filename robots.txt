@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /blog/tags/
+Disallow: /blog/categories/
+Disallow: /impressum/
+
+Sitemap: //viktoras.de/sitemap.xml
