@@ -1,0 +1,27 @@
+name: Build and deploy
+
+on:
+  workflow_dispatch:
+
+env:
+  SOURCE_BRANCH: refs/heads/source
+
+jobs:
+  deploy:
+    name: Deploy website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Generate
+        run: docker run --rm -v $(pwd):/app viktoras25/sculpin:latest generate --env=live
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == env.SOURCE_BRANCH }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output_live
+          cname: viktoras.de
