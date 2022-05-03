@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Демо: плазма - viktoras.de</title>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+            <meta name="robots" content="index, follow">
+
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="/css/style.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/js/highlightjs/styles/github.css" />
+
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/highlightjs/highlight.pack.js" defer></script>
+        <script async src='https://www.google-analytics.com/analytics.js'></script>
+        <script>jQuery(document).ready(function(){hljs.initHighlightingOnLoad();});</script>
+
+                    </head>
+    <body class="container">
+
+                <div id="header" class="text-center">
+            <div id="invader-wrapper">
+                <a href="/"></a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <aside class="col-lg-1"></aside>
+
+            <main class="col-lg-10">
+                    <article class="post">
+        <div class="postdata row no-gutters">
+            <h2 class="title col">
+                <a href="/blog/plasma/" rel="bookmark">Демо: плазма</a>
+            </h2>
+            <div class="date text-right float-sm-right">13.05.2013</div>
+        </div>
+        <div class="entry">
+            <p><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma-logo.png" class="oppic" height="150px">Эффект плазмы (или попросту плазма) - эффект часто использующийся в демках, чтобы создать переливающийся эффект. Есть много способов создать анимацию плазмы, но я рассмотрю только один: сумма синусов и некоторых других функций. Экспериментируя с параметрами и пробуя различные функции, а так же цвета, можно найти очень круто выглядящие комбинации. Оригинал этой статьи можно найти <a href="http://lodev.org/cgtutor/plasma.html">здесь</a>. В ней примеры указаны с использованием С, я же делал все на HTML5 (JavaScript + canvas). Примеры довольно просты и перенести на любой другой язык будет несложно. Внутри около 5 мегабайт картинок, если кого-то это беспокоит.<!--more--></p>
+
+<p>Перед тем, как мы приступим к собственно созданию плазмы, давайте рассмотрим функцию, которая нам в этом поможет. Значения функции синус лежат в промежутке от -1 до +1, выглядит вот так:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/sine.png"></p>
+
+<p>Для наших целей мы отобразим ее немного иначе, а именно будем устанавливать цвет пикселя равным синусу его x-координаты:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example1.png"></p>
+
+<p>Белые полосы это места, где синус близок или равен единице, черные, соответственно, близко к -1. Такого эффекта можно добиться следующим кодом:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.width; y++) {
+    for (x = 0; x &lt; canvas.height; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 4));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Мы проходим через каждый пиксель, расчитываем его цвет на основе синуса, и выводим. Значение цвета должно быть в пределах от 0 до 256 (0x00 - 0xFF), а так как синус всегда имеет значение между -1 и 1, мы преобразуем его в 0-256, умножив на 128 и прибавив 128. X делим на 4 чтобы значение функции менялось медленнее. Если разделить на меньшее значение, то полосы станут уже:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example2.png"></p>
+
+<p>Если использовать синус от суммы sin((x + y) / 8.0), то линии будут скошенными:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example3.png"></p>
+
+<p>Другая интересная функция для плазмы это синус расстояния от пикселя до определенной точки. Расстояние от пикселя до точки отсчета (0, 0) равняется sqrt(x * x + y * y). А расстояние от пикселя до центра экрана (холста): sqrt((x - w / 2) * (x - w / 2) + (y - h / 2) * (y - h / 2)). Если взять от этого синус, то получится:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example4.png"></p>
+
+<p>Вот код, который генерирует такую картинку (в этом примере, я перенес точку координат в центр изображения, для простоты [charnad]):</p>
+
+<pre><code class="javascript">for (y = -cY; y &lt; cY; y++) {
+    for (x = -cX; x &lt; cX; x++) {
+        color = 128 + Math.floor(128 * Math.sin(Math.sqrt(x*x + y*y) / 8));
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Складывая эти функции (с различными коэффициентами, точками отсчета, и т.д.), и используя лучшую цветовую палитру, чем оттенки серого, которые мы использовали до сих пор, мы можем создавать крутую плазму. Для разогрева, вот плазма сгенерированная суммой двух функций:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example5.png"></p>
+
+<p>Несмотря на то, что выглядит не очень круто, это уже настоящая плазма. Она получается из суммы синусов x и y. Код ничуть не сложнее предыдущих примеров, но для ясности я расписал формулу на несколько строк. Также, в конце результат делится на два, таким образом мы остаемся в пределах 0-255:</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        context.fillStyle = rgbString(color, color, color);
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>Чтобы получить и цвета и анимацию, мы будем использовать цветовую палитру (параметр "цвет" будет использоваться как индекс для выбора цвета из палитры), и каждый фрейм будем сдвигать палитру на небольшое значение, так что все цвета палитры будут проходить по кругу. В таком режиме нам нужно будет нарисовать плазму только один раз и дальше только сдвигать палитру. Так как цвета меняются по кругу, палитра не должна быть "прерывистой", и заканчиваться должна тем же цветом, что и начинаться.
+Следующие две "прерываются" и не могут быть использованы для плазмы, потому что тогда анимация будет рваной или перескакивать:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette1.png"></p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette2.png"></p>
+
+<p>А вот эта палитра может быть использована:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette3.png"></p>
+
+<p>Теперь чтобы у нас получился эффект плазмы: создаем палитру, создаем буфер, где будут хранится значения вычисленной функции синусов для разных пикселей, рисуем пиксели с цветом из палитры, смещаем палитру каждый фрейм. Плазма сама по себе такая же, как и в предыдущем примере, но использование палитры делает ее гораздо интереснее. Вот упрощенная часть кода, которая реализует этот алгоритм:</p>
+
+<pre><code class="javascript">// Просчитываем значения цвета, как и в предыдущих примерах
+for (y = 0; y &lt; canvas.height; y++) {
+    data[y] = [];
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = 128 + Math.floor(128 * Math.sin(x / 8));
+        color += 128 + Math.floor(128 * Math.sin(y / 8));
+        color = Math.floor(color/2);
+        data[y][x] = color;
+    }
+}
+
+// Далее в цикле отрисовываем
+// n - сдвиг палитры
+for (y = 0; y &lt; data.length; y++) {
+    for (x = 0; x &lt; data[y].length; x++) {
+        color = palette[Math.floor(data[y][x] + n) % 360];
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p>и это дает нам примерно следующую картину:</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma1.gif"></p>
+
+<p>Вторая картинка показывает ту же плазму, но с упрощенной палитрой состоящей всего из 2х цветов, чтобы можно было лучше проследить движение цвета.</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma2.gif"></p>
+
+<p>Теперь, если в коде генерации плазмы мы заменим функцию на сумму 4 синусов, один из которых синус расстояния до верхнего левого угла картинки, то получим:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 8));
+color += 128 + (128 * Math.sin((x+y) / 16));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma4.gif"></p>
+
+<p>И вот, что еще можно попробовать:</p>
+
+<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
+color += 128 + (128 * Math.sin(y / 32));
+color += 128 + (128 * Math.sin(Math.sqrt(Math.pow(cX-x, 2)+Math.pow(cY-y, 2)) / 8));
+color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
+color = Math.floor(color/4);
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma5.gif"></p>
+
+<p>Как видите, можно менять параметры и функции, пока не будет достигнут желаемый результат.
+Давайте теперь попробуем другие палитры.</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 32.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 64.0));
+    b = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette4.png"></p>
+
+<p>Это все та же плазма, но уже с новой палитрой. Чтобы цвета не "перескакивали", палитра должна начинаться и заканчиваться одним и тем же цветом.</p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma6.gif"></p>
+
+<p>Следующая палитра дает довольно крутой эффект (хотя это дело вкуса):</p>
+
+<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
+    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 16.0));
+    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
+    b = 0;
+    palette[i] = rgbString(r, g, b);
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette5.png"></p>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma7.gif"></p>
+
+<p>Наконец, вместо использования палитры и ее смещения, можно так же пересчитывать синусы каждый фрейм, каждый раз меняя значения, используя время в функции. Можно генерировать RBG-составляющие отдельно. Это все в сумме довольно много вычислений, так что плазма может тормозить. Но упомянуть об этом стоит. Каждый фрейм, для каждого пикселя расчитывается сумма 4х расстояний. Затем, из полученного значения вычисляется цвет, и он же используется чтобы создать R, G и B составляющие цвета этого пикселя. Из-за такого способа подсчета цвета картинка получится немного пикселизированной.</p>
+
+<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
+    for (x = 0; x &lt; canvas.width; x++) {
+        color = Math.sin(dist(x + time, y, 128.0, 128.0) / 8.0)
+        color += Math.sin(dist(x, y, 64.0, 64.0) / 8.0)
+        color += Math.sin(dist(x, y + time / 7, 192.0, 64) / 7.0)
+        color += Math.sin(dist(x, y, 192.0, 100.0) / 8.0);
+        color = Math.floor((4 + color)) * 32;
+        color = rgbString(color, color * 2, 255 - color);
+        context.fillStyle = color;
+        context.fillRect(x, y, 1, 1);
+    }
+}
+</code></pre>
+
+<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma8.gif"></p>
+
+<p>Можно так же расчитывать отдельную плазму для каждого цветового канала и т.д. Возможности безграничны, но это все будет медленнее, чем смещение палитры, особенно с неоптимизированными алгоритмами, которые приведены тут.</p>
+
+        </div>
+    </article>
+            </main>
+
+            <aside class="col-lg-1"></aside>
+        </div>
+
+        <footer class="footer text-center">
+            <small>&copy; 2022 Viktoras Bezaras
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA</a>
+                ·
+                <img height="20px" alt="CC" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
+                <img height="20px" alt="BY" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy42MzciIGN5PSIyOC44MDYiIHI9IjI4LjI3NiIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk4OCwwLDE2LjU3LDMuMDg1LDIyLjc0Miw5LjI1N0M2Ni4zOTMsMTEuOTY3LDY5LjUsMTkuNTQ4LDY5LjUsMjguNWMwLDguOTkxLTMuMDQ5LDE2LjQ3Ni05LjE0NSwyMi40NTYNCgkJCUM1My44NzksNTcuMzE5LDQ2LjI0Miw2MC41LDM3LjQ0Myw2MC41Yy04LjY0OSwwLTE2LjE1My0zLjE0NC0yMi41MTQtOS40M0M4LjY0NCw0NC43ODQsNS41LDM3LjI2Miw1LjUsMjguNQ0KCQkJYzAtOC43NjEsMy4xNDQtMTYuMzQyLDkuNDI5LTIyLjc0MkMyMS4xMDEtMC40MTUsMjguNjA0LTMuNSwzNy40NDMtMy41eiBNMzcuNTU3LDIuMjcyYy03LjI3NiwwLTEzLjQyOCwyLjU1My0xOC40NTcsNy42NTcNCgkJCWMtNS4yMiw1LjMzNC03LjgyOSwxMS41MjUtNy44MjksMTguNTcyYzAsNy4wODYsMi41OSwxMy4yMiw3Ljc3LDE4LjM5OGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDcsMTguNjI5LTcuODI4YzUuMDI5LTQuODM4LDcuNTQzLTEwLjk1Miw3LjU0My0xOC4zNDNjMC03LjI3Ni0yLjU1My0xMy40NjUtNy42NTYtMTguNTcxDQoJCQlDNTAuOTY3LDQuODI0LDQ0Ljc5NSwyLjI3MiwzNy41NTcsMi4yNzJ6IE00Ni4xMjksMjAuNTU3djEzLjA4NWgtMy42NTZ2MTUuNTQyaC05Ljk0NFYzMy42NDNoLTMuNjU2VjIwLjU1Nw0KCQkJYzAtMC41NzIsMC4yLTEuMDU3LDAuNTk5LTEuNDU3YzAuNDAxLTAuMzk5LDAuODg3LTAuNiwxLjQ1Ny0wLjZoMTMuMTQ0YzAuNTMzLDAsMS4wMSwwLjIsMS40MjgsMC42DQoJCQlDNDUuOTE4LDE5LjUsNDYuMTI5LDE5Ljk4Niw0Ni4xMjksMjAuNTU3eiBNMzMuMDQyLDEyLjMyOWMwLTMuMDA4LDEuNDg1LTQuNTE0LDQuNDU4LTQuNTE0czQuNDU3LDEuNTA0LDQuNDU3LDQuNTE0DQoJCQljMCwyLjk3MS0xLjQ4Niw0LjQ1Ny00LjQ1Nyw0LjQ1N1MzMy4wNDIsMTUuMywzMy4wNDIsMTIuMzI5eiIvPg0KCTwvZz4NCjwvZz4NCjwvc3ZnPg0K" />
+                <img height="20px" alt="SA" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNi45NDQiIGN5PSIyOC42MzEiIHI9IjI5LjEwNSIvPg0KCTxnPg0KCQk8cGF0aCBkPSJNMzcuNDQzLTMuNWM4Ljk1MSwwLDE2LjUzMSwzLjEwNSwyMi43NDIsOS4zMTVDNjYuMzkzLDExLjk4Nyw2OS41LDE5LjU0OCw2OS41LDI4LjVjMCw4Ljk1NC0zLjA0OSwxNi40NTctOS4xNDUsMjIuNTE0DQoJCQlDNTMuOTE4LDU3LjMzOCw0Ni4yNzksNjAuNSwzNy40NDMsNjAuNWMtOC42NDksMC0xNi4xNTMtMy4xNDMtMjIuNTE0LTkuNDI5QzguNjQ0LDQ0Ljc4Niw1LjUsMzcuMjY0LDUuNSwyOC41MDENCgkJCWMwLTguNzIzLDMuMTQ0LTE2LjI4NSw5LjQyOS0yMi42ODVDMjEuMTM4LTAuMzk1LDI4LjY0My0zLjUsMzcuNDQzLTMuNXogTTM3LjU1NywyLjI3MmMtNy4yNzYsMC0xMy40MjgsMi41NzItMTguNDU3LDcuNzE1DQoJCQljLTUuMjIsNS4yOTYtNy44MjksMTEuNDY3LTcuODI5LDE4LjUxM2MwLDcuMTI1LDIuNTksMTMuMjU3LDcuNzcsMTguNGM1LjE4MSw1LjE4MiwxMS4zNTIsNy43NzEsMTguNTE0LDcuNzcxDQoJCQljNy4xMjMsMCwxMy4zMzQtMi42MDksMTguNjI5LTcuODI4YzUuMDI5LTQuODc2LDcuNTQzLTEwLjk5LDcuNTQzLTE4LjM0M2MwLTcuMzEzLTIuNTUzLTEzLjQ4NS03LjY1Ni0xOC41MTMNCgkJCUM1MS4wMDQsNC44NDIsNDQuODMyLDIuMjcyLDM3LjU1NywyLjI3MnogTTIzLjI3MSwyMy45ODVjMC42MDktMy45MjQsMi4xODktNi45NjIsNC43NDItOS4xMTQNCgkJCWMyLjU1Mi0yLjE1Miw1LjY1Ni0zLjIyOCw5LjMxNC0zLjIyOGM1LjAyNywwLDkuMDI5LDEuNjIsMTIsNC44NTZjMi45NzEsMy4yMzgsNC40NTcsNy4zOTEsNC40NTcsMTIuNDU3DQoJCQljMCw0LjkxNS0xLjU0Myw5LTQuNjI3LDEyLjI1NmMtMy4wODgsMy4yNTYtNy4wODYsNC44ODYtMTIuMDAyLDQuODg2Yy0zLjYxOSwwLTYuNzQzLTEuMDg1LTkuMzcxLTMuMjU3DQoJCQljLTIuNjI5LTIuMTcyLTQuMjA5LTUuMjU3LTQuNzQzLTkuMjU3SDMxLjFjMC4xOSwzLjg4NiwyLjUzMyw1LjgyOSw3LjAyOSw1LjgyOWMyLjI0NiwwLDQuMDU3LTAuOTcyLDUuNDI4LTIuOTE0DQoJCQljMS4zNzMtMS45NDIsMi4wNTktNC41MzQsMi4wNTktNy43NzFjMC0zLjM5MS0wLjYyOS01Ljk3MS0xLjg4NS03Ljc0M2MtMS4yNTgtMS43NzEtMy4wNjYtMi42NTctNS40My0yLjY1Nw0KCQkJYy00LjI2OCwwLTYuNjY3LDEuODg1LTcuMiw1LjY1NmgyLjM0M2wtNi4zNDIsNi4zNDNsLTYuMzQzLTYuMzQzTDIzLjI3MSwyMy45ODVMMjMuMjcxLDIzLjk4NXoiLz4NCgk8L2c+DQo8L2c+DQo8L3N2Zz4NCg==" />
+                ·
+                <a href="/impressum">Impressum</a>
+            </small>
+        </footer>
+
+        <!-- Page scripts -->
+        
+        <!-- Google Analytics -->
+                    <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', 'UA-15013831-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+        
+        <!-- More page scripts -->
+                    </body>
+</html>
