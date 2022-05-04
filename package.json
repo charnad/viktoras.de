@@ -1,0 +1,23 @@
+{
+  "name": "viktoras.de",
+  "version": "1.0.0",
+  "description": "Asset builder",
+  "main": "webpack.mix.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://github.com/viktoras25/viktoras25.github.io.git"
+  },
+  "author": "Viktoras Bezaras",
+  "license": "ISC",
+  "scripts": {
+    "build": "mix --production"
+  },
+  "devDependencies": {
+    "bootstrap": "^4.6.1",
+    "highlight.js": "^11.5.1",
+    "laravel-mix": "^6.0.43",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.51.0",
+    "sass-loader": "^12.6.0"
+  }
+}
