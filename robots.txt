@@ -2,5 +2,7 @@ User-agent: *
 Disallow: /blog/tags/
 Disallow: /blog/categories/
 Disallow: /impressum/
+Disallow: /cv/
+Disallow: /lebenslauf/
 
 Sitemap: //viktoras.de/sitemap.xml

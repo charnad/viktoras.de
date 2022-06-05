@@ -6,396 +6,320 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <meta name="robots" content="noindex">
+        
+        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
+        <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="/css/app.css" rel="stylesheet" type="text/css" />
+        <script src="/js/app.js"></script>
 
-        <style>
-            @page {
-                size: A4;
-                margin: 0;
-            }
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-            @media print {
-                .page-break-before {
-                    page-break-before: always;
-                    padding-top: 2em;
-                }
-
-                /*#cv-main {*/
-                /*    font-size: 0.8em*/
-                /*}*/
-            }
-
+    <style>
+        @media print {
             body {
-                padding: 0 !important;
-                font-size: 16px !important;
+                font-size: 0.8em !important;
             }
 
-            #cv-sidebar {
-                padding-top: 2em;
-                background-color: #ddd;
-                text-align: center;
-                width: 20%;
+            h5 {
+                font-size: 1.2em !important;
             }
+        }
 
-            #cv-sidebar #cv-photo-container {
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 1.5em;
-                width: 13em;
-                height: 13em;
-                border: 1px solid #444;
-                overflow: hidden;
-                border-radius: 100%;
-            }
+        body {
+            padding: 0 !important;
+            font-size: 16px;
+        }
+    </style>
+            </head>
 
-            #cv-sidebar #cv-photo {
-                position: relative;
-                top: -20px;
-                right: 1.5em;
-                height: 26em;
-            }
+    <body>
+        <div class="container">
+    <div class="row">
+        <div id="cv-sidebar" class="col-sm-3">
+            <div id="cv-photo-container">
+                <img src="//viktoras.de/img/viktoras.jpg" id="cv-photo" alt="☺"/>
+            </div>
 
-            #cv-sidebar section .sidebar-section-header {
-                font-size: 1.3em;
-                margin-bottom: 0.5em;
-                text-transform: uppercase;
-            }
+            <h3>
+                <span class="fw-600">VIKTORAS</span><br>
+                <span class="fw-300">BEZARAS</span>
+            </h3>
 
-            #cv-sidebar section #cv-section-list-item {
-                padding-left: 7%;
-                text-align: left;
-            }
+            <hr>
 
-            #cv-sidebar #cv-section-list-item div {
-                margin-bottom: 0.5em;
-            }
+            <section>
+                <div class="sidebar-section-header">Kontaktdaten</div>
 
-            #cv-sidebar #cv-section-list-item div i {
-                margin-right: 0.4em;
-                width: 18px;
-                height: 18px;
-                text-align: center;
-            }
+                <div id="cv-section-list-item">
+                    <div><i class="fas fa-envelope"></i>mail@viktoras.de</div>
+                    <div><i class="fas fa-phone"></i>+49 176 38930891</div>
+                    <div><i class="fas fa-map-marker-alt"></i>Leipzig, Germany</div>
+                    <div><i class="fas fa-globe"></i><a href="https://viktoras.de">viktoras.de</a></div>
+                    <div><i class="fab fa-github"></i><a href="https://github.com/viktoras25">github.com/viktoras25</a></div>
+                </div>
+            </section>
 
-            #cv-main {
-                padding: 0 2em 2em;
-                font-size: 1.2em
-            }
+            <hr>
 
-            #cv-main .section-header {
-                background-color: #ddd;
-                font-weight: 200;
-                line-height: 1.5em;
-                font-size: 1.5em;
-                color: #111;
-                text-align: center;
-                margin-top: 1em;
-                margin-bottom: 0.5em;
-                text-transform: uppercase;
-            }
+            <section>
+                <div class="sidebar-section-header">Sprachen</div>
 
-            #cv-main #skills {
-                text-align: center;
-                opacity: 70%;
-            }
+                <div id="cv-section-list-item">
+                    <div><i class="fas fa-flag op-50"></i>Deutsch - fließend</div>
+                    <div><i class="far fa-flag"></i>Russisch - Muttersprache</div>
+                    <div><i class="fas fa-flag"></i>Englisch - fließend</div>
+                </div>
+            </section>
 
-            #cv-main #skills span {
-                font-weight: 600 !important;
-                margin: 1px;
-            }
+            <hr>
 
-            #cv-main #experience div.position {
-                margin-bottom: 1.5em;
-            }
+            <section>
+                <div class="sidebar-section-header">Hobbys</div>
 
-            #cv-main #experience div.position .badge {
-                font-size: 0.6em;
-            }
-
-            .fw-300 {
-                font-weight: 300;
-            }
-
-            .fw-600 {
-                font-weight: 600;
-            }
-
-            .op-50 {
-                opacity: 50%;
-            }
-        </style>
-    </head>
-
-    <body class="container">
-        <div class="row">
-    <div id="cv-sidebar" class="col-sm-3">
-        <div id="cv-photo-container">
-            <img src="//viktoras.de/img/viktoras.jpg" id="cv-photo" alt="☺"/>
+                <div id="cv-section-list-item">
+                    <div><i class="fas fa-chess-king"></i>Schach</div>
+                    <div><i class="fas fa-dumbbell"></i>Sport</div>
+                    <div><i class="fas fa-gamepad"></i>Gaming</div>
+                </div>
+            </section>
         </div>
 
-        <h3>
-            <span class="fw-600">VIKTORAS</span><br>
-            <span class="fw-300">BEZARAS</span>
-        </h3>
+        <div id="cv-main" class="col-sm-9">
+            <div class="section-header">Profil</div>
 
-        <hr>
+            <p id="cv-professional-profile">
+                <span style="font-weight: 500">Hallo, mein Name ist Viktoras Bezaras.</span>
+                Seit über <span style="font-weight: 500">14</span> Jahren entwickle ich beruflich Software, davon <span style="font-weight: 500">3</span> in leitenden Positionen.
+                Ich brenne für Teamarbeit und Kommunikation zwischen Entwicklern, Managern und Stakeholdern, um den Erfolg des Projekts sicherzustellen.
+                Ich liebe es, Wissen mit dem Team zu teilen, um das berufliche Wachstum zu fördern, als auch vom Team zu lernen.
+            </p>
 
-        <section>
-            <div class="sidebar-section-header">Kontaktdaten</div>
+            <section id="skills">
+                <div class="section-header">Kenntnisse</div>
 
-            <div id="cv-section-list-item">
-                <div><i class="fas fa-envelope"></i>mail@viktoras.de</div>
-                <div><i class="fas fa-phone"></i>+49 176 38930891</div>
-                <div><i class="fas fa-map-marker-alt"></i>Leipzig, Germany</div>
-                <div><i class="fas fa-globe"></i><a href="https://viktoras.de">viktoras.de</a></div>
-                <div><i class="fab fa-github"></i><a href="https://github.com/viktoras25">github.com/viktoras25</a></div>
-            </div>
-        </section>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.1em">PHP</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.1em">SQL</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.1em">JS</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.05em">CSS</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.05em">Git</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.05em">Agile</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1.05em">Laravel</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1em">Linux</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 1em">PHPUnit</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">SOLID</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">Docker</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">RabbitMQ</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">CI/CD</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">Redis</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.95em">Clean Architecture</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.9em">jQuery</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.9em">Symfony</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.9em">Zend Framework</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.85em">Python</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.85em">Ansible</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.80em">Postgresql</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.75em">Bootstrap</span>
+                <span class="badge badge-secondary bg-secondary" style="font-size: 0.75em">Golang</span>
+            </section>
 
-        <hr>
+            <section id="experience">
+                <div class="section-header">Arbeitserfahrung</div>
 
-        <section>
-            <div class="sidebar-section-header">Sprachen</div>
+                <div class="position">
+                    <h5>Head of development @ LeasingMarkt, Düsseldorf   <span class="float-right float-end cv-date">03/2022 - aktuell</span></h5>
 
-            <div id="cv-section-list-item">
-                <div><i class="fas fa-flag op-50"></i>Deutsch - fließend</div>
-                <div><i class="far fa-flag"></i>Russisch - Muttersprache</div>
-                <div><i class="fas fa-flag"></i>Englisch - fließend</div>
-            </div>
-        </section>
+<!--                    <p>-->
+<!--                        LeasingMarkt GmbH is the market leader in auto leasing in Germany.-->
+<!--                    </p>-->
 
-        <hr>
+<!--                    <ul>-->
+<!--                        <li>Leading multiple developer teams</li>-->
+<!--                    </ul>-->
 
-        <section>
-            <div class="sidebar-section-header">Hobbys</div>
+<!--                    <span class="badge badge-secondary bg-secondary">PHP</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">MariaDB</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Laravel</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Javascript</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Redis</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Pest</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Software Architecture</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Git</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Agile</span>-->
+<!--                    <span class="badge badge-secondary bg-secondary">Gitlab CI/CD</span>-->
+                </div>
 
-            <div id="cv-section-list-item">
-                <div><i class="fas fa-chess-king"></i>Schach</div>
-                <div><i class="fas fa-dumbbell"></i>Sport</div>
-                <div><i class="fas fa-gamepad"></i>Gaming</div>
-            </div>
-        </section>
-    </div>
+                <div class="position">
+                    <h5>CTO @ SportSpar, Leipzig   <span class="float-right float-end cv-date">07/2019 - 02/2022</span></h5>
 
-    <div id="cv-main" class="col-sm-9">
-        <div class="section-header">Profil</div>
+                    <p>
+                        SportSpar ist ein E-Commerce-Unternehmen, das täglich Tausende von Bestellungen verarbeitet.
+                        Meine Aufgaben reichten von der High-Level Planung und technischen Entscheidungsfindung bis hin zum Projektarchitektur und der praktischen Entwicklung.
+                    </p>
 
-        <p id="cv-professional-profile">
-            <span style="font-weight: 500">Hallo, mein Name ist Viktoras Bezaras.</span>
-            Seit über <span style="font-weight: 500">14</span> Jahren entwickle ich beruflich Software, davon <span style="font-weight: 500">3</span> in leitenden Positionen.
-            Ich brenne für Teamarbeit und Kommunikation zwischen Entwicklern, Managern und Stakeholdern, um den Erfolg des Projekts sicherzustellen.
-            Ich liebe es, Wissen mit dem Team zu teilen, um das berufliche Wachstum zu fördern, als auch vom Team zu lernen.
-        </p>
+                    <ul>
+                        <li>Eingestellt, organisiert und geleitet das Team von 7 Entwickler</li>
+                        <li>Etabliert die teamorientierte agile Entwicklungsprozesse</li>
+                        <li>Eingeführt Qualitätsstandards und diese über CI/CD-Prozesse automatisiert</li>
+                        <li>Konzipiert und Entwickelt die interne Tools und Projekte</li>
+                        <li>Entwickelt und betreut die neue Infrastruktur für die interne Projekte</li>
+                    </ul>
 
-        <section id="skills">
-            <div class="section-header">Kenntnisse</div>
-
-            <span class="badge badge-secondary" style="font-size: 1.1em">PHP</span>
-            <span class="badge badge-secondary" style="font-size: 1.1em">SQL</span>
-            <span class="badge badge-secondary" style="font-size: 1.1em">Javascript</span>
-            <span class="badge badge-secondary" style="font-size: 1.05em">CSS</span>
-            <span class="badge badge-secondary" style="font-size: 1.05em">Git</span>
-            <span class="badge badge-secondary" style="font-size: 1.05em">Clean Architecture</span>
-            <span class="badge badge-secondary" style="font-size: 1.05em">Laravel</span>
-            <span class="badge badge-secondary" style="font-size: 1em">Symfony</span>
-            <span class="badge badge-secondary" style="font-size: 1em">Linux</span>
-            <span class="badge badge-secondary" style="font-size: 1em">PHPUnit</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">SOLID</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">Docker</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">RabbitMQ</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">Gitlab + CI/CD</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">Redis</span>
-            <span class="badge badge-secondary" style="font-size: 0.95em">Agile</span>
-            <span class="badge badge-secondary" style="font-size: 0.9em">jQuery</span>
-            <span class="badge badge-secondary" style="font-size: 0.9em">Zend Framework</span>
-            <span class="badge badge-secondary" style="font-size: 0.85em">Python</span>
-            <span class="badge badge-secondary">Ansible</span>
-            <span class="badge badge-secondary">Scrum</span>
-            <span class="badge badge-secondary">Postgresql</span>
-            <span class="badge badge-secondary">SQLite</span>
-            <span class="badge badge-secondary">Bootstrap</span>
-            <span class="badge badge-secondary">Golang</span>
-            <span class="badge badge-secondary">C/C++</span>
-            <span class="badge badge-secondary">Phalcon</span>
-            <span class="badge badge-secondary">Mercurial</span>
-        </section>
-
-        <section id="experience">
-            <div class="section-header">Arbeitserfahrung</div>
-
-            <div class="position">
-                <h5>CTO @ SportSpar GmbH, Leipzig   <small class="float-right">07/2019 - aktuell</small></h5>
-
-                <p>
-                    SportSpar ist ein E-Commerce-Unternehmen, das täglich Tausende von Bestellungen verarbeitet.
-                    Meine Aufgaben reichten von der High-Level Planung und technischen Entscheidungsfindung bis hin zum Projektarchitektur und der praktischen Entwicklung.
-                </p>
-
-                <ul>
-                    <li>Eingestellt, organisiert und geleitet das Team von 7 Entwickler</li>
-                    <li>Etabliert die teamorientierte agile Entwicklungsprozesse</li>
-                    <li>Eingeführt Qualitätsstandards und diese über CI/CD-Prozesse automatisiert</li>
-                    <li>Konzipiert und Entwickelt die interne Tools und Projekte</li>
-                    <li>Entwickelt und betreut die neue Infrastruktur für die interne Projekte</li>
-                </ul>
-
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">MariaDB</span>
-                <span class="badge badge-secondary">Laravel</span>
-                <span class="badge badge-secondary">RabbitMQ</span>
-                <span class="badge badge-secondary">Javascript</span>
-                <span class="badge badge-secondary">jQuery</span>
-                <span class="badge badge-secondary">PHPUnit</span>
-                <span class="badge badge-secondary">Software Architecture</span>
-                <span class="badge badge-secondary">Git</span>
-                <span class="badge badge-secondary">Agile</span>
-                <span class="badge badge-secondary">Redis</span>
-                <span class="badge badge-secondary">Gitlab CI/CD</span>
-                <span class="badge badge-secondary">Youtrack</span>
-                <span class="badge badge-secondary">Ansible</span>
-            </div>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">MariaDB</span>
+                    <span class="badge badge-secondary bg-secondary">Laravel</span>
+                    <span class="badge badge-secondary bg-secondary">RabbitMQ</span>
+                    <span class="badge badge-secondary bg-secondary">Javascript</span>
+                    <span class="badge badge-secondary bg-secondary">jQuery</span>
+                    <span class="badge badge-secondary bg-secondary">PHPUnit</span>
+                    <span class="badge badge-secondary bg-secondary">Software Architecture</span>
+                    <span class="badge badge-secondary bg-secondary">Git</span>
+                    <span class="badge badge-secondary bg-secondary">Agile</span>
+                    <span class="badge badge-secondary bg-secondary">Redis</span>
+                    <span class="badge badge-secondary bg-secondary">Gitlab CI/CD</span>
+                    <span class="badge badge-secondary bg-secondary">Youtrack</span>
+                    <span class="badge badge-secondary bg-secondary">Ansible</span>
+                </div>
 
 
-            <div class="position">
-                <h5>Integrations Lead / Entwickler @ TraSo GmbH, Leipzig   <small class="float-right">05/2014 - 06/2019</small></h5>
-                <p>
-                    Die TraSo GmbH entwickelt eine Backend-Software für touristische Reiseveranstalter, um täglich Milliarden von Reiseangeboten auf den Markt zu bringen.
-                </p>
+                <div class="position">
+                    <h5>Integrations Lead / Entwickler @ TraSo, Leipzig   <span class="float-right float-end cv-date">05/2014 - 06/2019</span></h5>
+                    <p>
+                        Die TraSo GmbH entwickelt eine Backend-Software für touristische Reiseveranstalter, um täglich Milliarden von Reiseangeboten auf den Markt zu bringen.
+                    </p>
 
-                <ul>
-                    <li>Schnell ohne Übergabe in den Legacy Code einarbeitet</li>
-                    <li>Den Problematischen Hotelbereich übernommen und komplett renoviert</li>
-                    <li>Mit Tausenden der Unit-Tests die Fehlerquote drastisch reduziert</li>
-                    <li>Entwickelt neue Schnittstellen und somit die Anzahl der aktive Anbindungen verdreifacht</li>
-                    <li>Übernommen die Kunden- und Partner Kommunikation</li>
-                    <li>Zusätzlich weitere Aufgaben übernommen: Anbindungen der Buchungs- und Transferschnittstellen, OTDS-Export</li>
-                    <li>Organisiert das Integrations Team und übernommen die Verantwortung und das Mentoring</li>
-                </ul>
+                    <ul>
+                        <li>Schnell ohne Übergabe in den Legacy Code einarbeitet</li>
+                        <li>Den Problematischen Hotelbereich übernommen und komplett renoviert</li>
+                        <li>Mit Tausenden der Unit-Tests die Fehlerquote drastisch reduziert</li>
+                        <li>Entwickelt neue Schnittstellen und somit die Anzahl der aktive Anbindungen verdreifacht</li>
+                        <li>Übernommen die Kunden- und Partner Kommunikation</li>
+                        <li>Zusätzlich weitere Aufgaben übernommen: Anbindungen der Buchungs- und Transferschnittstellen, OTDS-Export</li>
+                        <li>Organisiert das Integrations Team und übernommen die Verantwortung und das Mentoring</li>
+                    </ul>
 
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">MySQL</span>
-                <span class="badge badge-secondary">Zend Framework</span>
-                <span class="badge badge-secondary">PHPUnit</span>
-                <span class="badge badge-secondary">Git</span>
-                <span class="badge badge-secondary">Jira</span>
-                <span class="badge badge-secondary">Stash</span>
-                <span class="badge badge-secondary">Bamboo</span>
-                <span class="badge badge-secondary">GitLab</span>
-            </div>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">MySQL</span>
+                    <span class="badge badge-secondary bg-secondary">Zend Framework</span>
+                    <span class="badge badge-secondary bg-secondary">PHPUnit</span>
+                    <span class="badge badge-secondary bg-secondary">Git</span>
+                    <span class="badge badge-secondary bg-secondary">Jira</span>
+                    <span class="badge badge-secondary bg-secondary">Stash</span>
+                    <span class="badge badge-secondary bg-secondary">Bamboo</span>
+                    <span class="badge badge-secondary bg-secondary">GitLab</span>
+                </div>
 
-            <div class="position page-break-before">
-                <h5>Senior Web-Entwickler @ meets-ecommerce GmbH, Niesky   <small class="float-right">06/2013 – 05/2014</small></h5>
-                <p>
-                    meets-ecommerce GmbH war ein E-commerce Startup mit der Vision ein zentrales Steuerungssystem für diverse Verkaufsplattformen zu entwickeln.
-                </p>
+                <div class="position page-break-before">
+                    <h5>Senior Web-Entwickler @ meets-ecommerce, Niesky   <span class="float-right float-end cv-date">06/2013 – 05/2014</span></h5>
+                    <p>
+                        meets-ecommerce GmbH war ein E-commerce Startup mit der Vision ein zentrales Steuerungssystem für diverse Verkaufsplattformen zu entwickeln.
+                    </p>
 
-                <ul>
-                    <li>Projektiert und entwickelt eine Microservice Application</li>
-                    <li>Entwickelt die Anbindungen an e-commerce Plattformen wie Magento</li>
-                </ul>
+                    <ul>
+                        <li>Projektiert und entwickelt eine Microservice Application</li>
+                        <li>Entwickelt die Anbindungen an e-commerce Plattformen wie Magento</li>
+                    </ul>
 
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">Postgresql</span>
-                <span class="badge badge-secondary">Phalcon Framework</span>
-                <span class="badge badge-secondary">RabbitMQ</span>
-                <span class="badge badge-secondary">Git</span>
-                <span class="badge badge-secondary">Redmine</span>
-                <span class="badge badge-secondary">RobotFramework</span>
-                <span class="badge badge-secondary">SCRUM</span>
-            </div>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">Postgresql</span>
+                    <span class="badge badge-secondary bg-secondary">Phalcon Framework</span>
+                    <span class="badge badge-secondary bg-secondary">RabbitMQ</span>
+                    <span class="badge badge-secondary bg-secondary">Git</span>
+                    <span class="badge badge-secondary bg-secondary">Redmine</span>
+                    <span class="badge badge-secondary bg-secondary">RobotFramework</span>
+                    <span class="badge badge-secondary bg-secondary">SCRUM</span>
+                </div>
 
-            <div class="position">
-                <h5>PHP-Entwickler @ netforge GmbH & Co. KG, Berlin    <small class="float-right">01/2011 – 04/2013</small></h5>
-                <p>
-                    netforge GmbH hat ein Dating Plattform entwickelt, für die interne Prozessen brauchte die Firma eine Rechnung-Steuerungssystem.
-                </p>
+                <div class="position">
+                    <h5>PHP-Entwickler @ netforge GmbH & Co. KG, Berlin    <span class="float-right float-end cv-date">01/2011 – 04/2013</span></h5>
+                    <p>
+                        netforge GmbH hat ein Dating Plattform entwickelt, für die interne Prozessen brauchte die Firma eine Rechnung-Steuerungssystem.
+                    </p>
 
-                <ul>
-                    <li>Angestellt nach erfolgreiche Arbeit als externe Auftragnehmer</li>
-                    <li>Entwickelt ein Rechnung-Steuerungssystem auf Basis von Symfony und Doctrine</li>
-                    <li>Über die Zeit viele neue Features entwickelt inkl. Werbungsprogramme, Mandantenfähigkeit u.v.m.</li>
-                    <li>Komplett selbständig remote gearbeitet</li>
-                </ul>
+                    <ul>
+                        <li>Angestellt nach erfolgreiche Arbeit als externe Auftragnehmer</li>
+                        <li>Entwickelt ein Rechnung-Steuerungssystem auf Basis von Symfony und Doctrine</li>
+                        <li>Über die Zeit viele neue Features entwickelt inkl. Werbungsprogramme, Mandantenfähigkeit u.v.m.</li>
+                        <li>Komplett selbständig remote gearbeitet</li>
+                    </ul>
 
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">MySQL</span>
-                <span class="badge badge-secondary">SQLite</span>
-                <span class="badge badge-secondary">Symfony Framework</span>
-                <span class="badge badge-secondary">Doctrine</span>
-                <span class="badge badge-secondary">Lime (Test Framework)</span>
-                <span class="badge badge-secondary">SVN</span>
-                <span class="badge badge-secondary">Bootstrap</span>
-            </div>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">MySQL</span>
+                    <span class="badge badge-secondary bg-secondary">SQLite</span>
+                    <span class="badge badge-secondary bg-secondary">Symfony Framework</span>
+                    <span class="badge badge-secondary bg-secondary">Doctrine</span>
+                    <span class="badge badge-secondary bg-secondary">Lime (Test Framework)</span>
+                    <span class="badge badge-secondary bg-secondary">SVN</span>
+                    <span class="badge badge-secondary bg-secondary">Bootstrap</span>
+                </div>
 
-            <div class="position">
-                <h5>PHP-Entwickler @ WEB-SHOP-HOSTING, Berlin   <small class="float-right">03/2010 – 12/2010</small></h5>
-                <p>
-                    An meine erste Projekte in Deutschland habe ich als Freiberufler gearbeitet.
-                    WEB-SHOP-HOSTING ist eine Online Agentur für Shop Hosting und Websiten Entwicklung.
-                </p>
+                <div class="position">
+                    <h5>PHP-Entwickler @ WEB-SHOP-HOSTING, Berlin   <span class="float-right float-end cv-date">03/2010 – 12/2010</span></h5>
+                    <p>
+                        An meine erste Projekte in Deutschland habe ich als Freiberufler gearbeitet.
+                        WEB-SHOP-HOSTING ist eine Online Agentur für Shop Hosting und Websiten Entwicklung.
+                    </p>
 
-                <ul>
-                    <li>Entwickelt ein Symfony-basierendes CMS-System</li>
-                    <li>Weiterentwicklung einer Drupal-basierende Webseite für Teamdrive GmbH</li>
-                </ul>
+                    <ul>
+                        <li>Entwickelt ein Symfony-basierendes CMS-System</li>
+                        <li>Weiterentwicklung einer Drupal-basierende Webseite für Teamdrive GmbH</li>
+                    </ul>
 
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">MySQL</span>
-                <span class="badge badge-secondary">SQLite</span>
-                <span class="badge badge-secondary">Symfony Framework</span>
-                <span class="badge badge-secondary">Drupal 7</span>
-                <span class="badge badge-secondary">Mercurial</span>
-            </div>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">MySQL</span>
+                    <span class="badge badge-secondary bg-secondary">SQLite</span>
+                    <span class="badge badge-secondary bg-secondary">Symfony Framework</span>
+                    <span class="badge badge-secondary bg-secondary">Drupal 7</span>
+                    <span class="badge badge-secondary bg-secondary">Mercurial</span>
+                </div>
 
-            <div class="position">
-                <h5>PHP-Entwickler @ RedFortress, Sankt-Petersburg   <small class="float-right">07/2008 – 03/2010</small></h5>
-                <p>
-                    RedFortress ist eine Online-Agentur für SEO und Webentwicklung.
-                </p>
+                <div class="position">
+                    <h5>PHP-Entwickler @ RedFortress, Sankt-Petersburg   <span class="float-right float-end cv-date">07/2008 – 03/2010</span></h5>
+                    <p>
+                        RedFortress ist eine Online-Agentur für SEO und Webentwicklung.
+                    </p>
 
-                <ul>
-                    <li>Unterstützt und weiterentwickelt Pizza und Sushi Bestellseiten</li>
-                    <li>Entwickelt interne Tools für SEO</li>
-                </ul>
+                    <ul>
+                        <li>Unterstützt und weiterentwickelt Pizza und Sushi Bestellseiten</li>
+                        <li>Entwickelt interne Tools für SEO</li>
+                    </ul>
 
-                <span class="badge badge-secondary">PHP</span>
-                <span class="badge badge-secondary">CSS</span>
-                <span class="badge badge-secondary">MySQL</span>
-                <span class="badge badge-secondary">Javascript</span>
-                <span class="badge badge-secondary">Symfony Framework</span>
-            </div>
-        </section>
+                    <span class="badge badge-secondary bg-secondary">PHP</span>
+                    <span class="badge badge-secondary bg-secondary">CSS</span>
+                    <span class="badge badge-secondary bg-secondary">MySQL</span>
+                    <span class="badge badge-secondary bg-secondary">Javascript</span>
+                    <span class="badge badge-secondary bg-secondary">Symfony Framework</span>
+                </div>
+            </section>
 
-        <section id="education">
-            <div class="section-header">Ausbildung</div>
+            <section id="education">
+                <div class="section-header">Ausbildung</div>
 
-            <div>
-                <h5>Aspirantur in Informatik   <small>10/2008 – 09/2009</small></h5>
-                <p>
-                    Russische Staatliche Pädagogische Herzen-Universität (Unbeendet wegen Umzugs nach Deutschland)
-                </p>
-            </div>
+                <div>
+                    <h5>Aspirantur in Informatik   <span class="float-right float-end cv-date">10/2008 – 09/2009</span></h5>
+                    <p>
+                        Russische Staatliche Pädagogische Herzen-Universität (Unbeendet wegen Umzugs nach Deutschland)
+                    </p>
+                </div>
 
-            <div>
-                <h5>Studium im Fach Informationssysteme, -technologie (Diplom)   <small>09/2003 – 07/2008</small></h5>
-                <p>
-                    Staatliche Universität für Wasserstraßenverkehrswege, Sankt-Petersburg<br />
-                    Staatliche Abschlussprüfung: <i>Sehr gut</i><br />
-                    Abschlussqualifikationsarbeit zum Thema "Entwicklung des Informationssystem aufgrund der XML- Technologie am Beispiel des RSS-Service": <i>Sehr gut</i>
-                </p>
-            </div>
+                <div>
+                    <h5>Studium im Fach Informationssysteme, -technologie (Diplom)   <span class="float-right float-end cv-date">09/2003 – 07/2008</span></h5>
+                    <p>
+                        Staatliche Universität für Wasserstraßenverkehrswege, Sankt-Petersburg<br />
+                        Staatliche Abschlussprüfung: <i>Sehr gut</i><br />
+                        Abschlussqualifikationsarbeit zum Thema "Entwicklung des Informationssystem aufgrund der XML- Technologie am Beispiel des RSS-Service": <i>Sehr gut</i>
+                    </p>
+                </div>
 
-            <div>
-                <h5>Abitur   <small>06/2003</small></h5>
-                <p>
-                    Gymnasium Nr. 397, Sankt-Petersburg mit Schwerpunkt Englisch
-                </p>
-            </div>
+                <div>
+                    <h5>Abitur   <span class="float-right float-end cv-date">06/2003</span></h5>
+                    <p>
+                        Gymnasium Nr. 397, Sankt-Petersburg mit Schwerpunkt Englisch
+                    </p>
+                </div>
 
-        </section>
+            </section>
+        </div>
     </div>
 </div>
     </body>
