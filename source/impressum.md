@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Lebenslauf
+title: Impressum
 ---
 
 {% block head_meta %}<meta name="robots" content="noindex">{% endblock %}

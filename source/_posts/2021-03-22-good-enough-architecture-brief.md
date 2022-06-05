@@ -8,7 +8,7 @@ post_date: 22.03.2021
 Takeouts from a talk from GOTO 2019 conference "'Good Enough' Architecture" by Stefan Tilkov. Found on [youtube](https://www.youtube.com/watch?v=PzEox3szeRc).
 
 <div class="text-center">
-    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/1-intro.jpg" alt="intro">
+    <img class="img-fluid" src="/img/posts/2021-03-22-good-enough-architecture-brief/1-intro.jpg" alt="intro">
 </div>
 
 Theory:
@@ -32,7 +32,7 @@ Architecture is not a description, it is the actual system. "Architecture is a p
 It's the same question as "what is a good car?". You have to take architecture in relation to the actual quality aspect that you care about. You might care about security more, than performance, you have to figure it out, what that is.
 
 <div class="text-center">
-    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/2-scaling-dimensions.jpg" alt="scaling-dimensions">
+    <img class="img-fluid" src="/img/posts/2021-03-22-good-enough-architecture-brief/2-scaling-dimensions.jpg" alt="scaling-dimensions">
 </div>
 
 There is no "good" and "bad" architecture without context; architecture needs to take specific quality attributes into account.
@@ -42,7 +42,7 @@ There is no "good" and "bad" architecture without context; architecture needs to
 If your design attempts to satisfy everyone, you'll likely end up satisfying no one.
 
 <div class="text-center">
-    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/3-configurability-cost.jpg" alt="configurability-cost">
+    <img class="img-fluid" src="/img/posts/2021-03-22-good-enough-architecture-brief/3-configurability-cost.jpg" alt="configurability-cost">
 </div>
 
 Solution was way too complex to small customer and not flexible enough large customers. They ended up building custom solution for specific clients. "Highly specific code is often preferable to sophisticated configuration".
@@ -68,7 +68,7 @@ Everybody wants to be Netflix, but nobody is.
 #### 4. Free-style architecture
 
 <div class="text-center">
-    <img src="/img/posts/2021-03-22-good-enough-architecture-brief/4-decoupling-developers.jpg" alt="configurability-cost">
+    <img class="img-fluid" src="/img/posts/2021-03-22-good-enough-architecture-brief/4-decoupling-developers.jpg" alt="configurability-cost">
 </div>
 
  - Lack of standardization led to inefficient UI integration at runtime

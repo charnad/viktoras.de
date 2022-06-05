@@ -1,135 +1,22 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title %}{{ page.title }}{% endblock %} - {{ site.title }}</title>
-        <meta charset="utf-8">
+{% extends "blank" %}
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block head_styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        <meta name="robots" content="noindex">
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link href="/css/app.css" rel="stylesheet" type="text/css" />
-
-        <style>
-            @page {
-                size: A4;
-                margin: 0;
-            }
-
-            @media print {
-                .page-break-before {
-                    page-break-before: always;
-                    padding-top: 2em;
-                }
-
-                /*#cv-main {*/
-                /*    font-size: 0.8em*/
-                /*}*/
-            }
-
+    <style>
+        @media print {
             body {
-                padding: 0 !important;
-                font-size: 16px !important;
+                font-size: 0.8em !important;
             }
 
-            #cv-sidebar {
-                padding-top: 2em;
-                background-color: #ddd;
-                text-align: center;
-                width: 20%;
+            h5 {
+                font-size: 1.2em !important;
             }
+        }
 
-            #cv-sidebar #cv-photo-container {
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 1.5em;
-                width: 13em;
-                height: 13em;
-                border: 1px solid #444;
-                overflow: hidden;
-                border-radius: 100%;
-            }
-
-            #cv-sidebar #cv-photo {
-                position: relative;
-                top: -20px;
-                right: 1.5em;
-                height: 26em;
-            }
-
-            #cv-sidebar section .sidebar-section-header {
-                font-size: 1.3em;
-                margin-bottom: 0.5em;
-                text-transform: uppercase;
-            }
-
-            #cv-sidebar section #cv-section-list-item {
-                padding-left: 7%;
-                text-align: left;
-            }
-
-            #cv-sidebar #cv-section-list-item div {
-                margin-bottom: 0.5em;
-            }
-
-            #cv-sidebar #cv-section-list-item div i {
-                margin-right: 0.4em;
-                width: 18px;
-                height: 18px;
-                text-align: center;
-            }
-
-            #cv-main {
-                padding: 0 2em 2em;
-                font-size: 1.2em
-            }
-
-            #cv-main .section-header {
-                background-color: #ddd;
-                font-weight: 200;
-                line-height: 1.5em;
-                font-size: 1.5em;
-                color: #111;
-                text-align: center;
-                margin-top: 1em;
-                margin-bottom: 0.5em;
-                text-transform: uppercase;
-            }
-
-            #cv-main #skills {
-                text-align: center;
-                opacity: 70%;
-            }
-
-            #cv-main #skills span {
-                font-weight: 600 !important;
-                margin: 1px;
-            }
-
-            #cv-main #experience div.position {
-                margin-bottom: 1.5em;
-            }
-
-            #cv-main #experience div.position .badge {
-                font-size: 0.6em;
-            }
-
-            .fw-300 {
-                font-weight: 300;
-            }
-
-            .fw-600 {
-                font-weight: 600;
-            }
-
-            .op-50 {
-                opacity: 50%;
-            }
-        </style>
-    </head>
-
-    <body class="container">
-        {% block contents %}{% endblock %}
-    </body>
-</html>
+        body {
+            padding: 0 !important;
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}

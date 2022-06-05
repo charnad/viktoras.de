@@ -3,7 +3,7 @@ layout: default
 title: 
 generator: pagination
 pagination:
-    max_per_page: 5
+    max_per_page: 8
 use:
     - posts
 ---
@@ -15,10 +15,10 @@ use:
     {% for post in page.pagination.items %}
     <article class="post">
         <div class="postdata row no-gutters g-0">
-            <h2 class="title col">
+            <h2 class="title col-md-auto">
                 <a href="{{ post.url }}" rel="bookmark">{{ post.title }}</a>
             </h2>
-            <div class="date text-right float-sm-right">{{ post.post_date }}</div>
+            <div class="col date text-end float-end">{{ post.post_date }}</div>
         </div>
 
         <div class="entry">

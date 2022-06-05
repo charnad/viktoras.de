@@ -1,5 +1,22 @@
-@import "bootstrap";
+@import "./bootstrap";
 @import "highlight.js/styles/github.css";
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+    padding-top: 2em;
+  }
+}
 
 body {
   font-size: 18px;
@@ -82,7 +99,7 @@ a:hover {
   z-index: 1000;
 }
 
-#main {
+main {
   padding: 10px 21px;
   min-height: 600px;
 }
@@ -155,6 +172,107 @@ footer img {
   vertical-align: bottom;
 }
 
-.text-align-center {
+.fw-300 {
+  font-weight: 300;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.op-50 {
+  opacity: 50%;
+}
+
+#cv-sidebar {
+  padding-top: 2em;
+  background-color: #ddd;
   text-align: center;
+}
+
+#cv-sidebar #cv-photo-container {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5em;
+  //width: 13em;
+  //height: 13em;
+  border: 1px solid #444;
+  overflow: hidden;
+  border-radius: 100%;
+
+  width: 80%;
+  height: 0;
+  padding-bottom: 80%;
+}
+
+#cv-sidebar #cv-photo {
+  position: relative;
+  top: -20px;
+  right: 1.5em;
+  height: 26em;
+}
+
+#cv-sidebar section .sidebar-section-header {
+  font-size: 1.3em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+}
+
+#cv-sidebar section #cv-section-list-item {
+  padding-left: 7%;
+  text-align: left;
+}
+
+#cv-sidebar #cv-section-list-item div {
+  margin-bottom: 0.5em;
+}
+
+#cv-sidebar #cv-section-list-item div i {
+  margin-right: 0.4em;
+  width: 18px;
+  height: 18px;
+  text-align: center;
+}
+
+#cv-main {
+  padding: 0 2em 0 2em;
+  font-size: 1.2em
+}
+
+#cv-main .section-header {
+  background-color: #ddd;
+  font-weight: 200;
+  line-height: 1.5em;
+  font-size: 1.2em;
+  color: #111;
+  text-align: center;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+}
+
+#cv-main #skills {
+  text-align: center;
+  opacity: 70%;
+}
+
+#cv-main #skills span {
+  font-weight: 600 !important;
+  margin: 1px;
+}
+
+#cv-main #experience div.position {
+  margin-bottom: 1.5em;
+}
+
+#cv-main #experience div.position .badge {
+  font-size: 0.6em;
+}
+
+#cv-main .cv-date {
+  font-size: 0.7em;
+}
+
+#cv-main .badge {
+  padding: .25em .45em !important;
 }

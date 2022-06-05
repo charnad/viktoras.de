@@ -1,5 +1,5 @@
 ---
-title: "Symfony: как добавить свой экшен в DoctrineRouteCollection"
+title: "Symfony: свой экшен в DoctrineRouteCollection"
 tags: [routing, symfony]
 categories: [php]
 post_date: 04.07.2011
