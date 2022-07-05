@@ -3,16 +3,16 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="//viktoras.de/atom.xml" rel="self"/>
     <link href="//viktoras.de/"/>
-    <updated>2022-07-05T19:20:04+00:00</updated>
+    <updated>2022-07-05T19:32:41+00:00</updated>
     <id>//viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
         <generator uri="http://sculpin.io/">Sculpin</generator>
             <entry>
             <title type="html"><![CDATA[7 attributes of a developer]]></title>
-            <link href="//viktoras.de/blog/7-attributes-of-a-developer/"/>
+            <link href="//viktoras.de/read/7-attributes-of-a-developer/"/>
             <updated>2022-07-04T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/7-attributes-of-a-developer/</id>
+            <id>//viktoras.de/read/7-attributes-of-a-developer/</id>
             <content type="html"><![CDATA[<p>Just as many other software developers, I like video games. I've spent countless hours grinding and leveling my characters in RPG games like Diablo. As your character grows in levels, you choose their skills and put points into attributes. Perhaps the most classical attribute set is: strength, dexterity, vitality and magic. They define whether your character is a wise mage, a strong fighter, or an agile sharpshooter.</p>
 
 <p>I decided to take this approach and develop a similar role-playing character system for software developers. For me as a manager, my direct responsibility is to give feedback and provide guidance to developers. So if you don't have a good system, it can be very hard to come up with crucial points, which your developers colleagues need to work on to get to the next level.</p>
@@ -47,9 +47,9 @@
         </entry>
             <entry>
             <title type="html"><![CDATA[On git branching. Leanflow]]></title>
-            <link href="//viktoras.de/blog/leanflow/"/>
+            <link href="//viktoras.de/read/leanflow/"/>
             <updated>2021-05-30T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/leanflow/</id>
+            <id>//viktoras.de/read/leanflow/</id>
             <content type="html"><![CDATA[<p>For productive work software teams need a version control system (VCS) flow. A set of rules, that describes how code changes will be integrated into the existing code and delivered to testing and production. Obviously the VCS itself is the first factor that affects the flow, what you can do with git may not work with svn. At the moment of writing git has become the industry standard, so the ideas are based on that premise.</p>
 
 <p>There already exist frameworks like Gitflow (I suppose this is where the popularity of the word flow comes), but as with any framework, it brings a lot of tools you might never need in your project. So lets consider the leanest flow, that is still organized and effective.</p>
@@ -165,9 +165,9 @@
         </entry>
             <entry>
             <title type="html"><![CDATA[&#039;Good Enough&#039; Architecture by Stefan Tilkov Brief]]></title>
-            <link href="//viktoras.de/blog/good-enough-architecture-brief/"/>
+            <link href="//viktoras.de/read/good-enough-architecture-brief/"/>
             <updated>2021-03-22T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/good-enough-architecture-brief/</id>
+            <id>//viktoras.de/read/good-enough-architecture-brief/</id>
             <content type="html"><![CDATA[<p>Takeouts from a talk from GOTO 2019 conference "'Good Enough' Architecture" by Stefan Tilkov. Found on <a href="https://www.youtube.com/watch?v=PzEox3szeRc">youtube</a>.</p>
 
 <div class="text-center">
@@ -273,9 +273,9 @@
         </entry>
             <entry>
             <title type="html"><![CDATA[One plus one]]></title>
-            <link href="//viktoras.de/blog/one-plus-one/"/>
+            <link href="//viktoras.de/read/one-plus-one/"/>
             <updated>2019-08-12T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/one-plus-one/</id>
+            <id>//viktoras.de/read/one-plus-one/</id>
             <content type="html"><![CDATA[<p>A little funny quiz I've came up with. Guess programming language:</p>
 
 <ol>
@@ -322,9 +322,9 @@ TypeError: cannot concatenate 'str' and 'int' objects
         </entry>
             <entry>
             <title type="html"><![CDATA[4 Layer API Client Structure]]></title>
-            <link href="//viktoras.de/blog/4-layer-api-client-structure/"/>
+            <link href="//viktoras.de/read/4-layer-api-client-structure/"/>
             <updated>2019-08-11T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/4-layer-api-client-structure/</id>
+            <id>//viktoras.de/read/4-layer-api-client-structure/</id>
             <content type="html"><![CDATA[<p>One of common tasks in software development is building a client library for some service API. Over the years I've come up with a way of structuring these libraries, which has served me well. The evolution of my approach went all the way from 2 layer (Business - Client) to now 4 layers. In some specific cases you might need more than these 4, but in usual case it enough. So the layers are:</p>
 
 <ol>
@@ -387,9 +387,9 @@ TypeError: cannot concatenate 'str' and 'int' objects
         </entry>
             <entry>
             <title type="html"><![CDATA[Helper classes don&#039;t help]]></title>
-            <link href="//viktoras.de/blog/helper-classes-dont-help/"/>
+            <link href="//viktoras.de/read/helper-classes-dont-help/"/>
             <updated>2019-08-04T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/helper-classes-dont-help/</id>
+            <id>//viktoras.de/read/helper-classes-dont-help/</id>
             <content type="html"><![CDATA[<p>Some time ago I wrote a post on my hate towards static methods and helper classes. It was more of an emotional rant than anything else and didn't serve the educational purpose. So this is a rewrite of the original post, which I hope can provide more insight.</p>
 
 <p>To begin with, a static method is a method, that can be invoked without instantiating an object of that class. The most common usage of static methods I've seen are helper classes and singleton pattern. A helper class is a collection of static methods, which hopefully has some common topic. So it may look like:</p>
@@ -433,9 +433,9 @@ $this-&gt;getLogger()-&gt;debug(FormatHelper::formatXml($response));
         </entry>
             <entry>
             <title type="html"><![CDATA[Forget about DRY]]></title>
-            <link href="//viktoras.de/blog/forget-about-dry/"/>
+            <link href="//viktoras.de/read/forget-about-dry/"/>
             <updated>2017-08-13T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/forget-about-dry/</id>
+            <id>//viktoras.de/read/forget-about-dry/</id>
             <content type="html"><![CDATA[<p>I've once had a heated discussion with my colleagues, which eventually motivated me to write this blog post. This goes about DRY programming principle, being oh so loved by many developers. I'm convinced, that many do not really understand what does this principle really promote. DRY suffers from what I would call an "imprinting fallacy" (trying to mimic senior colleagues, while taking barely understood concepts to extreme), the same way the Singleton design pattern does.</p>
 
 <p>An inexperienced developer, lets say Joe, starts working in a team, where words like "design patterns" are frequently used. Joe looks through some online articles and sees a lot of scary words and complex schemes. But then a simple enough passage pops up - a single instance of some class. So Joe starts to use Singleton extensively, as he thinks it makes him a more senior developer, because he now uses a design pattern. He does not know about all the hidden flaws he's building into the project. Same goes for DRY. It's deceptively easy to understand, while the devil is in the details. DRY - Don't repeat yourself, don't duplicate programming code, what's more to it? The same Joe, is happy to use a programming principle he has heard about. He vigorously finds out all repeated lines of code and extracts them into separate (usually into static methods) classes. By doing that, he is most likely damaging the project once again.
@@ -473,9 +473,9 @@ $this-&gt;getLogger()-&gt;debug(FormatHelper::formatXml($response));
         </entry>
             <entry>
             <title type="html"><![CDATA[Segments intersection algortihm]]></title>
-            <link href="//viktoras.de/blog/segments-intersection-algorithm/"/>
+            <link href="//viktoras.de/read/segments-intersection-algorithm/"/>
             <updated>2017-01-25T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/segments-intersection-algorithm/</id>
+            <id>//viktoras.de/read/segments-intersection-algorithm/</id>
             <content type="html"><![CDATA[<p>For my job I needed to write a more efficient function to merge multiple sets of segments. Segments were date ranges where some special offers are applicable. So let's say a 10% discount is valid from 1st Jan to 10th Jan and another 20% discount is valid from 5th Jan to 15th Jan. This means both of them are valid between 5th and 10th. Those are just two ranges, there potentially be two lists of any amount of segments.</p>
 
 <p>Now, I've said more efficient, because the code I inherited has been creating an list of all the dates within given ranges and calling <a href="http://php.net/manual/en/function.array-merge.php">array_merge</a> on them. This has worked until we've started getting dates ranges like "0001-01-01 to 9999-12-31". I've came up with an algorithm, which might not be the most optimal, but I'm pretty happy with it. Especially because I've developed it without stealing parts from Google or StackOverflow. For funsies I'll reproduce the algorithm in Golang (it was in PHP originally).</p>
@@ -548,9 +548,9 @@ func max(a, b int64) int64 {
         </entry>
             <entry>
             <title type="html"><![CDATA[Why do I hate static methods]]></title>
-            <link href="//viktoras.de/blog/why-do-i-hate-static-methods/"/>
+            <link href="//viktoras.de/read/why-do-i-hate-static-methods/"/>
             <updated>2015-05-10T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/why-do-i-hate-static-methods/</id>
+            <id>//viktoras.de/read/why-do-i-hate-static-methods/</id>
             <content type="html"><![CDATA[<p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
 
 <p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
@@ -593,9 +593,9 @@ public function foo()
         </entry>
             <entry>
             <title type="html"><![CDATA[Project Euler 502]]></title>
-            <link href="//viktoras.de/blog/project-euler-502/"/>
+            <link href="//viktoras.de/read/project-euler-502/"/>
             <updated>2015-04-11T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/project-euler-502/</id>
+            <id>//viktoras.de/read/project-euler-502/</id>
             <content type="html"><![CDATA[<p>Hello everyone, I've decided to continue writing posts into my blog, when I deal with something interesting. This time my attention has been drawn to Project Euler problems. I tend to refer to those problems when I'm learning a new programming language. Solving easier problems help to get handy with the syntax and language constructs. So it's Haskell now. I'm not going to tell how Haskell is different from anything I've learned before (Coursera Scala course was the closest), so i'll just proceed with the Problem 502, which I found really intriguing.</p>
 
 <p>The problem itself can be found <a href="https://projecteuler.net/problem=502">here</a>. Brief comprehension is: how many castles can you build, that follow the rules: no hanging blocks, total amount of blocks is even. I am currently at the first approach stage. The first approach is usually naive: generate every possible castle, check the validity and calculate how many there are.</p>
