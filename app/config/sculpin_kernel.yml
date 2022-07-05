@@ -1,3 +1,7 @@
 sculpin_content_types:
-    posts:
+    old_posts:
         permalink: blog/:filename/
+        path: posts/
+    posts:
+        permalink: read/:filename/
+        path: event/
