@@ -29,6 +29,56 @@
         <article class="post">
         <div class="postdata row no-gutters g-0">
             <h2 class="title col-md-auto">
+                <a href="/blog/why-do-i-hate-static-methods/" rel="bookmark">Why do I hate static methods</a>
+            </h2>
+            <div class="col date text-end float-end">10.05.2015</div>
+        </div>
+
+        <div class="entry">
+                            <p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
+
+<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
+
+<pre><code class="php">class Helper
+{
+   public static formatA() {...}
+   public static formatB() {...}
+   public static formatC() {...}
+}
+</code></pre>
+
+<p>The thing is, it has absolutely no difference from:</p>
+
+<pre><code class="php">function helper_formatA() {...}
+function helper_formatB() {...}
+function helper_formatC() {...}
+</code></pre>
+
+<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
+
+<p>So we have used this static method somewhere in the code:</p>
+
+<pre><code class="php">// .. within some class
+public function foo()
+{
+    // ...
+    Helper::formatA('bar');
+}
+</code></pre>
+
+<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
+
+<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
+
+<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
+
+<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
+
+                    </div>
+    </article>
+        <article class="post">
+        <div class="postdata row no-gutters g-0">
+            <h2 class="title col-md-auto">
                 <a href="/blog/project-euler-502/" rel="bookmark">Project Euler 502</a>
             </h2>
             <div class="col date text-end float-end">11.04.2015</div>
@@ -183,25 +233,6 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
 
 <p>Эта система координат отличается, от обычной. Обратите внимание, что координата Y увеличивается вниз, а координата X увеличивается вправо. Это важно понимать, чтобы правильно рисовать изображения на экране.
                             <a href="/blog/sdl-tutorial-2-coordinates-and-blitting/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters g-0">
-            <h2 class="title col-md-auto">
-                <a href="/blog/sdl-tutorial-1-basics/" rel="bookmark">SDL: Как создать игру. Базовое окно.</a>
-            </h2>
-            <div class="col date text-end float-end">01.05.2012</div>
-        </div>
-
-        <div class="entry">
-                            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
-
-<p>Эти обучающие статьи предназначены для тех, у кого уже есть опыт использования C++ или другого языка программирования. Если у вас возникают сложности с пониманием кода, а не концепций, то я настоятельно советую вам сначала прочитать статью, объясняющую основы языка С++. Необязательно знать все о С++, но чем больше - тем проще вам будет в дальнейшем.</p>
-
-<p>В статьях я буду использовать Code::Blocks в качестве IDE и gcc с mingw для компиляции. [Я лично изначально использовал gcc с cygwin, но такой набор потребует включения cygwin1.dll в дистрибутив, что может накладывать лицензионные ограничения. Поэтому позже я установил mingw компилятор из тех же репозиториев cygwin.] Если вы хотите использовать другую IDE и/или компилятор, вы, конечно, можете это сделать, если достаточно уверены, что сможете включить все библиотеки в линковку. Скачать же Code::Blocks можно на официальном сайте <a href="http://www.codeblocks.org/downloads/26">http://www.codeblocks.org</a> (скачать версию, включающую MinGW). Рекомендуется использовать стабильную версию, если вы не хотите тратить время на ночные сборки.</p>
-
-<p>Эти статьи в значительной степени сосредоточены вокруг SDL (Simple DirectMedia Layer), 2D кросс-платформенной графической библиотеки. Эта библиотека позволит отрисовывать графику, и делать разные классные вещи, которые потом и помогут нам сделать игру. Вам также надо будет загрузить библиотеку с сайта <a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org</a>. Вам нужен tar-файл в разделе "Development Libraries, Win32" и zip-файл в разделе "Runtime Libraries, Win32". Если вы используете Visual Studio - выберите соответствующий файл вместо MinGW версии. После скачивания вы можете скопировать .dll файлы в папку Windows/system32, таким образом любое SDL приложение сможет его использовать. [Я не стал этого делать, достаточно чтобы SDL.dll и другие необходимые dll файлы находились в той же папке, что и исполняемый файл]. 
-                            <a href="/blog/sdl-tutorial-1-basics/">More...</a>
                     </div>
     </article>
     

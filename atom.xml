@@ -3,11 +3,48 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="//viktoras.de/atom.xml" rel="self"/>
     <link href="//viktoras.de/"/>
-    <updated>2022-06-05T11:29:01+00:00</updated>
+    <updated>2022-07-05T19:20:04+00:00</updated>
     <id>//viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
         <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[7 attributes of a developer]]></title>
+            <link href="//viktoras.de/blog/7-attributes-of-a-developer/"/>
+            <updated>2022-07-04T00:00:00+00:00</updated>
+            <id>//viktoras.de/blog/7-attributes-of-a-developer/</id>
+            <content type="html"><![CDATA[<p>Just as many other software developers, I like video games. I've spent countless hours grinding and leveling my characters in RPG games like Diablo. As your character grows in levels, you choose their skills and put points into attributes. Perhaps the most classical attribute set is: strength, dexterity, vitality and magic. They define whether your character is a wise mage, a strong fighter, or an agile sharpshooter.</p>
+
+<p>I decided to take this approach and develop a similar role-playing character system for software developers. For me as a manager, my direct responsibility is to give feedback and provide guidance to developers. So if you don't have a good system, it can be very hard to come up with crucial points, which your developers colleagues need to work on to get to the next level.</p>
+
+<!--more-->
+
+<p>So here are the seven attributes of a developer that I came up with:</p>
+
+<pre><code>1. Knowledge
+2. Problem-solving
+3. Performance
+4. Initiative
+5. Reliability/Autonomy
+6. Teamwork
+7. Leadership
+</code></pre>
+
+<ol>
+<li><p><strong>Knowledge</strong> - It is how good a developer knows their tools, how wide and deep their skill set is. It's a general technical fitness and overall expertise. In a role-playing system, it would correspond to how many spells do they have in a spell book. It correlates well with years of experience. Knowledge, however, does not include anything else - as we will see later, one still has to properly use these skills. A person with low knowledge is someone who just started their developer's journey. Someone with a high knowledge attribute is a seasoned veteran, who has defeated swarms of bugs and knows exactly where to look to solve a problem.</p></li>
+<li><p><strong>Problem-solving</strong> - it sounds similar to the previous attribute, but is actually orthogonal to static knowledge. It is how you come to a solution. Can you separate the important from the unimportant, do you take everything into account, or do you just follow what's written in the ticket? In chess, you may know a lot of theory, remember all the moves up until some point, but after that, you have to rely on your savviness. Someone with poor problem-solving skills will stare blankly at a screen, when the problem is formulated a little vaguely. A good problem solver can find a great solution based on incomplete information and maybe even provide plans B and C.</p></li>
+<li><p><strong>Performance</strong> - this is how you use your knowledge and problem-solving skills. There are two parts in performance: quality and quantity (quality comes first). It is not enough to just be a good developer, you also need to apply it. There is no use in your deep knowledge and ingenuity if you lazily move a couple of lines of code and call it refactoring. A mass-produced garbage code is another extreme example of poor quality. A good performing person may not be the best developer in the team, but they are the backbone. It is one of the traits that "rockstar" developers have.</p></li>
+<li><p><strong>Initiative</strong> - is bringing new ideas to the table. An initiative developer wants to change the world, the current state is just not good enough. They want to use new tools, improve the architecture, and do tech talks. If we continue with "Radical Candor" analogues, this is something "superstars" have a lot of. Not every company can handle a person with high initiative, but if you strive for the better - you need people like this. Developers with low initiative will just leave things be and go with the flow.</p></li>
+<li><p><strong>Reliability/Autonomy</strong> - these are two facets of the same attribute. You can easily delegate a task to a reliable and autonomous person and not worry if the task will be finished - it will be. The less reliable or autonomous a developer is - the more help they need from the team and management. Obviously, this corresponds with more junior developers. Autonomous and reliable work is essential for becoming a middle level developer.</p></li>
+<li><p><strong>Teamwork</strong> - corresponds with charisma in a classical role-playing attributes system. It's how pleasant a person is to deal with. Someone with a very low teamwork attribute could be for example a lone wolf. It is not so bad per se, their contribution can still be very valuable. A different example would be a toxic person - these you don't want to have in your team. A great team player helps to keep the team together and always finds a compromise.</p></li>
+<li><p><strong>Leadership</strong> - it's like initiative, but on an interpersonal level. A good leader is not necessarily the most knowledgeable developer, but it's the one with the biggest heart. It's the one who cares about their colleagues. This attribute does not really go negative, a person without leadership skills can still be a great team player and a good developer. Leadership also includes organizational skills.</p></li>
+</ol>
+
+<p>It is absolutely normal that some developers are particularly strong in some attributes and have weaknesses in others. But what is important, you can work on every one of these attributes. Reading books and taking courses improves knowledge. Diligence and perseverance are key for problem-solving and performance. Being kind and willing to help others are needed for teamwork and leadership. Keeping your word makes you reliable.</p>
+
+<p>Different organizations need different kinds of people. Some value teamwork and initiative over knowledge, some want knowledgeable and reliable people. Your task as a manager is to understand what attributes are key for you and look for people who have it.</p>
+]]></content>
+        </entry>
             <entry>
             <title type="html"><![CDATA[On git branching. Leanflow]]></title>
             <link href="//viktoras.de/blog/leanflow/"/>
@@ -610,189 +647,6 @@ countBlocks = genericLength . (filter ((== 1).head)) . group . binary
 </code></pre>
 
 <p>This is by no means an optimal solution, I couldn't even compute a 10x13 grid from the simpler example within a reasonable amonut of time. The biggest so far was a 9x7 grid for 28+ millions of castles.</p>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[Демо: плазма]]></title>
-            <link href="//viktoras.de/blog/plasma/"/>
-            <updated>2013-05-14T00:00:00+00:00</updated>
-            <id>//viktoras.de/blog/plasma/</id>
-            <content type="html"><![CDATA[<p><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma-logo.png" class="oppic" height="150px">Эффект плазмы (или попросту плазма) - эффект часто использующийся в демках, чтобы создать переливающийся эффект. Есть много способов создать анимацию плазмы, но я рассмотрю только один: сумма синусов и некоторых других функций. Экспериментируя с параметрами и пробуя различные функции, а так же цвета, можно найти очень круто выглядящие комбинации. Оригинал этой статьи можно найти <a href="http://lodev.org/cgtutor/plasma.html">здесь</a>. В ней примеры указаны с использованием С, я же делал все на HTML5 (JavaScript + canvas). Примеры довольно просты и перенести на любой другой язык будет несложно. Внутри около 5 мегабайт картинок, если кого-то это беспокоит.<!--more--></p>
-
-<p>Перед тем, как мы приступим к собственно созданию плазмы, давайте рассмотрим функцию, которая нам в этом поможет. Значения функции синус лежат в промежутке от -1 до +1, выглядит вот так:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/sine.png"></p>
-
-<p>Для наших целей мы отобразим ее немного иначе, а именно будем устанавливать цвет пикселя равным синусу его x-координаты:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example1.png"></p>
-
-<p>Белые полосы это места, где синус близок или равен единице, черные, соответственно, близко к -1. Такого эффекта можно добиться следующим кодом:</p>
-
-<pre><code class="javascript">for (y = 0; y &lt; canvas.width; y++) {
-    for (x = 0; x &lt; canvas.height; x++) {
-        color = 128 + Math.floor(128 * Math.sin(x / 4));
-        context.fillStyle = rgbString(color, color, color);
-        context.fillRect(x, y, 1, 1);
-    }
-}
-</code></pre>
-
-<p>Мы проходим через каждый пиксель, расчитываем его цвет на основе синуса, и выводим. Значение цвета должно быть в пределах от 0 до 256 (0x00 - 0xFF), а так как синус всегда имеет значение между -1 и 1, мы преобразуем его в 0-256, умножив на 128 и прибавив 128. X делим на 4 чтобы значение функции менялось медленнее. Если разделить на меньшее значение, то полосы станут уже:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example2.png"></p>
-
-<p>Если использовать синус от суммы sin((x + y) / 8.0), то линии будут скошенными:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example3.png"></p>
-
-<p>Другая интересная функция для плазмы это синус расстояния от пикселя до определенной точки. Расстояние от пикселя до точки отсчета (0, 0) равняется sqrt(x * x + y * y). А расстояние от пикселя до центра экрана (холста): sqrt((x - w / 2) * (x - w / 2) + (y - h / 2) * (y - h / 2)). Если взять от этого синус, то получится:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example4.png"></p>
-
-<p>Вот код, который генерирует такую картинку (в этом примере, я перенес точку координат в центр изображения, для простоты [charnad]):</p>
-
-<pre><code class="javascript">for (y = -cY; y &lt; cY; y++) {
-    for (x = -cX; x &lt; cX; x++) {
-        color = 128 + Math.floor(128 * Math.sin(Math.sqrt(x*x + y*y) / 8));
-        context.fillStyle = rgbString(color, color, color);
-        context.fillRect(x, y, 1, 1);
-    }
-}
-</code></pre>
-
-<p>Складывая эти функции (с различными коэффициентами, точками отсчета, и т.д.), и используя лучшую цветовую палитру, чем оттенки серого, которые мы использовали до сих пор, мы можем создавать крутую плазму. Для разогрева, вот плазма сгенерированная суммой двух функций:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/example5.png"></p>
-
-<p>Несмотря на то, что выглядит не очень круто, это уже настоящая плазма. Она получается из суммы синусов x и y. Код ничуть не сложнее предыдущих примеров, но для ясности я расписал формулу на несколько строк. Также, в конце результат делится на два, таким образом мы остаемся в пределах 0-255:</p>
-
-<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
-    for (x = 0; x &lt; canvas.width; x++) {
-        color = 128 + Math.floor(128 * Math.sin(x / 8));
-        color += 128 + Math.floor(128 * Math.sin(y / 8));
-        color = Math.floor(color/2);
-        context.fillStyle = rgbString(color, color, color);
-        context.fillRect(x, y, 1, 1);
-    }
-}
-</code></pre>
-
-<p>Чтобы получить и цвета и анимацию, мы будем использовать цветовую палитру (параметр "цвет" будет использоваться как индекс для выбора цвета из палитры), и каждый фрейм будем сдвигать палитру на небольшое значение, так что все цвета палитры будут проходить по кругу. В таком режиме нам нужно будет нарисовать плазму только один раз и дальше только сдвигать палитру. Так как цвета меняются по кругу, палитра не должна быть "прерывистой", и заканчиваться должна тем же цветом, что и начинаться.
-Следующие две "прерываются" и не могут быть использованы для плазмы, потому что тогда анимация будет рваной или перескакивать:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette1.png"></p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette2.png"></p>
-
-<p>А вот эта палитра может быть использована:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette3.png"></p>
-
-<p>Теперь чтобы у нас получился эффект плазмы: создаем палитру, создаем буфер, где будут хранится значения вычисленной функции синусов для разных пикселей, рисуем пиксели с цветом из палитры, смещаем палитру каждый фрейм. Плазма сама по себе такая же, как и в предыдущем примере, но использование палитры делает ее гораздо интереснее. Вот упрощенная часть кода, которая реализует этот алгоритм:</p>
-
-<pre><code class="javascript">// Просчитываем значения цвета, как и в предыдущих примерах
-for (y = 0; y &lt; canvas.height; y++) {
-    data[y] = [];
-    for (x = 0; x &lt; canvas.width; x++) {
-        color = 128 + Math.floor(128 * Math.sin(x / 8));
-        color += 128 + Math.floor(128 * Math.sin(y / 8));
-        color = Math.floor(color/2);
-        data[y][x] = color;
-    }
-}
-
-// Далее в цикле отрисовываем
-// n - сдвиг палитры
-for (y = 0; y &lt; data.length; y++) {
-    for (x = 0; x &lt; data[y].length; x++) {
-        color = palette[Math.floor(data[y][x] + n) % 360];
-        context.fillStyle = color;
-        context.fillRect(x, y, 1, 1);
-    }
-}
-</code></pre>
-
-<p>и это дает нам примерно следующую картину:</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma1.gif"></p>
-
-<p>Вторая картинка показывает ту же плазму, но с упрощенной палитрой состоящей всего из 2х цветов, чтобы можно было лучше проследить движение цвета.</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma2.gif"></p>
-
-<p>Теперь, если в коде генерации плазмы мы заменим функцию на сумму 4 синусов, один из которых синус расстояния до верхнего левого угла картинки, то получим:</p>
-
-<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
-color += 128 + (128 * Math.sin(y / 8));
-color += 128 + (128 * Math.sin((x+y) / 16));
-color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
-color = Math.floor(color/4);
-</code></pre>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma4.gif"></p>
-
-<p>И вот, что еще можно попробовать:</p>
-
-<pre><code class="javascript">color = 128 + (128 * Math.sin(x / 16));
-color += 128 + (128 * Math.sin(y / 32));
-color += 128 + (128 * Math.sin(Math.sqrt(Math.pow(cX-x, 2)+Math.pow(cY-y, 2)) / 8));
-color += 128 + (128 * Math.sin(Math.sqrt(x*x+y*y) / 8));
-color = Math.floor(color/4);
-</code></pre>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma5.gif"></p>
-
-<p>Как видите, можно менять параметры и функции, пока не будет достигнут желаемый результат.
-Давайте теперь попробуем другие палитры.</p>
-
-<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
-    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 32.0));
-    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 64.0));
-    b = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
-    palette[i] = rgbString(r, g, b);
-}
-</code></pre>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette4.png"></p>
-
-<p>Это все та же плазма, но уже с новой палитрой. Чтобы цвета не "перескакивали", палитра должна начинаться и заканчиваться одним и тем же цветом.</p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma6.gif"></p>
-
-<p>Следующая палитра дает довольно крутой эффект (хотя это дело вкуса):</p>
-
-<pre><code class="javascript">for (i = 0; i &lt; 256; i++) {
-    r = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 16.0));
-    g = Math.floor(128.0 + 128 * Math.sin(3.1415 * i / 128.0));
-    b = 0;
-    palette[i] = rgbString(r, g, b);
-}
-</code></pre>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/palette5.png"></p>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma7.gif"></p>
-
-<p>Наконец, вместо использования палитры и ее смещения, можно так же пересчитывать синусы каждый фрейм, каждый раз меняя значения, используя время в функции. Можно генерировать RBG-составляющие отдельно. Это все в сумме довольно много вычислений, так что плазма может тормозить. Но упомянуть об этом стоит. Каждый фрейм, для каждого пикселя расчитывается сумма 4х расстояний. Затем, из полученного значения вычисляется цвет, и он же используется чтобы создать R, G и B составляющие цвета этого пикселя. Из-за такого способа подсчета цвета картинка получится немного пикселизированной.</p>
-
-<pre><code class="javascript">for (y = 0; y &lt; canvas.height; y++) {
-    for (x = 0; x &lt; canvas.width; x++) {
-        color = Math.sin(dist(x + time, y, 128.0, 128.0) / 8.0)
-        color += Math.sin(dist(x, y, 64.0, 64.0) / 8.0)
-        color += Math.sin(dist(x, y + time / 7, 192.0, 64) / 7.0)
-        color += Math.sin(dist(x, y, 192.0, 100.0) / 8.0);
-        color = Math.floor((4 + color)) * 32;
-        color = rgbString(color, color * 2, 255 - color);
-        context.fillStyle = color;
-        context.fillRect(x, y, 1, 1);
-    }
-}
-</code></pre>
-
-<p class="img"><img src="//viktoras.de/img/posts/2013-05-14-plasma/plasma8.gif"></p>
-
-<p>Можно так же расчитывать отдельную плазму для каждого цветового канала и т.д. Возможности безграничны, но это все будет медленнее, чем смещение палитры, особенно с неоптимизированными алгоритмами, которые приведены тут.</p>
 ]]></content>
         </entry>
     </feed>
