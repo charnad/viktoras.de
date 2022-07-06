@@ -1,5 +1,6 @@
 ---
-title: "7 attributes of a developer"
+title: 7 attributes of a developer
+description: A role-playing approach to developer feedback.
 tags: [management]
 categories: []
 post_date: 04.07.2022

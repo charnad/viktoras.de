@@ -1,5 +1,13 @@
 {% extends "blank" %}
 
+{% block head_meta %}
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}"/>
+    <meta property="og:title" content="{{ site.title }}"/>
+    <meta property="og:description" content="{{ site.description }}"/>
+{% endblock %}
+
 {% block contents %}
     <div class="container">
         <div id="header" class="text-center">
@@ -26,21 +34,5 @@
                 <a href="/impressum">Impressum</a>
             </small>
         </footer>
-
-        <!-- Page scripts -->
-        {% block scripts %}{% endblock %}
-
-        <!-- Google Analytics -->
-<!--        {% if site.google.analytics.tracking_id %}-->
-<!--            <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;-->
-<!--                ga('create', '{{site.google.analytics.tracking_id}}', 'auto');-->
-<!--                ga('send', 'pageview');-->
-<!--            </script>-->
-<!--            <script async src='https://www.google-analytics.com/analytics.js'></script>-->
-<!--        {% endif %}-->
-
-        <!-- More page scripts -->
-        {% block scripts_after %}
-        {% endblock %}
     </div>
 {% endblock %}

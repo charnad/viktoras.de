@@ -2,7 +2,13 @@
 
 {% block head_meta %}
     <meta name="robots" content="index, follow">
+    <meta name="twitter:card" content="summary"></meta>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}"/>
+    <meta property="og:title" content="{{ page.title }}"/>
+    <meta property="og:description" content="{{ page.description }}"/>
 {% endblock %}
+
 
 {% block posts %}
     <article class="post">
