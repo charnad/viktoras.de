@@ -7,6 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <meta name="robots" content="index, follow">
+    <meta name="twitter:card" content="summary"></meta>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://viktoras.de/read/symfony-custom-action-with-doctrinerulecollection/"/>
+    <meta property="og:title" content="Symfony: свой экшен в DoctrineRouteCollection"/>
+    <meta property="og:description" content=""/>
 
         <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
         <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
@@ -34,7 +39,7 @@
             <div class="col date text-end float-end">04.07.2011</div>
         </div>
         <div class="entry">
-            <p><img class="oppic" src="//viktoras.de/img/symfony_logo.gif"/>Я часто сталкивался с необходимостью указать путь к своему экшену, например в link_to. До какого-то времени для меня вполне работал вариант 'module/action?parameter=value'. Однако, в один прекрасный день, количество таких ссылок возросло до нескольких сотен на странице. И они порядком тормозили, потому что роутингу приходилось проверять все указанные роуты, перед тем как использовать default. Решением в таких случаях являются именованные роуты, например '@users'. Но вот вопрос, как сделать именованный роут для админ генеренного модуля. Для таких модулей, добавляется DoctrineRouteCollection роут, который на самом деле генерит 7 роутов module_new, module_list и т.д.</p>
+            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>Я часто сталкивался с необходимостью указать путь к своему экшену, например в link_to. До какого-то времени для меня вполне работал вариант 'module/action?parameter=value'. Однако, в один прекрасный день, количество таких ссылок возросло до нескольких сотен на странице. И они порядком тормозили, потому что роутингу приходилось проверять все указанные роуты, перед тем как использовать default. Решением в таких случаях являются именованные роуты, например '@users'. Но вот вопрос, как сделать именованный роут для админ генеренного модуля. Для таких модулей, добавляется DoctrineRouteCollection роут, который на самом деле генерит 7 роутов module_new, module_list и т.д.</p>
 
 <p>Ну и вот мы делаем такой финт ушами:</p>
 
@@ -69,19 +74,6 @@
                 <a href="/impressum">Impressum</a>
             </small>
         </footer>
-
-        <!-- Page scripts -->
-        
-        <!-- Google Analytics -->
-<!--        -->
-<!--            <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;-->
-<!--                ga('create', 'UA-15013831-1', 'auto');-->
-<!--                ga('send', 'pageview');-->
-<!--            </script>-->
-<!--            <script async src='https://www.google-analytics.com/analytics.js'></script>-->
-<!--        -->
-
-        <!-- More page scripts -->
-                    </div>
+    </div>
     </body>
 </html>

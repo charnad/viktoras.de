@@ -7,6 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <meta name="robots" content="index, follow">
+    <meta name="twitter:card" content="summary"></meta>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://viktoras.de/read/sdl-tutorial-5-animation/"/>
+    <meta property="og:title" content="SDL: Как создать игру. Анимация."/>
+    <meta property="og:description" content=""/>
 
         <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
         <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="viktoras.de activity feed" />
@@ -34,7 +39,7 @@
             <div class="col date text-end float-end">07.05.2012</div>
         </div>
         <div class="entry">
-            <p><img class="oppic" src="//viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+            <p><img class="oppic" src="https://viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-animation">SDL Tutorial - Animation</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
 
 <p>В последней статье мы создали прототип игры в крестики-нолики. Надеюсь, многие из вас смогли заставить его работать. Если нет, то не волнуйтесь, рано или поздно у вас все получится. В этой статье мы собираемся научиться делать анимацию с помощью SDL. Как и прежде, мы будем код предыдущих статей SDL, за исключением кода из Крестиков-ноликов. Я отменил почти все изменения, сделанные в той статье, оставил лишь Transparent функцию для класса Sprite.</p>
 
@@ -135,7 +140,7 @@ int Animation::GetCurrentFrame() {
 
 <p>Теперь объясню что же делает этот класс. Существует один основной элемент анимации, который мы должны обрабатывать - текущий кадр анимации. Возьмите изображение Йоши ниже (мы будем использовать его в этой статье). Вы увидите, у нас есть 8 кадров Йоши на одном изображении. Каждый кадр будет пронумерован 0, 1, 2 сверху вниз.</p>
 
-<p><img src="//viktoras.de/img/posts/2012-05-07-sdl-tutorial-5/yoshi.bmp"></p>
+<p><img src="https://viktoras.de/img/posts/2012-05-07-sdl-tutorial-5/yoshi.bmp"></p>
 
 <p>Помните, статью про координаты, где мы создаели функцию, которая отрисовывает часть изображения? И если взять эту функцию в сочетании с номером кадра анимации, вуаля!</p>
 
@@ -146,7 +151,7 @@ int Animation::GetCurrentFrame() {
 
 <p>Так как наш Йоши размером 64 х 64 пикселей, столько мы и захватим для вывода, это же и является нашим кадром анимации. Посмотрите на иллюстрацию ниже.</p>
 
-<p><img src="//viktoras.de/img/posts/2012-05-07-sdl-tutorial-5/Animation.jpg"/></p>
+<p><img src="https://viktoras.de/img/posts/2012-05-07-sdl-tutorial-5/Animation.jpg"/></p>
 
 <p>Когда CurrentFrame увеличивается на 1, мы прыгаем вниз на 64 пикселя (высота кадра Yoshi), и рисуем этот кадр.</p>
 
@@ -209,19 +214,6 @@ Anim_Yoshi.MaxFrames = 8;
                 <a href="/impressum">Impressum</a>
             </small>
         </footer>
-
-        <!-- Page scripts -->
-        
-        <!-- Google Analytics -->
-<!--        -->
-<!--            <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;-->
-<!--                ga('create', 'UA-15013831-1', 'auto');-->
-<!--                ga('send', 'pageview');-->
-<!--            </script>-->
-<!--            <script async src='https://www.google-analytics.com/analytics.js'></script>-->
-<!--        -->
-
-        <!-- More page scripts -->
-                    </div>
+    </div>
     </body>
 </html>

@@ -5,4 +5,4 @@ Disallow: /impressum/
 Disallow: /cv/
 Disallow: /lebenslauf/
 
-Sitemap: //viktoras.de/sitemap.xml
+Sitemap: https://viktoras.de/sitemap.xml
