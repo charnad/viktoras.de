@@ -194,22 +194,17 @@ footer img {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 1.5em;
-  //width: 13em;
-  //height: 13em;
   border: 1px solid #444;
   overflow: hidden;
   border-radius: 100%;
 
   width: 80%;
   height: 0;
-  padding-bottom: 80%;
+  padding-bottom: 79%;
 }
 
 #cv-sidebar #cv-photo {
-  position: relative;
-  top: -20px;
-  right: 1.5em;
-  height: 26em;
+  width: 100%;
 }
 
 #cv-sidebar section .sidebar-section-header {
@@ -218,16 +213,16 @@ footer img {
   text-transform: uppercase;
 }
 
-#cv-sidebar section #cv-section-list-item {
+#cv-sidebar section .cv-section-list-item {
   padding-left: 7%;
   text-align: left;
 }
 
-#cv-sidebar #cv-section-list-item div {
+#cv-sidebar .cv-section-list-item div {
   margin-bottom: 0.5em;
 }
 
-#cv-sidebar #cv-section-list-item div i {
+#cv-sidebar .cv-section-list-item div i {
   margin-right: 0.4em;
   width: 18px;
   height: 18px;
