@@ -18,6 +18,21 @@
   }
 }
 
+.hide-md {
+  @extend .d-none;
+  @extend .d-lg-block;
+}
+
+.hide-sm {
+  @extend .d-none;
+  @extend .d-md-block;
+}
+
+.hide-xs {
+  @extend .d-none;
+  @extend .d-sm-block;
+}
+
 body {
   font-size: 18px;
   font-weight: 300;
@@ -265,6 +280,8 @@ footer img {
 }
 
 #cv-main .cv-date {
+  @extend .hide-sm;
+
   font-size: 0.7em;
 }
 
