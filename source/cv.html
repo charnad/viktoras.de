@@ -8,7 +8,10 @@ title: Résumé
     <div class="row">
         <div id="cv-sidebar" class="col-sm-3">
             <div id="cv-photo-container">
-                <img src="{{site.url}}/img/viktoras_3.jpg" id="cv-photo" alt="☺"/>
+                <picture>
+                    <source srcSet="{{site.url}}/img/viktoras_3.avif" type="image/avif" />
+                    <img src="{{site.url}}/img/viktoras_3.jpg" decoding="async" loading="lazy" id="cv-photo" alt="☺"/>
+                </picture>
             </div>
 
             <h3>

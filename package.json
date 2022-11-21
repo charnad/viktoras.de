@@ -18,7 +18,7 @@
     "highlight.js": "^11.6",
     "laravel-mix": "^6.0",
     "resolve-url-loader": "^5.0",
-    "sass": "^1.54",
-    "sass-loader": "^13.0"
+    "sass": "^1.56",
+    "sass-loader": "^13.2"
   }
 }
