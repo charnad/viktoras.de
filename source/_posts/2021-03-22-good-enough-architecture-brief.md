@@ -2,6 +2,8 @@
 title: "'Good Enough' Architecture by Stefan Tilkov Brief"
 tags: [architecture, brief]
 categories: []
+published: true
+language: en
 post_date: 22.03.2021
 ---
 

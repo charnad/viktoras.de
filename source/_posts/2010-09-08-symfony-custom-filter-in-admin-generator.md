@@ -2,6 +2,8 @@
 title: "Symfony: свой фильтр в admin generator"
 tags: [admin generator, form filter, symfony]
 categories: [php]
+published: true
+language: ru
 post_date: 08.09.2010
 ---
 

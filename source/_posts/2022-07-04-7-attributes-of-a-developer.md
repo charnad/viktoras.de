@@ -3,6 +3,8 @@ title: 7 attributes of a developer
 description: A role-playing approach to developer feedback.
 tags: [management]
 categories: []
+published: true
+language: en
 post_date: 04.07.2022
 ---
 

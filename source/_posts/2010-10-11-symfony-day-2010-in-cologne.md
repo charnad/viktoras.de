@@ -2,6 +2,8 @@
 title: "Symfony: Symfony Day 2010 в Кёльне"
 tags: [symfony]
 categories: [php]
+published: true
+language: ru
 post_date: 04.07.2011
 ---
 

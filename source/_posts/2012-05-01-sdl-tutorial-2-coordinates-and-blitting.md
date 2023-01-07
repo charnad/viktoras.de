@@ -2,6 +2,8 @@
 title: "SDL: Как создать игру. Координаты и блиттинг."
 tags: [blitting, gamedev, sdl]
 categories: [c/c++]
+published: true
+language: ru
 post_date: 01.05.2012
 ---
 <img class="oppic" src="{{site.url}}/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, [SDL Coordinates and Bliting](http://www.sdltutorials.com/sdl-coordinates-and-blitting) за авторством Tim Jones. Готовый код я буду выкладывать на [Github][2], откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.

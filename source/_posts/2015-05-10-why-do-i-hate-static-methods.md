@@ -2,6 +2,8 @@
 title: Why do I hate static methods
 tags: []
 categories: [php]
+published: true
+language: en
 post_date: 10.05.2015
 ---
 

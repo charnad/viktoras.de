@@ -2,6 +2,8 @@
 title: "SDL: Как создать игру. Анимация."
 tags: [entities, gamedev, sdl]
 categories: [c/c++]
+published: true
+language: ru
 post_date: 07.05.2012
 ---
 <img class="oppic" src="{{site.url}}/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, [SDL Tutorial - Animation](http://www.sdltutorials.com/sdl-animation) за авторством Tim Jones. Готовый код я буду выкладывать на [Github][1], откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.

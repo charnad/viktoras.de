@@ -2,6 +2,8 @@
 title: 4 Layer API Client Structure
 tags: []
 categories: []
+published: true
+language: en
 post_date: 11.08.2019
 ---
 

@@ -2,6 +2,8 @@
 title: Helper classes don't help
 tags: []
 categories: [php]
+published: true
+language: en
 post_date: 04.08.2019
 ---
 

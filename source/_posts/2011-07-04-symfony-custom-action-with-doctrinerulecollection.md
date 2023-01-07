@@ -2,6 +2,8 @@
 title: "Symfony: свой экшен в DoctrineRouteCollection"
 tags: [routing, symfony]
 categories: [php]
+published: true
+language: ru
 post_date: 04.07.2011
 ---
 

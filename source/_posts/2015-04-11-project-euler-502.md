@@ -2,6 +2,8 @@
 title: Project Euler 502
 tags: []
 categories: [haskell, euler]
+published: true
+language: en
 post_date: 11.04.2015
 ---
 

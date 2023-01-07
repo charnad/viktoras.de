@@ -2,6 +2,8 @@
 title: Segments intersection algortihm
 tags: []
 categories: [golang]
+published: true
+language: en
 post_date: 25.01.2017
 ---
 

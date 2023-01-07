@@ -1,8 +1,10 @@
 ---
 title: Complexity / competence ratio
-description: How to know where are you going.
+description: Keeping the project stable as the complexity grows.
 tags: [management]
 categories: []
+published: false
+language: en
 post_date: 04.01.2023
 ---
 
@@ -28,6 +30,12 @@ I draw following conclusions from this little story:
 - To reduce complexity, you need to take measures to improve structure and architecture of the project.
 - The competence was always higher than the complexity, so the project was never at risk. 
 
-Here is an example of how the same project could've evolved further. Let's say a different developer took over. The project continue to grow adding features, and as we stated above, complexity grows with it. A high-complexity/average competence combination is not a stable one. If the developer has competence to understand     
+Here is an example of how the same project could've evolved further. Let's say a different developer took over. The project continue to grow adding features, and as we stated above, complexity grows with it. A high-complexity/average competence combination is not a stable one. If the developer has enough competence to spot the threat and mitigate it with high quality work, that would first place the project into down-right cell. From there it will either move to average complexity, or average competence, i.e. insufficient for the new level of complexity. This stop itself is not a stable state, due to [software rot][2]. With active effort, once again, the complexity can be reduced, or the project will eventually move to disaster phase.     
+
+Findings from this story are:
+- Active efforts are required to counteract complexity growth.
+- As complexity grows, higher competence is required to keep the project stable.
+- If complexity is higher than competence, the project will slide left and down, where the eventual stop is disaster.
 
 [1]: https://en.wikipedia.org/wiki/Programming_complexity
+[2]: https://en.wikipedia.org/wiki/Software_rot

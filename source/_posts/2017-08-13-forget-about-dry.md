@@ -2,6 +2,8 @@
 title: Forget about DRY
 tags: []
 categories: []
+published: true
+language: en
 post_date: 13.08.2017
 ---
 

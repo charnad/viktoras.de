@@ -2,6 +2,8 @@
 title: "SDL: Как создать игру. События."
 tags: [events, gamedev, sdl]
 categories: [c/c++]
+published: true
+language: ru
 post_date: 02.05.2012
 ---
 <img class="oppic" src="{{site.url}}/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-events">SDL Events</a> за авторством Tim Jones. Готовый код я буду выкладывать на [Github][2], откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.
