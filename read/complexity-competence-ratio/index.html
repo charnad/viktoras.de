@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Forget about DRY - viktoras.de</title>
+        <title>Complexity / competence ratio - viktoras.de</title>
         <meta charset="utf-8">
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
             <meta name="robots" content="index, follow">
-    <meta name="description" content="">
+    <meta name="description" content="Keeping the project stable as the complexity grows.">
 
     <meta name="twitter:card" content="summary">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://viktoras.de/read/forget-about-dry/">
-    <meta property="og:title" content="Forget about DRY">
-    <meta property="og:description" content="">
+    <meta property="og:url" content="https://viktoras.de/read/complexity-competence-ratio/">
+    <meta property="og:title" content="Complexity / competence ratio">
+    <meta property="og:description" content="Keeping the project stable as the complexity grows.">
     <meta property="og:image" content="https://viktoras.de/img/viktoras_2.jpg">
 
         <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/feed/" />
@@ -37,44 +37,41 @@
                     <article class="post">
         <div class="postdata row no-gutters g-0">
             <h2 class="title col-md-auto">
-                <a href="/read/forget-about-dry/" rel="bookmark">Forget about DRY</a>
+                <a href="/read/complexity-competence-ratio/" rel="bookmark">Complexity / competence ratio</a>
             </h2>
-            <div class="col date text-end float-end">13.08.2017</div>
+            <div class="col date text-end float-end">04.01.2023</div>
         </div>
         <div class="entry">
-            <p>I've once had a heated discussion with my colleagues, which eventually motivated me to write this blog post. This goes about DRY programming principle, being oh so loved by many developers. I'm convinced, that many do not really understand what does this principle really promote. DRY suffers from what I would call an "imprinting fallacy" (trying to mimic senior colleagues, while taking barely understood concepts to extreme), the same way the Singleton design pattern does.</p>
+            <p>During a discussion with a colleague I once mentioned a problem I've started noticing - the complexity of the project started to exceed our current level of competence. I called it a competence/complexity ratio. A software company, as a living organism, constantly changes: you hire new people, some people with knowledge leave, you build new features, you refactor. Both, the complexity and the overall competence of the team change over time. If complexity over competence ratio becomes greater than 1 (i.e. complexity > competence), it can become a serious problem for the project's well-being. I liked this term so much, that I wanted to explore the idea further.</p>
 
-<p>An inexperienced developer, lets say Joe, starts working in a team, where words like "design patterns" are frequently used. Joe looks through some online articles and sees a lot of scary words and complex schemes. But then a simple enough passage pops up - a single instance of some class. So Joe starts to use Singleton extensively, as he thinks it makes him a more senior developer, because he now uses a design pattern. He does not know about all the hidden flaws he's building into the project. Same goes for DRY. It's deceptively easy to understand, while the devil is in the details. DRY - Don't repeat yourself, don't duplicate programming code, what's more to it? The same Joe, is happy to use a programming principle he has heard about. He vigorously finds out all repeated lines of code and extracts them into separate (usually into static methods) classes. By doing that, he is most likely damaging the project once again.
-<!--more--></p>
+<!--more-->
 
-<p>DRY principle is most likely not what you think it is. The idea comes from the book "The Pragmatic Programmer" by Andrew Hunt and David Thomas and is defined as follows:</p>
+<p>Let's first talk a little bit about what is complexity and what is competence. Wikipedia article about <a href="https://en.wikipedia.org/wiki/Programming_complexity">programming complexity</a> explains it neatly: "There is a distinction between the terms complex and complicated. Complicated implies being difficult to understand but with time and effort, ultimately knowable. Complex, on the other hand, describes the interactions between a number of entities.". So, low complexity means the project is small, easy to handle, even if the underlying business problem may not be simple. High complexity means it's just too much to deal with and you start sweating trying to change even the littlest of things.</p>
 
-<blockquote>Every piece of knowledge must have a single, unambiguous, authoritative representation within a system.</blockquote>
+<p>Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, appropriate competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words it can be characterized as quality of work.</p>
 
-<p>It's not about duplicating code, the idea behind the principle is far grander.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> It is to have one single source of knowledge, so that changes to project requirements would only affect that source. The rest - data storage, UI, code, documentation should tap into this source and update accordingly. Because if they don't, then your project is full of duplication. Code represents the same knowledge documentation does, but in a machine-readable way, rather that a human-readable. UI form duplicates database structure, because it needs to show all the same fields a DB table has. Even the comments in your code duplicate some knowledge, because they also can get outdated. So you see, that referring to DRY is not actually an argument in favor of code deduplicaton, as it's a project-level approach.</p>
+<p>Now, combining these categories into complexity / competence matrix we get this:</p>
 
-<p>But still, what about code duplication? If you change some code, you would likely need to update all the duplicated parts as well, so that a system remains consistent. This means more work and potentially bugs due to inconsistent behavior if you forget to update every place. Code duplication is just one side of the problem. What if a change to the code in one place requires a change in another place even if there is no apparent code duplication? Same thing, more work and potentially buggy software. It's not just duplication itself which is problematic, it's connascence<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</p>
-
-<p>You have probably heard about cohesion and coupling, software quality metrics which help to reason about quality of the code. Connascence is a great addition to them. The stronger the form of connascence is, the more difficult and costly it is to change the elements in the relationship. I absolutely recommend watching this <a href="https://www.youtube.com/watch?v=Ip2o4vbAK3s&amp;t=741">video</a>, a session by Josh Robb about Connascence &amp; Coupling. I don't think I could give a better overview and explanation on the topic, so I humbly leave it to others.</p>
-
-<p>So now we know, that duplication is not harmful by itself, rather than by inducing a connascence of algorithm. By duplicating the code we expect different parts to behave the same way and a change in one part requires a change in the copy. But what if the copy does not have to be updated with the original? What if it's a completely separate module, or even a separate project? The way we process some file format in different modules may be identical now, but may be not so in the future. It is the accursed code duplication, but there is no connascence and there is also no coupling! By duplicating the code we've achieved the best level of these metrics. If you follow the way of deduplication, you will have to introduce coupling and eventually connascence. These modules will depend on the same library, and a change in the library may require a change in both modules, which we initially tried to avoid.</p>
-
-<p>There is no one single principle or rule to live by. Using some principle may make you break another, but that is fine, because these are just guidelines and not unbreakable laws of existence. Every situation is unique and you need to think carefully and choose what better suits yours.</p>
-
-<div class="footnotes" role="doc-endnotes">
-<hr />
-<ol>
-
-<li id="fn:1" role="doc-endnote">
-<p><a title="A Conversation with Andy Hunt and Dave Thomas by Bill Venners" href="http://www.artima.com/intv/dry.html">A Conversation with Andy Hunt and Dave Thomas by Bill Venners</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
-</li>
-
-<li id="fn:2" role="doc-endnote">
-<p><a title="Connascence" href="https://en.wikipedia.org/wiki/Connascence_(computer_programming)">Connascence - Wikipedia</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#8617;&#xFE0E;</a></p>
-</li>
-
-</ol>
+<div class="text-center">
+    <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/1-complexity-competence-matrix.svg" alt="Complexity/competence matrix">
 </div>
+
+<p>Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project lifetime it can, of course, go through different stages. Some are more stable, some are more transitional. Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't want to spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence, based on mediocre quality of the code. The project proved itself to be very useful, so I refactored it, added proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time happened what usually happens, users liked the product and demanded more features. So I added those, increasing the project complexity, while adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remains.</p>
+
+<p>I draw following conclusions from this little story:</p>
+
+<ul>
+<li>Complexity tend to increase over time, as the project grows.</li>
+<li>To reduce complexity, you need to take measures to improve structure and architecture of the project.</li>
+<li>The competence was always higher than the complexity, so the project was never at risk.</li>
+</ul>
+
+<p>Here is an example of how the same project could've evolved further. Let's say a different developer took over. The project continue to grow adding features, and as we stated above, complexity grows with it. A high-complexity/average competence combination is not a stable one. If the developer has enough competence to spot the threat and mitigate it with high quality work, that would first place the project into down-right cell. From there it will either move to average complexity, or average competence, i.e. insufficient for the new level of complexity. This stop itself is not a stable state, due to <a href="https://en.wikipedia.org/wiki/Software_rot">software rot</a>. With active effort, once again, the complexity can be reduced, or the project will eventually move to disaster phase.</p>
+
+<p>Findings from this story are:
+- Active efforts are required to counteract complexity growth.
+- As complexity grows, higher competence is required to keep the project stable.
+- If complexity is higher than competence, the project will slide left and down, where the eventual stop is disaster.</p>
 
         </div>
     </article>

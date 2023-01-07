@@ -34,35 +34,54 @@
         <div class="row justify-content-center">
             <main class="col-10">
                 
-        <article class="post">
-        <div class="postdata row no-gutters g-0">
-            <h2 class="title col-md-auto">
-                <a href="/read/sdl-tutorial-1-basics/" rel="bookmark">SDL: Как создать игру. Базовое окно.</a>
-            </h2>
-            <div class="col date text-end float-end">01.05.2012</div>
-        </div>
+                        <article class="post">
+                <div class="postdata row no-gutters g-0">
+                    <h2 class="title col-md-auto">
+                        <a href="/read/sdl-tutorial-2-coordinates-and-blitting/" rel="bookmark">SDL: Как создать игру. Координаты и блиттинг.</a>
+                    </h2>
+                    <div class="col date text-end float-end">01.05.2012</div>
+                </div>
 
-        <div class="entry">
-                            <p><img class="oppic" src="https://viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
+                <div class="entry">
+                                            <p><img class="oppic" src="https://viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-coordinates-and-blitting">SDL Coordinates and Bliting</a> за авторством Tim Jones. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь: вы можете оставить комментарий или написать мне на почту, она указана внизу страницы.</p>
+
+<p>Используя <a href="https://viktoras.de/blog/sdl-tutorial-1-basics/">первую статью</a>, как базу, углубимся в мир поверхностей SDL. Я пытался донести до вас мысль, что SDL поверхности - это в основном изображения, хранящиеся в памяти. Представьте что, у нас есть пустая поверхность размером 320x240 пикселей. Если добавить к ней систему SDL координат, то получится что-то вроде этого:</p>
+
+<p><img src="https://viktoras.de/img/posts/2012-05-01-sdl-tutorial-2/coords.jpg"></p>
+
+<p>Эта система координат отличается, от обычной. Обратите внимание, что координата Y увеличивается вниз, а координата X увеличивается вправо. Это важно понимать, чтобы правильно рисовать изображения на экране.
+                                            <a href="/read/sdl-tutorial-2-coordinates-and-blitting/">More...</a>
+                                    </div>
+            </article>
+                                <article class="post">
+                <div class="postdata row no-gutters g-0">
+                    <h2 class="title col-md-auto">
+                        <a href="/read/sdl-tutorial-1-basics/" rel="bookmark">SDL: Как создать игру. Базовое окно.</a>
+                    </h2>
+                    <div class="col date text-end float-end">01.05.2012</div>
+                </div>
+
+                <div class="entry">
+                                            <p><img class="oppic" src="https://viktoras.de/img/sdl_logo.png" alt="SDL" />Это вольный перевод и переосмысление статьи, <a href="http://www.sdltutorials.com/sdl-tutorial-basics">SDL Tutorial Basic</a> за авторством Tim Jones. Хочу выделить, что это не прямой перевод, код не полностью повторяет код оригинала, тем не менее вы можете сверяться и сравнивать с оригинальной статьей. Готовый код я буду выкладывать на <a href="https://github.com/charnad/SDLTutorial">Github</a>, откуда вы сможете скачать так же ZIP-архив. Если вы увидите ошибку, неточность, или у вас возникнут проблемы - обращайтесь. Вы можете оставить комментарий или написать мне на почту, она указана внизу страницы. Итак начнем.</p>
 
 <p>Эти обучающие статьи предназначены для тех, у кого уже есть опыт использования C++ или другого языка программирования. Если у вас возникают сложности с пониманием кода, а не концепций, то я настоятельно советую вам сначала прочитать статью, объясняющую основы языка С++. Необязательно знать все о С++, но чем больше - тем проще вам будет в дальнейшем.</p>
 
 <p>В статьях я буду использовать Code::Blocks в качестве IDE и gcc с mingw для компиляции. [Я лично изначально использовал gcc с cygwin, но такой набор потребует включения cygwin1.dll в дистрибутив, что может накладывать лицензионные ограничения. Поэтому позже я установил mingw компилятор из тех же репозиториев cygwin.] Если вы хотите использовать другую IDE и/или компилятор, вы, конечно, можете это сделать, если достаточно уверены, что сможете включить все библиотеки в линковку. Скачать же Code::Blocks можно на официальном сайте <a href="http://www.codeblocks.org/downloads/26">http://www.codeblocks.org</a> (скачать версию, включающую MinGW). Рекомендуется использовать стабильную версию, если вы не хотите тратить время на ночные сборки.</p>
 
 <p>Эти статьи в значительной степени сосредоточены вокруг SDL (Simple DirectMedia Layer), 2D кросс-платформенной графической библиотеки. Эта библиотека позволит отрисовывать графику, и делать разные классные вещи, которые потом и помогут нам сделать игру. Вам также надо будет загрузить библиотеку с сайта <a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org</a>. Вам нужен tar-файл в разделе "Development Libraries, Win32" и zip-файл в разделе "Runtime Libraries, Win32". Если вы используете Visual Studio - выберите соответствующий файл вместо MinGW версии. После скачивания вы можете скопировать .dll файлы в папку Windows/system32, таким образом любое SDL приложение сможет его использовать. [Я не стал этого делать, достаточно чтобы SDL.dll и другие необходимые dll файлы находились в той же папке, что и исполняемый файл]. 
-                            <a href="/read/sdl-tutorial-1-basics/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters g-0">
-            <h2 class="title col-md-auto">
-                <a href="/read/symfony-custom-action-with-doctrinerulecollection/" rel="bookmark">Symfony: свой экшен в DoctrineRouteCollection</a>
-            </h2>
-            <div class="col date text-end float-end">04.07.2011</div>
-        </div>
+                                            <a href="/read/sdl-tutorial-1-basics/">More...</a>
+                                    </div>
+            </article>
+                                <article class="post">
+                <div class="postdata row no-gutters g-0">
+                    <h2 class="title col-md-auto">
+                        <a href="/read/symfony-custom-action-with-doctrinerulecollection/" rel="bookmark">Symfony: свой экшен в DoctrineRouteCollection</a>
+                    </h2>
+                    <div class="col date text-end float-end">04.07.2011</div>
+                </div>
 
-        <div class="entry">
-                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>Я часто сталкивался с необходимостью указать путь к своему экшену, например в link_to. До какого-то времени для меня вполне работал вариант 'module/action?parameter=value'. Однако, в один прекрасный день, количество таких ссылок возросло до нескольких сотен на странице. И они порядком тормозили, потому что роутингу приходилось проверять все указанные роуты, перед тем как использовать default. Решением в таких случаях являются именованные роуты, например '@users'. Но вот вопрос, как сделать именованный роут для админ генеренного модуля. Для таких модулей, добавляется DoctrineRouteCollection роут, который на самом деле генерит 7 роутов module_new, module_list и т.д.</p>
+                <div class="entry">
+                                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>Я часто сталкивался с необходимостью указать путь к своему экшену, например в link_to. До какого-то времени для меня вполне работал вариант 'module/action?parameter=value'. Однако, в один прекрасный день, количество таких ссылок возросло до нескольких сотен на странице. И они порядком тормозили, потому что роутингу приходилось проверять все указанные роуты, перед тем как использовать default. Решением в таких случаях являются именованные роуты, например '@users'. Но вот вопрос, как сделать именованный роут для админ генеренного модуля. Для таких модулей, добавляется DoctrineRouteCollection роут, который на самом деле генерит 7 роутов module_new, module_list и т.д.</p>
 
 <p>Ну и вот мы делаем такой финт ушами:</p>
 
@@ -81,36 +100,36 @@
 
 <p>В сгенеренный роут я добавил параметр object_action, после чего этот роут будет так же генерить роуты @modules_action1 и @modules_action2, что нам собственно и нужно. А GET - это тип запроса, на который будет отзываться новоделанный роут.</p>
 
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters g-0">
-            <h2 class="title col-md-auto">
-                <a href="/read/symfony-day-2010-in-cologne/" rel="bookmark">Symfony: Symfony Day 2010 в Кёльне</a>
-            </h2>
-            <div class="col date text-end float-end">04.07.2011</div>
-        </div>
+                                    </div>
+            </article>
+                                <article class="post">
+                <div class="postdata row no-gutters g-0">
+                    <h2 class="title col-md-auto">
+                        <a href="/read/symfony-day-2010-in-cologne/" rel="bookmark">Symfony: Symfony Day 2010 в Кёльне</a>
+                    </h2>
+                    <div class="col date text-end float-end">04.07.2011</div>
+                </div>
 
-        <div class="entry">
-                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>
+                <div class="entry">
+                                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>
 Как, наверное, некоторые из вас знают, 8 октября прошла конференция Symfony Day 2010 в Кёльне, на которой мне посчастливилось присутствовать. Я случайно наткнулся на сайт, <a href="http://www.symfonyday.com/">http://www.symfonyday.com/</a>, и сразу же решил, что хочу туда. Вход стоил 120 евро, но я успел как early bird за 80. Путь мой начинался с самой восточной границы Германии, и лежал почти до западной, более 550 километров, причем ночью. Не хотелось тратиться на гостиницу, а тут еще подвернулся вариант с CNL (ночным) поездом, я думал, что это вроде плацкартного. Как выяснилось, место у меня сидячее, в купе едут по 6 человек, спать было почти невозможно. Так что приехал я в Кёльн за 3 часа до конференции весьма измотанный.
-                            <a href="/read/symfony-day-2010-in-cologne/">More...</a>
-                    </div>
-    </article>
-        <article class="post">
-        <div class="postdata row no-gutters g-0">
-            <h2 class="title col-md-auto">
-                <a href="/read/symfony-custom-filter-in-admin-generator/" rel="bookmark">Symfony: свой фильтр в admin generator</a>
-            </h2>
-            <div class="col date text-end float-end">08.09.2010</div>
-        </div>
+                                            <a href="/read/symfony-day-2010-in-cologne/">More...</a>
+                                    </div>
+            </article>
+                                <article class="post">
+                <div class="postdata row no-gutters g-0">
+                    <h2 class="title col-md-auto">
+                        <a href="/read/symfony-custom-filter-in-admin-generator/" rel="bookmark">Symfony: свой фильтр в admin generator</a>
+                    </h2>
+                    <div class="col date text-end float-end">08.09.2010</div>
+                </div>
 
-        <div class="entry">
-                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>Кратко о том, как сделать фильтр для админ генератора. В моем проекте используется Doctrine с поведением NestedSet, и фильтр мне нужен был по родительскому полю. Точнее, показать потомков выбранного элемента. Для этого я пошел в папку /lib/filters и открыл файл фильтров для нужной модели. Там будем править метод configure. В моем случае дело происходит в плагине, поэтому метод, который я буду править называется setupInheritance.
-                            <a href="/read/symfony-custom-filter-in-admin-generator/">More...</a>
-                    </div>
-    </article>
-    
+                <div class="entry">
+                                            <p><img class="oppic" src="https://viktoras.de/img/symfony_logo.gif"/>Кратко о том, как сделать фильтр для админ генератора. В моем проекте используется Doctrine с поведением NestedSet, и фильтр мне нужен был по родительскому полю. Точнее, показать потомков выбранного элемента. Для этого я пошел в папку /lib/filters и открыл файл фильтров для нужной модели. Там будем править метод configure. В моем случае дело происходит в плагине, поэтому метод, который я буду править называется setupInheritance.
+                                            <a href="/read/symfony-custom-filter-in-admin-generator/">More...</a>
+                                    </div>
+            </article>
+            
     <nav class="text-center" role="navigation">
     <ul class="pagination justify-content-center">
 
@@ -139,7 +158,7 @@
         </div>
 
         <footer class="footer text-center">
-            <small>&copy; 2022 Viktoras Bezaras
+            <small>&copy; 2023 Viktoras Bezaras
                 <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC-BY-SA</a>
                 ·
                 <img height="20px" alt="CC" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxMy4wLjIsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDE0OTQ4KSAgLS0+DQo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMC8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMCIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiB2aWV3Qm94PSI1LjUgLTMuNSA2NCA2NCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1LjUgLTMuNSA2NCA2NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8Zz4NCgk8Y2lyY2xlIGZpbGw9IiNGRkZGRkYiIGN4PSIzNy43ODUiIGN5PSIyOC41MDEiIHI9IjI4LjgzNiIvPg0KCTxwYXRoIGQ9Ik0zNy40NDEtMy41YzguOTUxLDAsMTYuNTcyLDMuMTI1LDIyLjg1Nyw5LjM3MmMzLjAwOCwzLjAwOSw1LjI5NSw2LjQ0OCw2Ljg1NywxMC4zMTQNCgkJYzEuNTYxLDMuODY3LDIuMzQ0LDcuOTcxLDIuMzQ0LDEyLjMxNGMwLDQuMzgxLTAuNzczLDguNDg2LTIuMzE0LDEyLjMxM2MtMS41NDMsMy44MjgtMy44Miw3LjIxLTYuODI4LDEwLjE0Mw0KCQljLTMuMTIzLDMuMDg1LTYuNjY2LDUuNDQ4LTEwLjYyOSw3LjA4NmMtMy45NjEsMS42MzgtOC4wNTcsMi40NTctMTIuMjg1LDIuNDU3cy04LjI3Ni0wLjgwOC0xMi4xNDMtMi40MjkNCgkJYy0zLjg2Ni0xLjYxOC03LjMzMy0zLjk2MS0xMC40LTcuMDI3Yy0zLjA2Ny0zLjA2Ni01LjQtNi41MjQtNy0xMC4zNzJTNS41LDMyLjc2Nyw1LjUsMjguNWMwLTQuMjI5LDAuODA5LTguMjk1LDIuNDI4LTEyLjINCgkJYzEuNjE5LTMuOTA1LDMuOTcyLTcuNCw3LjA1Ny0xMC40ODZDMjEuMDgtMC4zOTQsMjguNTY1LTMuNSwzNy40NDEtMy41eiBNMzcuNTU3LDIuMjcyYy03LjMxNCwwLTEzLjQ2NywyLjU1My0xOC40NTgsNy42NTcNCgkJYy0yLjUxNSwyLjU1My00LjQ0OCw1LjQxOS01LjgsOC42Yy0xLjM1NCwzLjE4MS0yLjAyOSw2LjUwNS0yLjAyOSw5Ljk3MmMwLDMuNDI5LDAuNjc1LDYuNzM0LDIuMDI5LDkuOTEzDQoJCWMxLjM1MywzLjE4MywzLjI4NSw2LjAyMSw1LjgsOC41MTZjMi41MTQsMi40OTYsNS4zNTEsNC4zOTksOC41MTUsNS43MTVjMy4xNjEsMS4zMTQsNi40NzYsMS45NzEsOS45NDMsMS45NzENCgkJYzMuNDI4LDAsNi43NS0wLjY2NSw5Ljk3My0xLjk5OWMzLjIxOS0xLjMzNSw2LjEyMS0zLjI1Nyw4LjcxMy01Ljc3MWM0Ljk5LTQuODc2LDcuNDg0LTEwLjk5LDcuNDg0LTE4LjM0NA0KCQljMC0zLjU0My0wLjY0OC02Ljg5NS0xLjk0My0xMC4wNTdjLTEuMjkzLTMuMTYyLTMuMTgtNS45OC01LjY1NC04LjQ1OEM1MC45ODQsNC44NDQsNDQuNzk1LDIuMjcyLDM3LjU1NywyLjI3MnogTTM3LjE1NiwyMy4xODcNCgkJbC00LjI4NywyLjIyOWMtMC40NTgtMC45NTEtMS4wMTktMS42MTktMS42ODUtMmMtMC42NjctMC4zOC0xLjI4Ni0wLjU3MS0xLjg1OC0wLjU3MWMtMi44NTYsMC00LjI4NiwxLjg4NS00LjI4Niw1LjY1Nw0KCQljMCwxLjcxNCwwLjM2MiwzLjA4NCwxLjA4NSw0LjExM2MwLjcyNCwxLjAyOSwxLjc5MSwxLjU0NCwzLjIwMSwxLjU0NGMxLjg2NywwLDMuMTgxLTAuOTE1LDMuOTQ0LTIuNzQzbDMuOTQyLDINCgkJYy0wLjgzOCwxLjU2My0yLDIuNzkxLTMuNDg2LDMuNjg2Yy0xLjQ4NCwwLjg5Ni0zLjEyMywxLjM0My00LjkxNCwxLjM0M2MtMi44NTcsMC01LjE2My0wLjg3NS02LjkxNS0yLjYyOQ0KCQljLTEuNzUyLTEuNzUyLTIuNjI4LTQuMTktMi42MjgtNy4zMTNjMC0zLjA0OCwwLjg4Ni01LjQ2NiwyLjY1Ny03LjI1N2MxLjc3MS0xLjc5LDQuMDA5LTIuNjg2LDYuNzE1LTIuNjg2DQoJCUMzMi42MDQsMTguNTU4LDM1LjQ0MSwyMC4xMDEsMzcuMTU2LDIzLjE4N3ogTTU1LjYxMywyMy4xODdsLTQuMjI5LDIuMjI5Yy0wLjQ1Ny0wLjk1MS0xLjAyLTEuNjE5LTEuNjg2LTINCgkJYy0wLjY2OC0wLjM4LTEuMzA3LTAuNTcxLTEuOTE0LTAuNTcxYy0yLjg1NywwLTQuMjg3LDEuODg1LTQuMjg3LDUuNjU3YzAsMS43MTQsMC4zNjMsMy4wODQsMS4wODYsNC4xMTMNCgkJYzAuNzIzLDEuMDI5LDEuNzg5LDEuNTQ0LDMuMjAxLDEuNTQ0YzEuODY1LDAsMy4xOC0wLjkxNSwzLjk0MS0yLjc0M2w0LDJjLTAuODc1LDEuNTYzLTIuMDU3LDIuNzkxLTMuNTQxLDMuNjg2DQoJCWMtMS40ODYsMC44OTYtMy4xMDUsMS4zNDMtNC44NTcsMS4zNDNjLTIuODk2LDAtNS4yMDktMC44NzUtNi45NDEtMi42MjljLTEuNzM2LTEuNzUyLTIuNjAyLTQuMTktMi42MDItNy4zMTMNCgkJYzAtMy4wNDgsMC44ODUtNS40NjYsMi42NTgtNy4yNTdjMS43Ny0xLjc5LDQuMDA4LTIuNjg2LDYuNzEzLTIuNjg2QzUxLjExNywxOC41NTgsNTMuOTM4LDIwLjEwMSw1NS42MTMsMjMuMTg3eiIvPg0KPC9nPg0KPC9zdmc+DQo=">
