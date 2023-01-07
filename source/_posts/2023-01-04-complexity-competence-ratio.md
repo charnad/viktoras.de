@@ -16,7 +16,7 @@ Let's first clarify what is complexity and what is competence. Wikipedia article
 
 Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver the same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, appropriate competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words, it can be characterized as quality of work.
 
-Now, combining these categories into complexity / competence matrix we get this:
+Now, combining these categories into complexity / competence matrix, we get this:
 
 <div class="text-center">
     <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/1-complexity-competence-matrix.svg" alt="Complexity/competence matrix">
@@ -30,7 +30,11 @@ I draw the following conclusions from this little story:
 - To reduce complexity, you need to take measures to improve structure and architecture of the project.
 - The competence was always higher than the complexity, so the project was never at risk. 
 
-Here is an example of how the same project could've evolved further. Let's say a different developer took over. The project continues to grow adding features, and as we stated above, complexity grows with it. A high-complexity/average competence combination is not a stable one. If the developer has enough competence to spot the threat and mitigate it with high-quality work, that would first place the project into down right cell. From there it will either move to average complexity, or average competence, i.e. insufficient for the new level of complexity. This stop itself is not a stable state, due to [software rot][2]. With active effort, once again, the complexity can be reduced, or the project will eventually move to disaster phase.
+<div class="text-center">
+    <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/2-project-development.svg" alt="Project development paths">
+</div>
+
+Let's imagine how the same project could've evolved further if a different developer would take over. The project continues to grow with new features, and as we figured out, complexity grows with it. On the image above, initial development is indicated by a blue arrow. If the developer has enough competence to recognize the threat and mitigate it with high-quality work, that would first place the project into the bottom right cell. From there it will either move to manageable complexity, or average competence. A high-complexity/average competence combination is also not a stable state, due to [software rot][2]. With active effort, once again, the complexity can be reduced - green arrow, or the project will eventually move to disaster phase - red arrow.
 
 Findings from this story are:
 - Active efforts are required to counteract complexity growth.
