@@ -3,7 +3,7 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="https://viktoras.de/atom.xml" rel="self"/>
     <link href="https://viktoras.de/"/>
-    <updated>2023-01-07T14:13:47+00:00</updated>
+    <updated>2023-01-08T13:35:09+00:00</updated>
     <id>https://viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
@@ -13,31 +13,35 @@
             <link href="https://viktoras.de/read/complexity-competence-ratio/"/>
             <updated>2023-01-04T00:00:00+00:00</updated>
             <id>https://viktoras.de/read/complexity-competence-ratio/</id>
-            <content type="html"><![CDATA[<p>During a discussion with a colleague I once mentioned a problem I've started noticing - the complexity of the project started to exceed our current level of competence. I called it a competence/complexity ratio. A software company, as a living organism, constantly changes: you hire new people, some people with knowledge leave, you build new features, you refactor. Both, the complexity and the overall competence of the team change over time. If complexity over competence ratio becomes greater than 1 (i.e. complexity > competence), it can become a serious problem for the project's well-being. I liked this term so much, that I wanted to explore the idea further.</p>
+            <content type="html"><![CDATA[<p>During a discussion with a colleague, I once mentioned a problem I've started noticing - the complexity of the project started to exceed our current level of competence. I called it a competence/complexity ratio. A software company, as a living organism, constantly changes: you hire new people, some people with knowledge leave, you build new features, you refactor. Both, the complexity and the overall competence of the team change over time. If complexity over competence ratio becomes greater than 1 (meaning complexity > competence), it can become a serious issue for the project's well-being. I liked this term so much, that I wanted to explore the idea further.</p>
 
 <!--more-->
 
-<p>Let's first talk a little bit about what is complexity and what is competence. Wikipedia article about <a href="https://en.wikipedia.org/wiki/Programming_complexity">programming complexity</a> explains it neatly: "There is a distinction between the terms complex and complicated. Complicated implies being difficult to understand but with time and effort, ultimately knowable. Complex, on the other hand, describes the interactions between a number of entities.". So, low complexity means the project is small, easy to handle, even if the underlying business problem may not be simple. High complexity means it's just too much to deal with and you start sweating trying to change even the littlest of things.</p>
+<p>Let's first clarify what is complexity and what is competence. Wikipedia article about <a href="https://en.wikipedia.org/wiki/Programming_complexity">programming complexity</a> explains it neatly: "There is a distinction between the terms complex and complicated. Complicated implies being difficult to understand but, with time and effort, ultimately knowable. Complex, on the other hand, describes the interactions between a number of entities.". So, low complexity means the project is small, easy to handle, even if the underlying business logic may not be simple. High complexity means it's just too much to deal with, and you start sweating trying to change even the littlest of things.</p>
 
-<p>Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, appropriate competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words it can be characterized as quality of work.</p>
+<p>Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver the same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, appropriate competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words, it can be characterized as quality of work.</p>
 
-<p>Now, combining these categories into complexity / competence matrix we get this:</p>
+<p>Now, combining these categories into complexity / competence matrix, we get this:</p>
 
 <div class="text-center">
     <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/1-complexity-competence-matrix.svg" alt="Complexity/competence matrix">
 </div>
 
-<p>Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project lifetime it can, of course, go through different stages. Some are more stable, some are more transitional. Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't want to spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence, based on mediocre quality of the code. The project proved itself to be very useful, so I refactored it, added proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time happened what usually happens, users liked the product and demanded more features. So I added those, increasing the project complexity, while adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remains.</p>
+<p>Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project's lifetime it can, of course, go through different stages. Some are more stable, some are more transitional. Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't want to spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence, based on mediocre quality of the code. The project proved itself to be very useful, so I refactored it, added a proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time happened what usually happens, users liked the product and demanded more features. I added requested features, increasing the project complexity, but adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remains.</p>
 
-<p>I draw following conclusions from this little story:</p>
+<p>I draw the following conclusions from this little story:</p>
 
 <ul>
-<li>Complexity tend to increase over time, as the project grows.</li>
+<li>Complexity tends to increase over time, as the project grows.</li>
 <li>To reduce complexity, you need to take measures to improve structure and architecture of the project.</li>
 <li>The competence was always higher than the complexity, so the project was never at risk.</li>
 </ul>
 
-<p>Here is an example of how the same project could've evolved further. Let's say a different developer took over. The project continue to grow adding features, and as we stated above, complexity grows with it. A high-complexity/average competence combination is not a stable one. If the developer has enough competence to spot the threat and mitigate it with high quality work, that would first place the project into down-right cell. From there it will either move to average complexity, or average competence, i.e. insufficient for the new level of complexity. This stop itself is not a stable state, due to <a href="https://en.wikipedia.org/wiki/Software_rot">software rot</a>. With active effort, once again, the complexity can be reduced, or the project will eventually move to disaster phase.</p>
+<div class="text-center">
+    <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/2-project-development.svg" alt="Project development paths">
+</div>
+
+<p>Let's imagine how the same project could've evolved further if a different developer would take over. The project continues to grow with new features, and as we figured out, complexity grows with it. On the image above, initial development is indicated by a blue arrow. If the developer has enough competence to recognize the threat and mitigate it with high-quality work, that would first place the project into the bottom right cell. From there it will either move to manageable complexity, or average competence. A high-complexity/average competence combination is also not a stable state, due to <a href="https://en.wikipedia.org/wiki/Software_rot">software rot</a>. With active effort, once again, the complexity can be reduced - green arrow, or the project will eventually move to disaster phase - red arrow.</p>
 
 <p>Findings from this story are:
 - Active efforts are required to counteract complexity growth.
