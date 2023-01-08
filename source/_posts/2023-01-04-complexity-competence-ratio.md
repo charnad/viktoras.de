@@ -20,13 +20,13 @@ This way, low complexity means the project is small, easy to handle, even if the
 
 Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver the same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, average competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words, it can be characterized as quality of work.
 
-Now, combining these categories we get a complexity / competence matrix. Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project's lifetime it can, of course, go through different stages. Some are more stable, and some are transitional.
+Now, combining these categories, we get a complexity / competence matrix. Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project's lifetime it can, of course, go through different stages. Some are more stable, and some are transitional.
 
 <div class="text-center">
     <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/1-complexity-competence-matrix.svg" alt="Complexity/competence matrix">
 </div>
 
-Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence. The project proved itself to be very useful, so I refactored it, added a proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time users liked the product and demanded more features. I added requested features, increasing the project complexity, but adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remained.
+Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence. The project proved itself to be very useful, so I refactored it, added a proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time, users liked the product and demanded more features. I added requested features, increasing the project complexity, but adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remained.
 
 I draw the following conclusions from this little story:
 
@@ -38,7 +38,7 @@ I draw the following conclusions from this little story:
     <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/2-project-development.svg" alt="Project development paths">
 </div>
 
-Let's imagine how the same project could've evolved further. The project continues to grow with new features, and as we figured out, complexity grows with it. On the image above, initial development is indicated by a blue arrow. If the developer has enough competence to recognize the threat of uncontrolled complexity and mitigate it with high-quality work, that would first place the project into the bottom right cell. From there it will either move to manageable complexity, or average competence. A high complexity/average competence combination is also not a stable state, due to [software rot][2]. With active effort, once again, the complexity can be reduced (green arrow), or the project will eventually move to disaster phase (red arrow).
+Let's imagine how the same project could've evolved further. The project continues to grow with new features, and as we figured out, complexity grows with it. On the image above, the project's initial development is indicated by a blue arrow. If the developer has enough competence to recognize the threat of uncontrolled complexity and mitigate it with high-quality work, that would first place the project into the bottom right cell. From there it will either move to manageable complexity, or average competence. A high complexity/average competence combination is also not a stable state, due to [software rot][2]. With active effort, once again, the complexity can be reduced (green arrow), or the project will eventually move to disaster phase (red arrow).
 
 Findings from this story are:
 
