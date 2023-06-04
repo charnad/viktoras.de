@@ -33,7 +33,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <main class="col-10">
+            <main class="col-9">
                     <article class="post">
         <div class="postdata row no-gutters g-0">
             <h2 class="title col-md-auto">
@@ -42,7 +42,7 @@
             <div class="col date text-end float-end">04.01.2023</div>
         </div>
         <div class="entry">
-            <p>During one of my professional endeavors, I've started to notice a problem - the complexity of our project started to exceed our current level of competence. I called it a competence/complexity ratio. A software company, as a living organism, constantly go through changes: you hire new people, some people with knowledge leave, you build new features, you refactor. Hence, the complexity and the overall competence of the team also do change over time. If complexity over competence ratio becomes greater than 1 (meaning complexity > competence), it can become a serious issue for the project's long term well-being. I liked this term so much, that I wanted to explore the idea further.</p>
+            <p>In one of my professional endeavors, I've started to notice a problem - some parts of the project were increasingly harder to manage. They would consistently require more time and effort, than initially anticipated. I realised, that the complexity of the project now exceed our current level of competence, which I called a competence/complexity ratio. A software company, as a living organism, constantly go through changes: you hire new people, some people with knowledge leave, you build new features, you refactor. Hence, the complexity and the overall competence of the team also do change over time. If the complexity over competence ratio becomes greater than 1 (meaning complexity > competence), it can pose a serious issue for the project's long term well-being. I liked this term so much, that I wanted to explore the idea further.</p>
 
 <!--more-->
 
@@ -54,7 +54,7 @@
 
 <p>This way, low complexity means the project is small, easy to handle, even if the underlying business logic may not be trivial. High complexity means it's too much to deal with, and you start sweating trying to change even the littlest of things.</p>
 
-<p>Competence is a loosely defined term, since it's always relative. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver the same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, average competence and expert competence. A lacking competence does not necessarily mean you didn't know better, it could also mean you didn't do better for whatever reason it might be. In other words, it can be characterized as quality of work.</p>
+<p>Competence is a loosely defined term, since it's relative to the undertaking. Some developer may be competent enough to accomplish a given task quickly, effectively, with long-term working result. A different developer may struggle to deliver the same level of result, due to lacking technical skills, domain knowledge or even plainly prudence. We can broadly define three categories on the competence axis: lacking competence, average competence and expert competence.</p>
 
 <p>Now, combining these categories, we get a complexity / competence matrix. Each cell describes, how a software project may look like at this level of complexity and developer's competence. During a project's lifetime it can, of course, go through different stages. Some are more stable, and some are transitional.</p>
 
@@ -62,7 +62,7 @@
     <img class="img-fluid" src="/img/posts/2023-01-04-complexity-competence-ratio/1-complexity-competence-matrix.svg" alt="Complexity/competence matrix">
 </div>
 
-<p>Let me describe a small project I did years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't spend a lot of time and threw together what worked for me then. That would fit into top-left, low complexity and low competence. The project proved itself to be very useful, so I refactored it, added a proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time, users liked the product and demanded more features. I added requested features, increasing the project complexity, but adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remained.</p>
+<p>Let me describe an example project from years ago. It started off as a one-file monitoring script, with hard-coded credentials, that just did the work. I didn't spend a lot of time and threw together what worked for me then. That would fit into top-middle - low complexity and average competence, a stable low-tech solution. The project proved itself to be very useful, so I refactored it, added a proper configuration file. With this, the project moved into top-middle state of average competence, but still maintaining low complexity. Over time, users liked the product and demanded more features. I added requested features, increasing the project complexity, but adhering to good coding practices and keeping the structure clean. The project moved into the middle cell, where it remained.</p>
 
 <p>I draw the following conclusions from this little story:</p>
 
