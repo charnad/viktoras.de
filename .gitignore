@@ -8,6 +8,8 @@
 /source/components/
 /source/css/app.css
 /source/js/app.js
+/source/fonts/vendor
+/source/fonts/
 .DS_Store
 /vendor/
 /node_modules/

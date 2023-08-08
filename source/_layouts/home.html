@@ -1,0 +1,128 @@
+{% extends "blank" %}
+
+{% block head_styles %}
+<style>
+    body, html {
+        height: 100%;
+        width: 100%;
+        padding: 0 !important;
+    }
+
+    body {
+        background-image: url('/img/viktoras_6.jpg');
+        background-position: -40vh 50px;
+        background-repeat: no-repeat;
+        background-size: auto min(100vh, 100vw);
+    }
+
+    .container-fluid {
+        height: 100%;
+    }
+
+    .container-fluid .row {
+        height: 100%;
+    }
+
+    section#description {
+        height: calc(100% - 60px - 16px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    section#description div#main-text {
+        margin-top: 25vh;
+        flex-grow: 2;
+        text-align: center;
+    }
+
+    section#description footer {
+        flex-basis: 20px;
+    }
+
+    section#description ul {
+        list-style: none;
+    }
+
+    @media (max-width: 767px) {
+        body {
+            background-position: -70px 80px;
+            background-size: min(100%, 600px) auto;
+        }
+
+        section#photo-spacer {
+            min-height: min(100vw, 600px);
+            margin-top: 40px;
+        }
+
+        section#description {
+            height: auto;
+        }
+
+        section#description div#main-text {
+            margin-top: 0;
+        }
+    }
+
+    div.social-icons {
+        font-size: 1.5em;
+    }
+
+    div.social-icons i {
+        margin: 0 5px;
+    }
+
+    .navbar a {
+        text-decoration: none !important;
+    }
+
+    .nav-link {
+        line-height: 60px;
+        padding: 0 10px !important;
+        font-size: 15px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.035rem;
+        margin-left: 10px;
+    }
+</style>
+{% endblock %}
+
+
+{% block contents %}
+    <div class="container-fluid g-0">
+        <div class="row g-0">
+
+            <nav class="navbar navbar-expand offset-lg-5 offset-md-4 col-lg-7 col-md-8 col-sm-12" style="top: 0; left: 0; right: 0;">
+                <div class="collapse navbar-collapse justify-content-center">
+                    {% include 'menu-items.html' %}
+                </div>
+            </nav>
+
+            <section class="col-md-5" id="photo-spacer"></section>
+
+            <section class="col-md-7" id="description">
+                <div id="main-text">
+                    <div>
+                        <h1>Viktoras Bezaras</h1>
+
+                        <h5>Head of Development at LeasingMarkt.de</h5>
+
+                        <ul>
+                            <li>15 years of software development</li>
+                            <li>4 years of engineering management</li>
+                            <li>5 years of agile management</li>
+                        </ul>
+
+                        <div class="social-icons">
+                            <a href="https://github.com/viktoras25"><i class="bi-github"></i></a>
+                            <a href="https://www.linkedin.com/in/vkts"><i class="bi-linkedin"></i></a>
+                            <a href="https://t.me/viktoras"><i class="bi-telegram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                {% include 'footer.html' %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

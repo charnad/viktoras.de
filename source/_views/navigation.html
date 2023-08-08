@@ -5,9 +5,9 @@
             {% for i in 1..page.pagination.total_pages %}
 
                 {% if i == 1 %}
-                    {% set query = '/' %}
+                    {% set query = '/read/' %}
                 {% else %}
-                    {% set query = '/page/' ~ i %}
+                    {% set query = '/read/page/' ~ i %}
                 {% endif %}
 
                 {% if i == page.pagination.page %}
