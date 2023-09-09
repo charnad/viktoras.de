@@ -3,11 +3,54 @@
     <title><![CDATA[viktoras.de]]></title>
     <link href="https://viktoras.de/atom.xml" rel="self"/>
     <link href="https://viktoras.de/"/>
-    <updated>2023-08-08T15:51:45+00:00</updated>
+    <updated>2023-09-09T13:38:18+00:00</updated>
     <id>https://viktoras.de/</id>
             <author>
             <name><![CDATA[Viktoras Bezaras]]></name>                    </author>
         <generator uri="http://sculpin.io/">Sculpin</generator>
+            <entry>
+            <title type="html"><![CDATA[SSH via GPG]]></title>
+            <link href="https://viktoras.de/read/ssh-via-gpg/"/>
+            <updated>2023-08-20T00:00:00+00:00</updated>
+            <id>https://viktoras.de/read/ssh-via-gpg/</id>
+            <content type="html"><![CDATA[<p>This is summary of how I use SSH via GPG and back it up. I'm writing it down for myself and to share with my friend and colleagues. My setup is not ultimately secure, but it's secure and practical enough for me. At every step you can choose to harden the configuration even more and add hardware tokens like Yubikey. My motivation is having to deal with one keychain only and being able to have an offline hardcopy (printable QR code) backup, because all electronics can go bad when you least want it.</p>
+
+<p>We start off with having a proper GPG keychain. There are numerous guides to creating a keychain, I wil only provide a quick walkthrough without too much explanation. Just one thing to notice, you want to create an ECC key (Ed25519). It provides similar security level, while having a much smaller key size. Since we are going to print the key out as a QR code, we have to keep QR limitations in mind. A single QR code can contain around 3kb of data, so a RSA4096 key will not fit. And we also want some redundancy in the QR code, limiting the payload even more. There are of course ways around it, you can break it up into multiple QR codes or use a different encoding, like Data Matrix. I choose to just use an ECC key.</p>
+
+<p>Here I make the first security/practicality tradeoff. For maximum security, you can choose to create the master key on a separate machine, that never ever connects to any network, transfer it to Yubikey and wipe it. This way you can ensure, that your master key will never be compromised. If you are a high-value target, your current machine can already be keylogged, so creating a new key there is not 100% secure. I am accepting this risk and proceed on my daily laptop.</p>
+
+<p>An absolute must is to set a secure passphrase for a key. Again, internet recommends generating a passphrase using e.g. diceware to exclude any possible electronic traces. I don't do it, even thought it's fun. Just remember, if your key does get stolen, this passphrase will be the last and only level of your defense. We are going to print the private key as a QR code, so a copy will be obtainable.</p>
+
+<pre><code>gpg --full-generate-key --expert
+gpg --list-keys
+gpg --expert --edit-key MASTER_KEY_ID
+</code></pre>
+
+<p>A proper key management includes a master key with only certify capability and 3 sub-keys. For that, choose item 11, disable sign capability leaving certify only, the rest is default. After master key, add 3 sub-keys - sign, encrypt, authenticate. Sign can be used for signing git commits, encrypt for secure email communication, authenticate for SSH. I do it, because I like the structure with sub-keys.</p>
+
+<p>Now you have a key you can use. You need to enable SSH support in a GPG agent and setup SSH socket.</p>
+
+<pre><code>echo enable-ssh-support &gt;&gt; ~/.gnupg/gpg-agent.conf
+echo "export SSH_AUTH_SOCK=\$(gpgconf --list-dirs agent-ssh-socket)" &gt;&gt; ~/.bashrc
+gpg --list-keys --with-keygrip
+echo SUB_KEY_ID &gt;&gt; ~/.gnupg/sshcontrol
+gpg-connect-agent reloadagent /bye
+ssh-add -L
+</code></pre>
+
+<p>Now you should be able to see a key available for SSH authentication.</p>
+
+<pre><code>gpg --export-ssh-key MASTER_KEY_ID
+</code></pre>
+
+<p>Add it to the desired server/service, like Github for example and test it.</p>
+
+<pre><code>ssh -T git@github.com
+</code></pre>
+
+<p>https://github.com/drduh/YubiKey-Guide</p>
+]]></content>
+        </entry>
             <entry>
             <title type="html"><![CDATA[Complexity / competence ratio]]></title>
             <link href="https://viktoras.de/read/complexity-competence-ratio/"/>
@@ -590,51 +633,6 @@ func max(a, b int64) int64 {
     return result
 }
 </code></pre>
-]]></content>
-        </entry>
-            <entry>
-            <title type="html"><![CDATA[Why do I hate static methods]]></title>
-            <link href="https://viktoras.de/read/why-do-i-hate-static-methods/"/>
-            <updated>2015-05-10T00:00:00+00:00</updated>
-            <id>https://viktoras.de/read/why-do-i-hate-static-methods/</id>
-            <content type="html"><![CDATA[<p>Every time I use a static method I feel embarassed, like I'm doing something shameful. Or when I see a Pull-Request with a bunch of static methods I think "Why? Why did you have to do it this way?". I dont want to push my beliefs on the others, so I don't decline those PRs. At least they get the work done. However I feel it's time to express why do I hate static methods.</p>
-
-<p>To begin with, a static method is a class method, that can be invoked without instantiating a class. The most common usage I've seen are helper classes (oh my god I do also hate helper classes) and singletones. Let's look at those helper classes from another point of view. We have some set of methods, that, let's say, format a string in different ways. So we have</p>
-
-<pre><code class="php">class Helper
-{
-   public static formatA() {...}
-   public static formatB() {...}
-   public static formatC() {...}
-}
-</code></pre>
-
-<p>The thing is, it has absolutely no difference from:</p>
-
-<pre><code class="php">function helper_formatA() {...}
-function helper_formatB() {...}
-function helper_formatC() {...}
-</code></pre>
-
-<p>Why would you bother writing this within a class instead of just a set of functions? Is it because you think you are using Object-Oriented Programming and writing <strong>class</strong> keyword makes your code better? I feel, like using static methods this way is a step away from the ideas of the OOP. This is not an instance of a class anymore.</p>
-
-<p>So we have used this static method somewhere in the code:</p>
-
-<pre><code class="php">// .. within some class
-public function foo()
-{
-    // ...
-    Helper::formatA('bar');
-}
-</code></pre>
-
-<p>our module is now dependent on that static class. Can you tell by looking at the class API that it has that dependency? No you don't. It's a hidden dependency that can hit you when you don't expect it. If you extract your class into some library for common usage, you can suddenly find out, that you have to include Helper too. Moreover, this is a tight dependency, you can not substitute a call to this class by some other helper. And the more you use those static methods, the more dependencies you have in your project, that will entangle it like a spider web.</p>
-
-<p>A singletone is absolutely no better. But how do I ensure, that I have just a single connection to my DB, you may ask? Well, you can instantiate it once at the bootstrapping, put it in the service container and reuse it. True, you will end up with more code that before, but if you want your project to be flexible you have to accept abstraction costs.</p>
-
-<p>The same goes for the Helper Formatter example. Take an advantage of passing an instance of a Formatter class as a dependency injection. Use an interface as a type hinting to make it loosely coupled and be easily replacable. And then your method will depend on an abstraction rather than a specific object.</p>
-
-<p>Usage of static methods can probably be explained somehow, the same way as a usage of goto. I used goto <a href="https://github.com/mtdowling/cron-expression/issues/50#issuecomment-41650357">once</a>, because of the PHP 'continue 2' memory leak bug. But under normal circustumstances I don't think there is a justification of using a static method.</p>
 ]]></content>
         </entry>
     </feed>
