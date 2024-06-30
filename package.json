@@ -14,12 +14,12 @@
     "watch": "npm install && mix watch"
   },
   "devDependencies": {
-    "bootstrap": "5.2",
-    "bootstrap-icons": "^1.10.5",
-    "highlight.js": "^11.6",
+    "bootstrap": "5.3",
+    "bootstrap-icons": "^1.11.3",
+    "highlight.js": "^11.9",
     "laravel-mix": "^6.0",
     "resolve-url-loader": "^5.0",
-    "sass": "^1.56",
-    "sass-loader": "^13.2"
+    "sass": "^1.77",
+    "sass-loader": "^14.2"
   }
 }
