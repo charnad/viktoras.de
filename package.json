@@ -14,7 +14,7 @@
     "watch": "npm install && mix watch"
   },
   "devDependencies": {
-    "bootstrap": "5.2",
+    "bootstrap": "5.3",
     "bootstrap-icons": "^1.10.5",
     "highlight.js": "^11.6",
     "laravel-mix": "^6.0",
